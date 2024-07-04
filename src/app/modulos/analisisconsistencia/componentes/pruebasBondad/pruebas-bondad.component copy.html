@@ -1,0 +1,566 @@
+<!-- Miga de Pan.... -->
+<div class="row text-right sish-miga-de-pan">
+  <div class="col-md-12 text-right">
+      <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+          <li class="breadcrumb-item active"> {{'Configuracion'|translate}}</li>
+          <li class="breadcrumb-item">{{'ChiCuadrado'|translate}}</li>
+      </ol>
+  </div>
+</div>
+
+
+<div class="container-fluid bg-white pt-5">
+  <!-- Titulo.... -->
+  <div class="row">
+      <div class="col-md-12 text-center">
+          <h2 class="sish-titulo-formulario">{{'Pruebas de bondad de ajuste'|translate}}</h2>
+          <hr />
+      </div>
+  </div>
+
+
+  <!-- Formulario.... -->
+  <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioConsulta" (ngSubmit)="obtener()" novalidate>
+      <div class="row" width="100%">
+
+
+          <!--Primera Columna... -->
+          <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+              <label> {{ 'Filtros' | translate }}</label>
+              <!-- Codigo IDEAM.... -->
+              <div class="form-group">
+                  <label> {{ 'codigo' | translate }} IDEAM</label>
+                  <ng-select2 name="codigoIDEAM" [data]="listaCodigoIDEAM" [disabled]="!idTipoElemento"
+                      [(ngModel)]="idElemento" formControlName="idCodigoIDEAM" [width]="'100%'"
+                      placeholder="{{ 'Seleccionar' | translate }} {{' codigo IDEAM' | translate}}...">
+                  </ng-select2>
+              </div>
+
+              <!-- Codigo EAAB.... -->
+              <div class="form-group">
+                  <label> {{ 'codigo' | translate }} EAAB</label>
+                  <ng-select2 name="CodigoEAAB" formControlName="idCodigoEAAB" [disabled]="idTipoElemento !=466"
+                      [data]="listaCodigoEAAB" [(ngModel)]="idElemento" [width]="'100%'"
+                      placeholder="{{ 'Seleccionar' | translate }} {{' codigo EAAB' | translate}}...">
+                  </ng-select2>
+              </div>
+
+              <!-- Elemento.... -->
+              <div class="form-group">
+                  <label> {{ 'Nombre' | translate }} elemento *</label>
+                  <ng-select2 name="nombreElemento" [data]="listaElemento"
+                      (ngModelChange)="obtenerListaParametros($event)" formControlName="idElemento"
+                      [(ngModel)]="idElemento" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }}..."
+                      [disabled]="!idTipoElemento">
+                  </ng-select2>
+                  <p *ngIf="ngForm.submitted && idElemento == '0'" class="error">
+                      <sup>*</sup> {{ "Nombre" | translate }} {{ "obligatorio" | translate }}
+                  </p>
+              </div>
+              <!-- Valor de Significancia.... -->
+              <div class="form-group">
+                  <label> {{ 'Valor de significancia ' | translate }} *</label>
+                  <ng-select2 name="idReduccion" [data]="listaReduccion" formControlName="idReduccionFC"
+                      [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }}..." [(ngModel)]="idReduccion">
+                  </ng-select2>
+                  <p *ngIf="ngForm.submitted && (fcIdReduccion!.invalid  || null==idReduccion ||
+                  undefined==idReduccion|| idReduccion.length<=0)" class="error">
+                      <sup>*</sup>Valor de significancia {{ "obligatorio" | translate }}
+                  </p>
+              </div>
+              <!-- Función De Distribución.... --->
+              <div class="form-group" *ngIf="esKolmogorov || esVCramer">
+                  <label> {{ 'Función De Distribución' | translate }} *</label>
+                  <ng-select2 name="idDistribucion" [data]="listaFuncionDis" formControlName="idDistribucionFC"
+                      [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }}..." [(ngModel)]="idDistribucion"
+                      (ngModelChange)="onDistribucionChange($event)">
+                  </ng-select2>
+                  <p *ngIf="ngForm.submitted && (fcIdDistribucion!.invalid || null==idDistribucion ||
+                  undefined==idDistribucion|| idDistribucion.length<=0)" class="error">
+                      <sup>*</sup>Funcion de distribucion {{ "obligatorio" | translate }}
+                  </p>
+              </div>
+          </div>
+
+          <!--Segunda Columna... -->
+
+          <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+              <label></label>
+              <!-- Parametro.... -->
+              <div class="form-group">
+                  <label>{{ 'Parámetro'|translate}} *</label>
+                  <ng-select2 name="idParametro" [data]="listParametro" [(ngModel)]="parametro"
+                      formControlName="idParametro" [width]="'100%'" placeholder="Seleccionar parámetro"
+                      (ngModelChange)="actualizarFrecuencia($event)">
+                  </ng-select2>
+              </div>
+
+              <!-- Frecuencia.... -->
+              <div class="form-group">
+                  <label> {{ 'frecuencia' | translate }} *</label>
+                  <ng-select2 name="idFrecuencia" [(ngModel)]="idfrecuencia" [data]="listaFrecuencia"
+                      formControlName="frecuencia" [width]="'100%'" [disabled]=true>
+                  </ng-select2>
+              </div>
+
+              <div class="form-group">
+                  <label class="text-center"> {{ "Periodo" | translate }} </label>
+                  <br>
+                  <div class=" row ">
+                      <!--Fecha Inicio... -->
+                      <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12" *ngIf="idfrecuencia == 151 ||idfrecuencia == 146 ||idfrecuencia ==  145 ||idfrecuencia ==  683 ||idfrecuencia ==  682 ">
+
+                          <label> {{ "Desde" | translate }} *</label>
+                          <input type="datetime-local"
+                          class="form-control" formControlName="fechaInicio" [(ngModel)]="fecha" [max]=fechaActualHora name="fecha" placeholder="{{ 'fechaInstalacion' | translate }}" />
+                          <p *ngIf="ngForm.submitted && fecha  == undefined " class="error">
+                              <sup>*</sup> {{ "fecha" | translate }} {{ "obligatorio" | translate }}
+                          </p>
+                      </div>
+                      <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12" *ngIf="idfrecuencia == 152">
+                          <label> {{ "Desde" | translate }} *</label>
+                          <input type="date" [max]=fechaActual  class="form-control" [(ngModel)]="fecha" formControlName="fechaInicio"  [max]=fechaActual name="fecha" placeholder="{{ 'fechaInstalacion' | translate }}" />
+
+                          <p *ngIf="ngForm.submitted && fecha  == undefined " class="error">
+                              <sup>*</sup> {{ "fecha" | translate }} {{ "obligatorio" | translate }}
+                          </p>
+                      </div>
+
+                      <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12" *ngIf="idfrecuencia == 154 ">
+                          <label> {{ 'Desde' | translate }} *</label>
+
+                          <input type="month" [max]=fechaActualMensual name="fecha" id="fecha" [(ngModel)]="fechaMes" formControlName="fechaInicio" class="form-control">
+
+                          <p *ngIf="ngForm.submitted && fechaMes  == undefined " class="error">
+                              <sup>*</sup> {{ "fecha" | translate }} {{ "obligatorio" | translate }}
+                          </p>
+
+                      </div>
+                      <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12" *ngIf="idfrecuencia == 155">
+                          <label> {{ 'Desde' | translate }} *</label>
+                          <ng-select2 name="idFlagObservacion"   [data]="listAnos" [(ngModel)]="fechaAno" formControlName="fechaInicio" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{'año' | translate}}...">
+                          </ng-select2>
+
+                          <p *ngIf="ngForm.submitted && fechaAno  == undefined " class="error">
+                              <sup>*</sup> {{ "fecha" | translate }} {{ "obligatorio" | translate }}
+                          </p>
+
+
+                          <input type="year" name="fecha" id="fecha" class="form-control">
+
+
+                      </div>
+
+
+                      <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12" *ngIf="idfrecuencia == 151 ||idfrecuencia == 146 ||idfrecuencia ==  145 ||idfrecuencia ==  683 ||idfrecuencia ==  682 ">
+                               <label> {{ "Hasta" | translate }} *</label>
+                          <input type="datetime-local" class="form-control" formControlName="fechaFin"
+                           [(ngModel)]="fechaFinal" [max]=fechaActualHora name="fecha" placeholder="{{ 'fechaInstalacion' | translate }}" />
+                          <p *ngIf="ngForm.submitted && fecha  == undefined " class="error">
+                              <sup>*</sup> {{ "fecha" | translate }} {{ "obligatorio" | translate }}
+                          </p>
+                      </div>
+                      <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12" *ngIf="idfrecuencia == 152">
+                          <label> {{ "Hasta" | translate }} *</label>
+                          <input type="date" [max]=fechaActual  class="form-control" [(ngModel)]="fechaFinal" formControlName="fechaFin"  [max]=fechaActual name="fecha" placeholder="{{ 'fechaInstalacion' | translate }}" />
+
+                          <p *ngIf="ngForm.submitted && fecha  == undefined " class="error">
+                              <sup>*</sup> {{ "fecha" | translate }} {{ "obligatorio" | translate }}
+                          </p>
+                      </div>
+
+                      <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12" *ngIf="idfrecuencia == 154 ">
+                          <label> {{ 'Hasta' | translate }} *</label>
+
+                          <input type="month" [max]=fechaActualMensual name="fecha" id="fecha" [(ngModel)]="fechaMesFin" formControlName="fechaFin" class="form-control">
+
+                          <p *ngIf="ngForm.submitted && fechaMes  == undefined " class="error">
+                              <sup>*</sup> {{ "fecha" | translate }} {{ "obligatorio" | translate }}
+                          </p>
+
+                      </div>
+                      <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12" *ngIf="idfrecuencia == 155">
+                          <label> {{ 'Hasta' | translate }} *</label>
+                          <ng-select2 name="idFlagObservacion"    [data]="listAnos" [(ngModel)]="fechaAnoFin" formControlName="fechaFin" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{'año' | translate}}...">
+                          </ng-select2>
+
+                          <p *ngIf="ngForm.submitted && fechaAno  == undefined " class="error">
+                              <sup>*</sup> {{ "Hasta " | translate }} {{ "obligatorio" | translate }}
+                          </p>
+
+
+                          <input type="year" name="fecha" id="fecha" class="form-control">
+
+
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+
+          <!-- Tercera Columna...
+          <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+
+              <div class="form-group">
+                  <label>{{ "departamento" | translate }}</label>
+                  <ng-select2 name="idDepartamento" [data]="listaDepartamentos" formControlName="idDepartamento"
+                      [width]="'100%'" [(ngModel)]="departamentoSelected"
+                      (ngModelChange)="cambioDepartamento(departamentoSelected)" placeholder="{{ 'Seleccionar' | translate }} {{
+              'departamento' | translate
+              }}...">
+                  </ng-select2>
+              </div>
+
+
+              <div class="form-group">
+                  <label>{{ "area" | translate }} {{"Hidrografica"|translate}} </label>
+                  <ng-select2 name="idAreaHidrografica" [data]="listaAreaHidrografica"
+                      formControlName="idAreaHidrografica" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+            'Area Hidrografica' | translate
+          }}...">
+                  </ng-select2>
+              </div>
+
+              <div class="form-group">
+                  <label>{{ "zonaHidrografica" | translate }}</label>
+                  <ng-select2 name="idZonaHidrografica" [data]="listaZonaHidrografica"
+                      formControlName="idZonaHidrografica" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+            'Zona Hidrografica' | translate
+          }}...">
+                  </ng-select2>
+              </div>
+
+              <div class="form-group">
+                  <label>{{ "SubzonaHidrografica" | translate }}</label>
+                  <ng-select2 name="idSubZonaHidrografica" [data]="listaSubzonaHidrografica"
+                      formControlName="idSubZonaHidrografica" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+            'Subzona Hidrografica' | translate
+          }}...">
+                  </ng-select2>
+              </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+
+              <div class="form-group">
+                  <label>{{ "municipio" | translate }}</label>
+                  <ng-select2 name="idMunicipio" [data]="listaMunicipios" formControlName="idMunicipio"
+                      [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+               'municipio' | translate
+               }}...">
+                  </ng-select2>
+              </div>
+
+
+              <div class="form-group">
+                  <label>{{ "Cuenca" | translate }}</label>
+                  <ng-select2 name="cuenca" [data]="listaCuenca" formControlName="idCuenca" [width]="'100%'"
+                      placeholder="{{ 'Seleccionar' | translate }} {{
+            'cuenca' | translate
+          }}...">
+                  </ng-select2>
+              </div>
+
+
+              <div class="form-group">
+                  <label>{{ "Subcuenca" | translate }}</label>
+                  <ng-select2 name="idSubCuenca" [data]="listaSubcuenca" formControlName="idSubCuenca"
+                      [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+            'Subcuenca' | translate
+          }}...">
+                  </ng-select2>
+              </div>
+
+
+              <div class="form-group">
+                  <label> {{ 'Entidad' | translate }}</label>
+                  <ng-select2 name="tipo" [data]="listaEntidad" formControlName="idEntidad" [width]="'100%'"
+                      placeholder="{{'Seleccionar'|translate}} {{'Microcuenca'|translate}}...">
+                  </ng-select2>
+
+              </div>
+          </div> -->
+
+          <br>
+          <div class="row" width="100%">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                  <!--Tipo Prueba -->
+                  <div class="row" width="100%">
+                      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 text-right">
+                          <div>
+                              <label>{{ ' Tipo ' | translate }}{{ ' prueba ' | translate }}</label>
+                          </div>
+                      </div>
+
+                  </div>
+
+                  <div class="row" width="100%">
+                      <!--ChiCuadrado -->
+                      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 text-right">
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" (change)="obtenerPruebasBondad(1)"
+                               name="elemento" value="1" checked>
+                              <label class="form-check-label" for="inlineRadio1">{{"Chi cuadrado"|translate}}</label>
+                          </div>
+                      </div>
+
+                      <!--Kolmogorov -->
+                      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 text-left">
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" (change)="obtenerPruebasBondad(2)"
+                                   name="elemento" value="2" checked>
+                              <label class="form-check-label text-center"
+                                  for="inlineRadio2">{{"Kolmogorov-"|translate}}{{" smirnov"|translate}}</label>
+                          </div>
+                      </div>
+                  </div>
+
+                  <p></p>
+
+                  <div class="row" width="100%">
+                      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 text-center">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                              <!--Chramer -->
+                              <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" (change)="obtenerPruebasBondad(3)"
+                                       name="elemento"  value="3" checked>
+                                  <label class="form-check-label text-center">{{"V
+                                      de"|translate}}{{" cramer"|translate}}</label>
+                              </div>
+                          </div>
+                          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                              <!--Chramer -->
+                              <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio"
+                                     name="elemento" value="3" hidden checked>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <br>
+          <p></p>
+          <!--Botones -->
+          <div class="row">
+              <div class="form-group col-xl-12 col-lg-6 col-sm-12 text-center">
+                  <div class="btn-group mr-2" role="group" aria-label="First group">
+                      <button type="submit" class="sish-boton-confirmar">
+                          {{ 'Botones.consultar' | translate }}
+                      </button>
+                      <button type="button" (click)="regresar()" class="sish-boton-cancelar">
+                          {{ 'Botones.limpiar' | translate }}
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </form>
+      <div class="row" width="100%">
+          <!--Primera columna -->
+          <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+              <div class="form-group">
+                  <app-datatable id="miDataTableInv" [datos]="datosFilter" [opciones]="columnas" [id]="'idElemento'"
+                      [consultarRegistros]="false" [seleccionarRegistro]="false" [verFiltros]="false"
+                      [verColumnas]="false" [copiar]="false" [crear]="false">
+
+                  </app-datatable>
+              </div>
+          </div>
+          <!--segunda columna -->
+          <div class="col-xl-2 col-lg-12 col-md-12 col-sm-12">
+              <div class="form-group">
+                  <br>
+                  <br>
+                  <button type="button" name="elemento" data-toggle="modal"
+                  data-target="#ModalReporte">
+                      <img src="https://thumbs.dreamstime.com/z/gr%C3%A1ficos-financieros-41675922.jpg"
+                          style=" border:none; height:'70px'; width:'90px'; " />
+                      <label class="form-check-label text-center">{{"Ver Clasificacion"|translate}}</label>
+                  </button>
+
+              </div>
+
+          </div>
+
+          <!--tercera columna -->
+          <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+              <div class="form-group">
+                  <br>
+                  <br>
+                  <div class="card border-info ">
+                      <div class="row">
+                          <div class="col-sm-10">
+                              <div class="card">
+                                  <div class="card-body">
+                                      <p class="card-text"><b>Serie de</b></p>
+                                      <p class="card-text">
+                                          {{miNombreParametro}}
+                                      </p>
+
+                                      <p class="card-text"><b>Estacion</b></p>
+                                      <p class="card-text">
+                                          {{miNombreEstaciones}}
+                                      </p>
+
+                                      <p class="card-text"><b>Periodo de análisis</b></p>
+                                      <p class="card-text">
+                                          {{fechainicio}} Hasta {{Fechafin}}
+                                      </p>
+
+                                      <p class="card-text"><b>Resultado de la prueba</b></p>
+                                      <p class="card-text">
+                                          {{informacion}}
+                                      </p>
+
+                                      <p class="card-text"><b>Nivel de significancia a =</b></p>
+                                      <p class="card-text">
+                                          {{idReduccion}}%
+                                      </p>
+
+                                      <p class="card-text"><b>v =</b></p>
+                                      <p class="card-text text">
+                                          {{resultado}}
+                                      </p>
+
+                                  </div>
+                              </div>
+                          </div>
+
+                      </div>
+
+                  </div>
+
+              </div>
+              <br>
+              <div class="form-group">
+                  <div id="chart">
+                      <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+                          [dataLabels]="chartOptions.dataLabels" [plotOptions]="chartOptions.plotOptions"
+                          [yaxis]="chartOptions.yaxis" [xaxis]="chartOptions.xaxis" [title]="chartOptions.title">
+                      </apx-chart>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+      <br>
+
+      <div id="ModalReporte" class="modal fade" role="dialog">
+          <div class="modal-dialog modal-lg">
+              <!-- Modal content-->
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h4 class="modal-title">{{ "Prueba de" |translate }} {{" bondad" |translate}} </h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+
+                  <div class="modal-body">
+
+                      <h2>Variables</h2>
+                      <br>
+
+                      <p>{{texto1}}</p>
+                      <p>{{texto2}}</p>
+                      <p>{{texto3}}</p>
+
+                      <p *ngIf="esKolmogorov">{{texto4}}</p>
+                      <span *ngIf="esChi2" style="font-size: 35px;"><ng-katex [equation] ="chiEquation[0]"></ng-katex></span>
+                      <span *ngIf="esKolmogorov" style="font-size: 35px;" ><ng-katex [equation] ="kolmogorovEquation[0]"></ng-katex></span>
+                      <span *ngIf="esVCramer" style="font-size: 35px;"><ng-katex [equation] ="cramerEquation[0]"></ng-katex></span>
+                      <br>
+
+                      <form id="modalForm" class="sish-form" #ngForm="ngForm" novalidate>
+
+                          <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+
+                              <table class="table">
+                                  <thead>
+                                      <tr>
+                                          <th scope="col">Rango de valores</th>
+                                          <th scope="col">Resultado obtenido</th>
+                                          <th scope="col">Nivel de significancia</th>
+                                          <th scope="col">Descripción</th>
+                                          <th scope="col" *ngIf="esKolmogorov">Función de distribución</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr *ngIf="aprobada">
+                                          <td>{{formulaAprobado}}</td>
+                                          <td>{{resultado}}</td>
+                                          <td>{{idReduccion}}%</td>
+                                          <td>APROBADA</td>
+                                          <td *ngIf="esKolmogorov">{{idDistribucion}}</td>
+                                      </tr>
+                                      <tr *ngIf="reprobada">
+                                          <td>{{formulaReprobado}}</td>
+                                          <td>{{resultado}}</td>
+                                          <td>{{idReduccion}}%</td>
+                                          <td>RECHAZADA</td>
+                                          <td *ngIf="esKolmogorov">{{idDistribucion}}</td>
+                                      </tr>
+                                      <tr *ngIf="resultadoDevil">
+                                          <td>{{formulaAprobado}}</td>
+                                          <td>{{resultado}}</td>
+                                          <td>{{idReduccion}}%</td>
+                                          <td>El resultado es debil. Aunque el resultado estadisticamente
+                                              significativo, los campos solo estan debilmente asociado
+                                          </td>
+                                          <td *ngIf="esKolmogorov">{{idDistribucion}}</td>
+                                      </tr>
+                                      <tr *ngIf="resultadoModerado">
+                                          <td>{{formulaReprobado}}</td>
+                                          <td>{{resultado}}</td>
+                                          <td>{{idReduccion}}%</td>
+                                          <td>El resultado es moderado. Los campos estan asociados moderadamente
+                                          </td>
+                                          <td *ngIf="esKolmogorov">{{idDistribucion}}</td>
+                                      </tr>
+                                      <tr *ngIf="resultadoFuerte">
+                                          <td>{{formulaCramer}}</td>
+                                          <td>{{resultado}}</td>
+                                          <td>{{idReduccion}}%</td>
+                                          <td>El resultado es fuerte. Los campos estan fuertemente asociados.
+                                          </td>
+                                          <td *ngIf="esKolmogorov">{{idDistribucion}}</td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+
+                              <button type="button" class="sish-boton-cancelar" (click)="onCancelarModal()"
+                                  data-dismiss="modal">{{"Regresar"|translate}}</button>
+
+                              <div class="invisible">
+                                  <button type="button" #ModalReporte class="invisible" data-toggle="modal"
+                                      data-target="#ModalReporte"></button>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="row text-center">
+          <div class="form-group col-xl-12 col-lg-6 col-sm-12">
+              <div class="btn-group mr-2" role="group" aria-label="First group">
+                  <button type="button" class="sish-boton-confirmar" (click)="guadarPruebasBondad()">
+                      {{ 'Botones.Guardar' | translate }}
+                  </button>
+                  <button type="button" class="sish-boton-cancelar">
+                      {{ 'Botones.Cancelar' | translate }}
+                  </button>
+              </div>
+          </div>
+      </div>
+
+      <button type="button" id="btn" style="visibility: hidden;">
+      </button>
+      <div class="row">
+          <div class="col-md-12">
+              <p class="sish-datos-auditoria">
+                  <strong>{{'Auditoria'|translate}}</strong> | {{'Fecha'|translate}} {{'creacion'|translate}}:<label controlName="fechaCreacion"></label> | {{'Fecha'|translate}} {{'modificación'|translate}}: <label controlName="fechaModificacion"></label>                    | {{'Fecha'|translate}} {{'estado'|translate}}: <label controlName="fechaEstado"></label> | {{'Usuario'|translate}} {{'creacion'|translate}}:
+                  <label controlName="usuarioCreacion"></label> | {{'Usuario'|translate}} {{'modificación'|translate}}: <label controlName="usuarioModificacion"></label> | {{'Usuario'|translate}} {{'estado'|translate}}: <label controlName="usuarioEstado"></label>
+              </p>
+          </div>
+      </div>
+</div>

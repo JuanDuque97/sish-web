@@ -1,0 +1,28 @@
+<nav class="main-header navbar navbar-expand sish-linea-usuario sish-azul-claro"  >
+  <!-- Left navbar links -->
+  <ul class="navbar-nav">
+    <li class="nav-item" *ngIf="visible" >
+      <a class="nav-link" data-widget="pushmenu" href="#" role="button"><em class="fas fa-bars"></em></a>
+    </li>
+    <li class="nav-item d-none d-sm-inline-block">
+      <a [routerLink]="'inicio'" class="nav-link">
+        {{ "Inicio" | translate }}</a>
+    </li>
+    <li class="nav-item d-none d-sm-inline-block">
+      <a href="https://acueducto.com.co" class="nav-link">
+        {{ "portalCorporativo" | translate }}</a>
+    </li>
+  </ul>
+
+  <ul class="navbar-nav ml-auto">  
+ 
+    <ng-container *ngFor="let idioma of listaIdiomas; let i = index">
+      <p (click)="cambiarLenguaje(idioma)" [ngClass]="
+          idioma === actual
+            ? 'sish-popup-lang-active'
+            : 'sish-popup-lang-inactive'
+        " aria-current="page">{{ idioma }}</p>
+    </ng-container>     
+    <em class="fa fa-door-open fa-2x semaforoRojo" (click)="salir()" style="cursor: pointer;"  *ngIf="visible" > </em>
+  </ul>
+</nav>

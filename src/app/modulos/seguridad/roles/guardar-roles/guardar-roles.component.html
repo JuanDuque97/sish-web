@@ -1,0 +1,89 @@
+<!-- Miga de Pan-->
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item active" [routerLink]="['/configuracion/ejemplo']">
+                Rol
+            </li>
+            <li class="breadcrumb-item">
+                {{ id === "0" ? "Crear" : "Editar" }}
+            </li>
+        </ol>
+    </div>
+</div>
+
+<!-- Contenido -->
+<div class="container-fluid bg-white pt-5">
+    <!-- Titulo -->
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">
+                {{ id === "0" ? "Crear" : "Editar" }} Rol {{ id === "0" ? "Nuevo" : rol?.value}}
+            </h2>
+            <hr />
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioRol" (ngSubmit)="guardar()" novalidate>
+
+        <!-- ID Rol -->
+        <input name="idRol" formControlName="idRol" type="hidden" />
+
+        <!-- Campos Generales -->
+        <div class="row" width="100%">
+            <!-- Nombre del Rol -->
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="rol">Rol *</label>
+                <input name="rol" formControlName="rol" type="text" class="form-control" placeholder="Nombre del rol" />
+                <p *ngIf="ngForm.submitted && rol!.invalid" class="error">
+                    <sup>*</sup> Nombre del rol obligatorio
+                </p>
+            </div>
+            <!-- Descripcion del Rol -->
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="descripcion">Descripción *</label>
+                <input name="descripcion" formControlName="descripcion" type="text" class="form-control" placeholder="Descripción detallada del rol" />
+                <p *ngIf="ngForm.submitted && descripcion!.invalid" class="error">
+                    <sup>*</sup> Descripción obligatoria
+                </p>
+            </div>
+            <!-- Estado del Rol -->
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="activo">Estado *</label>
+                <ng-select2 name="activo" formControlName="activo" [data]="estados" [width]="'100%'" [placeholder]="'Seleccionar estado...'">
+                </ng-select2>
+                <p *ngIf="ngForm.submitted && activo!.invalid" class="error">
+                    <sup>*</sup> Estado obligatorio
+                </p>
+            </div>
+        </div>
+
+        <!-- Campos Auditoria -->
+        <div class="row">
+            <div class="col-md-12">
+                <p class="sish-datos-auditoria">
+                    <strong>Auditoría</strong> | Fecha creación:<label controlName="fechaCreacion"></label> | Fecha modificación: <label controlName="fechaModificacion"></label> | Fecha estado: <label controlName="fechaEstado"></label> | Usuario creación:
+                    <label controlName="usuarioCreacion"></label> | Usuario modificación: <label controlName="usuarioModificacion"></label> | Usuario estado: <label controlName="usuarioEstado"></label>
+                </p>
+            </div>
+        </div>
+
+        <!--Botones-->
+        <div class="btn-toolbar pb-5" role="toolbar" aria-label="Toolbar with button groups">
+            <!-- Boton Crear/Guardar -->
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+                <button type="submit" class="sish-boton-confirmar">
+                    {{ id === "0" ? "Crear" : "Guardar" }}
+                </button>
+            </div>
+            <!-- Boton Cancelar -->
+            <div class="btn-group mr-2" role="group" aria-label="Second group">
+                <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/seguridad/roles']">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

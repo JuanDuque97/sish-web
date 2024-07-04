@@ -1,0 +1,38 @@
+[
+  {
+    "idRol": 1,
+    "rol": "Administrador",
+    "descripcion": "Rol de administrador",
+    "activo": "S",
+    "fechaCreacion": "01-01-2021",
+    "fechaModificacion": "03-05-2021",
+    "prueba": true
+  },
+  {
+    "idRol": 2,
+    "rol": "Administrador 1",
+    "descripcion": "Rol de consultor",
+    "activo": "S",
+    "fechaCreacion": "01-01-2021",
+    "fechaModificacion": "03-05-2021",
+    "prueba": true
+  },
+  {
+    "idRol": 3,
+    "rol": "Administrador 2",
+    "descripcion": "Rol de consultista",
+    "activo": "N",
+    "fechaCreacion": "01-01-2021",
+    "fechaModificacion": "03-05-2021",
+    "prueba": false
+  },
+  {
+    "idRol": 4,
+    "rol": "Administrador 3",
+    "descripcion": "Rol de administradores",
+    "activo": "S",
+    "fechaCreacion": "01-01-2021",
+    "fechaModificacion": "03-05-2021",
+    "prueba": true
+  }
+]

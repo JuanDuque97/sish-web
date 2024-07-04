@@ -1,0 +1,226 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item">{{'serietiempo'|translate}}
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario text-center">Gerencia de tecnología dirección de hidrología aplicada
+            </h2>
+        </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioFiltro" (ngSubmit)="guardar()"
+                    novalidate>
+                    <div class="row ">
+                        <div class="form-group col-xl-12 col-lg-4 col-md-4 col-sm-12">
+                            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <label> {{ 'categoriaEstacion'|translate}} {{' estación'|translate}}</label>
+                                <ng-select2 name="idtipoEstacion" formControlName="idtipoEstacion"
+                                    [data]="listTipoEstacion" [width]="'100%'"
+                                    (ngModelChange)="obtenerEstaciones($event)"
+                                    placeholder="{{'Seleccionar'|translate}} {{''|translate}}...">
+                                </ng-select2>
+
+                                <p *ngIf="ngForm.submitted && idtipoEstacion!.invalid" class="error">
+                                    <sup>*</sup>{{"tipoEstacion"|translate}} {{ "obligatoria" | translate }}
+                                </p>
+
+                            </div>
+
+                            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <label> {{ 'Nombre' | translate }} *</label>
+                                <ng-select2 name="nombreElemento" [data]="listaEstacion" formControlName="idestacion"
+                                    [(ngModel)]="idestacion" (ngModelChange)="obtenerLista($event)" [width]="'100%'"
+                                    placeholder="{{ 'Seleccionar' | translate }}...">
+                                </ng-select2>
+
+                                <p *ngIf="ngForm.submitted && estacion!.invalid" class="error">
+                                    <sup>*</sup>{{"nombre"|translate}} {{ "obligatoria" | translate }}
+                                </p>
+
+                            </div>
+
+                            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <label> {{ 'codigo' | translate }} EAAB</label>
+                                <ng-select2 name="CodigoEAAB" formControlName="idestacion" [data]="listaCodigoEAAB"
+                                    [(ngModel)]="idestacion" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                                    '' | translate
+                                  }}...">
+                                </ng-select2>
+                            </div>
+
+                            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <label> {{ 'codigo' | translate }} IDEAM</label>
+                                <ng-select2 name="CodigoIDEAM" [data]="listaCodigoIDEAM" [(ngModel)]="idestacion"
+                                    formControlName="idestacion" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                                    '' | translate
+                                  }}...">
+                                </ng-select2>
+                            </div>
+
+                            <hr>
+                            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <label> {{ 'Parámetro'|translate}} </label>
+                                <ng-select2 name="parametro" [width]="'100%'" [data]="NombresParametros"
+                                    formControlName="parametro" (ngModelChange)="obtenerParametros($event)"
+                                    placeholder="{{'Seleccionar'|translate}} {{''|translate}}...">
+                                </ng-select2>
+                            </div>
+
+                            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <label for="dominio"> {{ 'frecuencia' | translate }}</label>
+                                <ng-select2 name="idparametro" formControlName="idparametro" [width]="'100%'"
+                                    [data]="listaFrecuenciaXParametro"
+                                    placeholder="{{'Seleccionar'|translate}} {{ '' | translate }} {{ '' | translate }}...">
+                                </ng-select2>
+
+                                <p *ngIf="ngForm.submitted && idparametro!.invalid" class="error">
+                                    <sup>*</sup>{{"frecuencia"|translate}} {{ "obligatoria" | translate }}
+                                </p>
+
+
+                            </div>
+
+                            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <label for="idperiodo"> {{ 'Periodo' | translate }}</label>
+                                <ng-select2 name="idperiodo" [data]="listPeriodo" [(ngModel)]="tipoperiodo"
+                                    formControlName="idperiodo" [width]="'100%'"
+                                    placeholder="{{'Seleccionar'|translate}} {{ '' | translate }}...">
+                                </ng-select2>
+
+
+                                <p *ngIf="ngForm.submitted && idperiodo!.invalid" class="error">
+                                    <sup>*</sup>{{"Periodo"|translate}} {{ "obligatoria" | translate }}
+                                </p>
+                            </div>
+
+
+
+
+                            <div class="row" *ngIf="tipoperiodo == 1">
+                                <div class="form-group col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                                    <label>{{'Desde'|translate}} </label>
+                                    <input type="date" class="form-control" formControlName="fechaInicio"
+                                        [max]=fechaActual
+                                        [(ngModel)]="fechaInicio"
+                                        name="fechaInicio" />
+
+
+                                    <label>{{'Hasta'|translate}} </label>
+                                    <input type="date" class="form-control" [max]=fechaActual 
+                                    [min]="fechaInicio"
+                                    formControlName="fechaFin"
+                                        name="fechaFin" />
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="form-group col-xl-12 col-lg-12 col-sm-12">
+                            <div class="btn-group mr-2" role="group" aria-label="First group">
+
+
+                                <button type="submit" class="sish-boton-confirmar">
+                                    {{ 'Botones.Filtrar' | translate }}
+                                </button>
+
+
+                                <div class="invisible">
+                                    <button type="button" #ModalResul class="invisible" data-toggle="modal"
+                                        data-target="#ModalResul"></button>
+                                </div>
+
+
+                            </div>
+                            <div class="btn-group mr-2" role="group" aria-label="Second group">
+                                <button type="button" class="sish-boton-cancelar"
+                                    (click)="limpiar()">
+                                    {{ 'Botones.limpiar' | translate }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="form-group col-xl-8 col-lg-4 col-md-4 col-sm-12">
+                <app-esri-map [center]="mapCenter" [basemap]="basemapType" [zoom]="mapZoomLevel">
+                </app-esri-map>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Abrir MOdal -->
+
+
+    <div id="ModalResul" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{NombreParametro}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+                <div class="modal-body" id="qrconten">
+
+
+                    <h6 class="modal-title"> Parámetro: {{serie}} </h6>
+                    <br>
+                    <h6 class="modal-title"> Estación: {{ NombreEstacion}}</h6>
+                    <br>
+                    <h6 class="modal-title">Periodo:</h6> 
+                        Desde: {{fechaMinima| date:'yyyy-MM-dd' }} 
+                        Hasta: {{fechaMaxima| date:'yyyy-MM-dd' }} 
+                    <br>
+                    <br>
+
+
+                    <div class="row">
+
+                        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <ngx-charts-bar-vertical-2d [view]="viewMensual" scheme="aqua" [results]="Mensual"
+                                [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" 
+                                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" 
+                                [legendPosition]="legendPosition" [showGridLines]=false 
+                                [xAxisLabel]="etiquetaEjeX" [yAxisLabel]="etiquetaEjeY">
+                            </ngx-charts-bar-vertical-2d>
+                        </div>
+                    </div>
+
+                    <app-datatable [name]="'ResultadoConsulta'" [datos]="datosFilter" [opciones]="columnas"
+                        [id]="'idSerieTiempoElemento'" [columnaEstado]="'activo'" [condicionEstado]="'No'"
+                        [transformaciones]="{ activo: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}"
+                        [consultarRegistros]="false" [editarRegistros]="false" [eliminarRegistros]="false"
+                        [cambiarEstadoRegistros]="false" [verColumnas]="true" [verFiltros]="false" [crear]="false"
+                        [copiar]="true" [imprimir]="true" [excel]="true" [seleccionarRegistro]="false"></app-datatable>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="sish-boton-cancelar" data-dismiss="modal">{{"Botones.Regresar"|translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>

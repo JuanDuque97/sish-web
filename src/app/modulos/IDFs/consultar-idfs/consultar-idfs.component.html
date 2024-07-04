@@ -1,0 +1,435 @@
+<!-- Miga de Pan.... -->
+<div class="row text-right sish-miga-de-pan">
+  <div class="col-md-12 text-right">
+    <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+      <li class="breadcrumb-item active"> {{'Configuracion'|translate}}</li>
+      <li class="breadcrumb-item">{{'Consultar'|translate}} {{'IDFs' | translate}}</li>
+    </ol>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.1/proj4.min.js" integrity="sha512-JToqu2hzfiepDTg9LjkVzYhUhTcYGJIj2aGOn3Q+7sPVSi2n+vmpxISCbOJ2b3I4OQmqG0KQYovX6f3Rx+etAQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<div class="container-fluid bg-white pt-5">
+  <!-- Titulo.... -->
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="sish-titulo-formulario">{{'Consultar'|translate}} {{'IDFs' | translate}}</h2>
+      <hr />
+    </div>
+  </div>
+
+  <!-- Formulario.... -->
+  <div class="modal-body">
+    <div class="row">
+      <div class="text-center form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 " width="100%">
+        <h2 class="sish-titulo-formulario"> {{"Tipo de busqueda"|translate}} </h2>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" [(ngModel)]="tipoBusqueda" name="tipoBusqueda" id="tipoBusqueda" (change)="cambiarMetodo(elemento)" 
+            value="1" checked>
+          <label class="form-check-label" for="inlineRadio1">{{"Manual"|translate}}</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" [(ngModel)]="tipoBusqueda" name="tipoBusqueda" id="tipoBusqueda" (change)="cambiarMetodo(elemento)" 
+            value="2">
+          <label class="form-check-label" for="inlineRadio2">{{"Cargue masivo "|translate}} </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" [(ngModel)]="tipoBusqueda" name="tipoBusqueda" id="tipoBusqueda" (change)="cambiarMetodo(elemento)" 
+            value="3">
+          <label class="form-check-label" for="inlineRadio2">{{"Buscar en mapa"|translate}} </label>
+
+        </div>
+      </div>
+
+      <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioConsulta" (ngSubmit)="filtrarCalidad()"
+        novalidate>
+
+        <br>
+        <div *ngIf="tipoBusqueda == 1" class="row">
+
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+            <label>{{ 'Cordenadas' | translate }}</label>
+
+
+            <br>
+
+            <div class="form-group">
+              <label> {{ 'Tipo de cordenadas' | translate }}</label>
+
+              <ng-select2 name="tipo_cordenada" [data]="ListaTipoCordenadas" formControlName="idtipoCordenadas"
+                [width]="'100%'"  [(ngModel)]="idtipoCordenada"  
+                placeholder="{{'Seleccionar'|translate}} {{ 'archivo' | translate }}{{ 'columna' | translate }}...">
+              </ng-select2>
+
+
+              <p *ngIf=" ngForm.submitted && tipoCordenadas" class="error">
+
+                <sup>*</sup> {{ "frecuencia" | translate }} {{ "obligatorio" | translate }}
+              </p>
+            </div>
+
+            <div class="form-group">
+              <label> {{ ' Longitud - X - Este' | translate }} </label>
+              <input type="number" class="form-control" name="idcordenadaY" formControlName="idcordenadaY"
+                [disabled]="!tipoCordenadas" [(ngModel)]="cordenadaY" [width]="'100%'">
+            </div>
+
+
+            <div class="form-group">
+              <label> {{ 'Latitud - Y - Norte ' | translate }} </label>
+              <input type="number" class="form-control" [disabled]="!tipoCordenadas" name="idcordenadaX"
+                formControlName="idcordenadaX" [(ngModel)]="cordenadaX" [width]="'100%'">
+            </div>
+
+            <div class="form-group text-center">
+              <a class="sish-boton-verde" title="Agregar">
+                <em class="fas fa-plus-circle" disabled="idElemento == '0' && idfrecuencia == 0 "
+                  (click)="buscarEstacion()"> </em>
+              </a>
+            </div>
+
+          </div>
+          <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+            <div class="form-group text-center">
+              <table datatable class="sish-tabla">
+                <thead>
+                  <tr>
+                    <th scope="col">Consecutivo </th>
+                    <th scope="col">Tipo Cordenada </th>
+                    <th scope="col">Longitud - X - Este</th>
+                    <th scope="col">Latitud - Y - Norte </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="text-center">
+                  <tr class="text-center" *ngFor="let dato of listaItemsElementosPintar">
+                    <th scope="row"> {{dato.id}} </th>
+                    <th scope="row"> {{dato.nombreTipoCordenadas}} </th>
+                    <th scope="row"> {{dato.cordenadaY }} </th>
+                    <th scope="row"> {{dato.cordenadaX }} </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+        <div *ngIf="tipoBusqueda == 3" class="row">
+
+          <br>
+
+          <div  class="form-group">
+            <label> {{ 'Tipo de cordenadas' | translate }}</label>
+
+            <ng-select2 name="tipo_cordenada" [data]="ListaTipoCordenadas" formControlName="idtipoCordenadas"
+              [width]="'100%'" [(ngModel)]="idtipoCordenada"  
+            
+              placeholder="{{'Seleccionar'|translate}} {{ 'archivo' | translate }}{{ 'columna' | translate }}...">
+            </ng-select2>
+
+
+            <p *ngIf=" ngForm.submitted && tipoCordenadas" class="error">
+
+              <sup>*</sup> {{ "frecuencia" | translate }} {{ "obligatorio" | translate }}
+            </p>
+          </div>
+          
+          <br><br> <br> <br>
+
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <app-esri-map [capas]="capas" [center]="mapCenter" [basemap]="basemapType" [zoom]="mapZoomLevel"
+              (clickMapa)="clickMapa($event)" (seleccionMapa)="seleccionMapa($event)"
+              (mapLoadedEvent)="mapLoadedEvent($event)">
+            </app-esri-map>
+          </div>
+
+          <br> <br> <br>
+
+          <div class="form-group text-center">
+            <br> <br> <br>
+            <table datatable class="sish-tabla">
+              <thead>
+                <tr>
+                  <th scope="col">Consecutivo </th>
+                  <th scope="col">Tipo Cordenada </th>
+                  <th scope="col">Longitud - X - Este</th>
+                  <th scope="col">Latitud - Y - Norte </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="text-center">
+                <tr class="text-center" *ngFor="let dato of listaItemsElementosPintar">
+                  <th scope="row"> {{dato.id}} </th>
+                  <th scope="row"> {{dato.nombreTipoCordenadas}} </th>
+                  <th scope="row"> {{dato.cordenadaY }} </th>
+                  <th scope="row"> {{dato.cordenadaX }} </th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <br>
+
+        </div>
+
+
+
+        <div class="row" *ngIf="tipoBusqueda == 1 || tipoBusqueda == 3">
+          <div class="form-group col-xl-12 col-lg-6 col-sm-12">
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+              <button type="submit" class="sish-boton-confirmar">
+                {{ 'Botones.consultar' | translate }}
+              </button>
+              <button type="button" class="sish-boton-cancelar" (click)="cancelar()">
+                {{ 'Botones.limpiar' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioConsulta" (ngSubmit)="filtrarCalidad2()">
+        <div *ngIf="tipoBusqueda == 2" class="row">
+
+          <div class="row">
+            <!-- Campo Browse for file... -->
+            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+              <section class="section-preview">
+                <div class="input-group my-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroupFileAddon01">{{'Archivo'|translate}} *</span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" accept="txt/csv" class="custom-file-input" id="inputFileServer"
+                      (change)="cargarArchivo($event)" aria-describedby="inputGroupFileAddon01">
+                    <label id="archivoNombre" class="custom-file-label"
+                      for="inputGroupFile01">{{'Examinar'|translate}}</label>
+                  </div>
+                </div>
+                <div>
+                  <p *ngIf="ngForm.submitted && archivoRuta.length==0" class="error">
+                    <sup>*</sup> {{'Archivo'|translate}} {{'obligatorio'|translate}}.
+                  </p>
+                </div>
+              </section>
+            </div>
+            <!-- Label: Total Registros a Cargar... -->
+            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12" *ngIf="totalRegistrosEsperados > 0">
+              <section class="section-preview">
+                <div class="input-group my-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroupFileAddon01">{{'Total'|translate}}
+                      {{'registros'|translate}} {{'a'|translate}} cargar: {{totalRegistrosEsperados}}</span>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Barra de Progreso -->
+            <div class="progress form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+              <div class="progress-bar" role="barraProgreso" [style.width.%]="[porcentaje]" aria-valuenow="0"
+                aria-valuemin="0" aria-valuemax="100">{{porcentaje}}%</div>
+            </div>
+            <!-- Label: Total Registros Cargados... -->
+            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12" *ngIf="porcentaje==100">
+              <section class="section-preview">
+                <div class="input-group my-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroupFileAddon01">{{'Total'|translate}}
+                      {{'registros'|translate}} {{'cargados'|translate}}: {{totalRegistrosCargados}}</span>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+
+        </div>
+        <div class="row" *ngIf="tipoBusqueda == 2">
+          <div class="form-group col-xl-12 col-lg-6 col-sm-12">
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+              <button type="submit" class="sish-boton-confirmar">
+                {{ 'Botones.consultar' | translate }}
+              </button>
+              <button type="button" class="sish-boton-cancelar" (click)="cancelar()">
+                {{ 'Botones.limpiar' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <br>
+
+    </div>
+
+
+  </div>
+
+  <br>
+
+</div>
+
+
+    <div class="modal"  id="validar" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Exportar PDF</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioIdfs" (ngSubmit)="guadarIdfs()" novalidate>
+
+          <div class="row">
+
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+              <label>{{ 'Ingresar Solicitud ' | translate }}</label>
+
+
+
+              <div class="form-group">
+                <label> {{ 'Identificación del solicitante ' | translate }}</label>
+
+                <input type="number" class="form-control" name="identificacion" formControlName="identificacion"
+                   [(ngModel)]="identificaciones" [width]="'100%'">
+
+
+             
+              </div>
+
+              <div class="form-group">
+                <label> {{ 'Correo del solicitante' | translate }} </label>
+                <input type="email" class="form-control" name="correo" formControlName="correo"
+               [(ngModel)]="correos" [width]="'100%'">
+              
+
+
+
+              </div>
+
+              <div class="form-group">
+                <label> {{ 'Nombre del solicitante' | translate }} </label>
+                <input type="text" class="form-control"  name="nombre_solicitante"
+                  formControlName="nombre_solicitante" [(ngModel)]="nombre_solicitantes" [width]="'100%'">
+
+
+              </div>
+
+              <div class="form-group">
+                <br>
+
+                <button type="submit" class="sish-boton-confirmar text-center">
+                  Guardar
+                </button>
+
+
+              </div>
+
+            </div>
+
+
+          </div>
+        </form>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="pdfTable" #pdfTable class="row" style="visibility: hidden;">
+  <h6><b>Fecha: {{fechaConsulta | date:'shortDate'}}</b></h6>
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col-2"> <img id="images" src="{{imagen}}"/></div>
+      <div class="col-4"></div>
+    </div>
+    <table class="table" width="100%"  border="0" cellspacing="0" cellpadding="0" style="font-size:7px">
+    <thead>
+      <tr>
+        <th colspan="20" style="text-align: center;">Tabla coeficientes ecuación IDF</th>
+      </tr>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th colspan="3">Punto de retorno 3 años</th>
+        <th colspan="3">Punto de retorno 5 años</th>
+        <th colspan="3">Punto de retorno 10 años</th>
+        <th colspan="3">Punto de retorno 25 años</th>
+        <th colspan="3">Punto de retorno 50 años</th>
+        <th colspan="3">Punto de retorno 100 años</th>
+      </tr>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Punto (E,N) EPSG3116</th>
+        <th scope="col">C1</th>
+        <th scope="col">Xo</th>
+        <th scope="col">C2</th>
+        <th scope="col">C1</th>
+        <th scope="col">Xo</th>
+        <th scope="col">C2</th>
+        <th scope="col">C1</th>
+        <th scope="col">Xo</th>
+        <th scope="col">C2</th>
+        <th scope="col">C1</th>
+        <th scope="col">Xo</th>
+        <th scope="col">C2</th>
+        <th scope="col">C1</th>
+        <th scope="col">Xo</th>
+        <th scope="col">C2</th>
+        <th scope="col">C1</th>
+        <th scope="col">Xo</th>
+        <th scope="col">C2</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let dato of listObservaciones">
+        <th scope="row">{{dato.id}}</th>
+        <td>{{dato.este }} {{dato.norte}}</td>
+        <td>{{dato.tr3_C1}}</td>
+        <td>{{dato.tr3_XO}}</td>
+        <td>{{dato.tr3_C2}}</td>
+        <td>{{dato.tr5_C1}}</td>
+        <td>{{dato.tr5_XO}}</td>
+        <td>{{dato.tr5_C2}}</td>
+        <td>{{dato.tr10_C1}}</td>
+        <td>{{dato.tr10_XO}}</td>
+        <td>{{dato.tr10_C2}}</td>
+        <td>{{dato.tr25_C1}}</td>
+        <td>{{dato.tr25_XO}}</td>
+        <td>{{dato.tr25_C2}}</td>
+        <td>{{dato.tr50_C1}}</td>
+        <td>{{dato.tr50_XO}}</td>
+        <td>{{dato.tr50_C2}}</td>
+        <td>{{dato.tr100_C1}}</td>
+        <td>{{dato.tr100_XO}}</td>
+        <td>{{dato.tr100_C2}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <h4><strong>Notas:</strong></h4>
+  <h6>1) Unidades en la aplicación de la ecuación IDF:Intensidad [mm/h], Duración [min]</h6>
+    <h6>2) Sistema de Referencia de Coordenadas:MAGNA-SIRGAS / Zona Bogotá Colombia, EPSG3116.</h6>
+
+    <br>
+    <br>
+    <h5><strong>Responsable EAAB:__________________________________</strong></h5>
+  <div class="col-1"></div>
+</div>
+
+
+
+<button id="validarBtn" style="visibility: hidden;" type="button" class="btn btn-primary" data-toggle="modal"
+  data-target="#validar">

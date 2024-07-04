@@ -1,0 +1,550 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">{{'reportes'|translate}}</li>
+            <li class="breadcrumb-item active" [routerLink]="['/configuracion/embalses']">
+                {{ id === "0" ? "Crear" : "Editar" }}
+            </li>
+            <li class="breadcrumb-item">
+                {{'reportes'|translate}}
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">
+                {{ id === "0" ? "Crear" : ac == 'V' ? "Detalle" : "Editar" }}
+            </h2>
+            <hr />
+        </div>
+    </div>
+    <!--INICIA FORMULARIO-->
+    <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioReporte" (ngSubmit)="guardar()" novalidate>
+        <input name="id" formControlName="idEstructura" type="hidden" />
+        <div class="row" width="100%">
+
+            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                <label> {{ 'Tipo' | translate }} {{ ' elemento' | translate }} *</label>
+                <ng-select2 name="nombreElemento" [data]="listaTipoElementos" 
+                formControlName="idTipoElemento" (ngModelChange)="obtenerElementos($event)"
+                 [disabled]="bloqueo"
+                [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }}...">
+                </ng-select2>
+            </div>
+
+
+            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                <label> {{ 'codigo' | translate }} {{ ' reporte' | translate }}*</label>
+                <input type="number"   class="form-control" formControlName="codReporte"
+                    name="codReporte" placeholder="{{ 'codigo' | translate }}  {{ 'reporte' | translate }}" /> 
+
+                    <p *ngIf="ngForm.submitted && codReporte!.invalid" class="error">
+                        <sup>*</sup>{{'codigo'|translate}} {{ "obligatoria" | translate }}
+                    </p>
+
+            </div>
+
+            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                <label> {{ 'Nombre' | translate }} {{ ' reporte' | translate }}*</label>
+                <input type="text" maxlength="50" autocomplete="off" class="form-control"
+                    formControlName="nombreReporte" name="nombreReporte"
+                    placeholder="{{ 'Nombre' | translate }}  {{ 'reporte' | translate }}" />
+
+                    <p *ngIf="ngForm.submitted && nombreReporte!.invalid" class="error">
+                        <sup>*</sup>{{'Nombre'|translate}} {{ "obligatoria" | translate }}
+                    </p>
+
+            </div>
+            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                <label>{{ 'Tipo'|translate}} {{ ' reporte' | translate }} *</label>
+                <ng-select2 name="idtipoReporte" [data]="listtipoReporte" formControlName="idtipoReporte"
+                    [width]="'100%'" placeholder="{{'Seleccionar'|translate}}  {{ 'Tipo'|translate}}...">
+                </ng-select2>
+ 
+                <p *ngIf="ngForm.submitted && idtipoReporte!.invalid" class="error">
+                    <sup>*</sup>{{'Tipo'|translate}} {{ "obligatoria" | translate }}
+                </p>
+
+            </div>
+            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                <label> {{ 'Periodo' | translate }} *</label>
+                <ng-select2 name="Periodo" [data]="listPeriodo" formControlName="idPeriodo" [width]="'100%'"
+                    placeholder="{{'Seleccionar'|translate}}  {{ 'Periodo'|translate}}...">
+                </ng-select2>
+
+                <p *ngIf="ngForm.submitted && idPeriodo!.invalid" class="error">
+                    <sup>*</sup>{{'Periodo'|translate}} {{ "obligatoria" | translate }}
+                </p>
+
+            </div>
+
+
+            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                <label> {{ 'Entidad que solicita' | translate }} *</label>
+                <input type="text" class="form-control" formControlName="EntidadSolicita" name="entidadSolicitante"
+                    placeholder="{{ 'entidadSolicita' | translate }}" />
+
+                    <p *ngIf="ngForm.submitted && EntidadSolicita!.invalid" class="error">
+                        <sup>*</sup>{{'EntidadSolicita'|translate}} {{ "obligatoria" | translate }}
+                    </p>
+    
+            </div>
+
+            <!-- <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                <label> {{ 'Estado' | translate }} *</label>
+              
+                <ng-select2 name="activo" [data]="listEstados" formControlName="activo" [width]="'100%'"
+                placeholder="{{'Seleccionar'|translate}} {{'Estado'|translate}}...">
+            </ng-select2>
+
+                <p *ngIf="ngForm.submitted && activo!.invalid" class="error">
+                    <sup>*</sup>{{'Estado'|translate}} {{ "obligatoria" | translate }}
+                </p>
+            </div> -->
+
+            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                <label> {{ 'Fecha de entrega' | translate }} {{ ' reporte' | translate }}*</label>
+                <input type="date" class="form-control" formControlName="fechaentrega" name="fechaentrega"
+                    placeholder="{{ 'fecha' | translate }}" />
+
+                    <p *ngIf="ngForm.submitted && fechaentrega!.invalid" class="error">
+                        <sup>*</sup>{{'fechaentrega'|translate}} {{ "obligatoria" | translate }}
+                    </p>
+
+            </div>
+            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                <label> {{ 'Descripcion' | translate }} *</label>
+                <input type="text" maxlength="50" autocomplete="off" class="form-control" formControlName="descripcion"
+                    name="descripcion" placeholder="{{ 'Descripcion' | translate }}" />
+
+                    <p *ngIf="ngForm.submitted && descripcion!.invalid" class="error">
+                        <sup>*</sup>{{'Descripcion'|translate}} {{ "obligatoria" | translate }}
+                    </p>
+            </div>
+
+            <div class="row">
+                <br>
+                <hr>
+                <!--Botón De Agregar Elementos-->
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" disabled="{{buttonDisabled}}" (click)="obtenerElementosPorTipo()"
+                        data-target="#ModalEstaciones">
+                        {{ 'Agregar' | translate }} {{" elemento" | translate }}
+                    </button>
+                   
+                </div>
+                <!--Botón De Agregar Parámetros-->
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" disabled="{{buttonDisabled}}" (click)="obtenerParametros()"
+                        data-target="#ModalParametros">
+                        {{ 'Agregar' | translate }} {{ " parámetros" | translate }}
+                    </button>
+                </div>
+                <!--Botón De Agregar Estructura-->
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" disabled="{{buttonDisabled}}"   
+                        data-target="#Modalestructura">
+                        {{ 'Definir estructura' | translate }}
+                    </button>
+                </div>
+            </div>
+            <br>
+            <p *ngIf="ngForm.submitted && listElementos.length <=0 " class="error">
+                <sup>*</sup>{{'Estaciones'|translate}} {{ "obligatoria" | translate }}
+            </p>
+
+            <p *ngIf="ngForm.submitted && listParametros.length <=0 " class="error">
+                <sup>*</sup>{{'Parametros'|translate}} {{ "obligatoria" | translate }}
+            </p>
+
+            <p *ngIf="ngForm.submitted && estructura.length  <= 0" class="error">
+                <sup>*</sup>{{'definirEstructura'|translate}} {{ "obligatoria" | translate }}
+            </p>
+
+            <hr>
+            <div class="container">
+                <br>
+                <hr>
+                <div class="row">
+                    
+                    <!--Elementos Agregados-->
+                    <div *ngIf="listElementos.length >= 1">
+                        <div class="row" width="100%">
+                            <div class="col-md-12">
+                                <h3 class="sish-titulo-formulario">{{elemento}}</h3>
+                            </div>
+                        </div>
+
+                        <ul class="selectRepor scroll">
+                            <li *ngFor="let estacion of listElementos">
+                                <button [class.selected]="estacion === selectedEstaciones" type="button">
+                                    <span class="badge">{{estacion.id}}</span>
+                                    <span class="name">{{estacion.text}}</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--Parámetros Agregados-->
+                    <div *ngIf="listParametros.length >= 1">
+
+                        <div class="row" width="100%">
+                            <div class="col-md-12">
+                                <h3 class="sish-titulo-formulario"> {{ "Parametros" | translate }}</h3>
+
+                            </div>
+                        </div>
+                        <ul class="selectRepor scroll">
+                            <li *ngFor="let estacion of listParametros">
+                                <button [class.selected]="estacion === selectedEstaciones" type="button">
+                                    <span class="badge">{{estacion.id}}</span>
+                                    <span class="name">{{estacion.text}}</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--Estructura Agregada-->
+                    <div *ngIf="listEstructura.length >= 1">
+
+                        <div class="row" width="100%">
+                            <div class="col-md-12">
+                                <h3 class="sish-titulo-formulario"> {{ "estructura" | translate }}</h3>
+
+                            </div>
+                        </div>
+                        <ul class="selectRepor scroll">
+                            <li *ngFor="let elemento of listEstructura">
+                                <button [class.selectedEliminar]="elemento === selectedEstacionesEliminada"
+                                    type="button" (click)="EliminarEstructura(elemento)">
+                                    <span class="name">{{elemento.id}}</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="sish-datos-auditoria">
+                        <strong>{{'Auditoria'|translate}}</strong> | {{'Fecha'|translate}} {{'creacion'|translate}}:
+                        <label controlName="fechaCreacion"></label> | {{'Fecha'|translate}} {{'modificación'|translate}}:
+                         <label controlName="fechaModificacion"></label>| {{'Fecha'|translate}} {{'estado'|translate}}:
+                           
+                        <label controlName="usuarioCreacion"></label> | {{'Usuario'|translate}} {{'modificación'|translate}}:
+                         <label controlName="usuarioModificacion"></label>  
+                </div>
+            </div>
+
+        </div>
+
+
+        <!--BOTONES-->
+        <div class="row">
+            <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                <!--Botón Crear Plantilla -->
+                <div class="btn-group mr-2" role="group" aria-label="First group" *ngIf="ac!='V'">
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id== '0'">
+                        {{ 'Botones.Crear' | translate }}
+                    </button>
+                    <!--Botón Guardar al editar Plantilla -->
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id!= '0'">
+                        {{ 'Botones.Guardar' | translate }}
+                    </button>
+                </div>
+
+
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                     <!--Botón Cancelar De La Creación De la Plantilla-->
+                    <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/gestionReportes']"
+                        *ngIf="ac!='V'">
+                        {{ 'Botones.Cancelar' | translate }}
+                     </button>
+                    <!--Botón Regresar De La Edición De la Plantilla-->
+                    <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/gestionReportes']"
+                        *ngIf="ac =='V'">
+                        {{ 'Botones.Regresar' | translate }}
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+    <!--FINALIZA FORMULARIO-->
+
+</div>
+
+<div id="Modalestructura" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <!--Pantalla Estructura-->
+            <div class="modal-header">
+                <h4 class="modal-title">{{ "estructura" | translate }}</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid" id="main-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-4">
+
+                                <h4>{{elemento}} </h4>
+                                <div>
+                                    <!--Listado Elementos - Pantalla Estructura-->>
+                                    <ul class="selectRepor scroll">
+                                        <li *ngFor="let elemento of listCamposElemento">
+                                            <button [class.selected]="elemento === selectedEstaciones" type="button"
+                                                (click)="ordenEstructura(elemento)">
+                                                <span class="name">{{elemento.id}}</span>
+                                                <!-- <span class="name">{{elemento.text}}</span> -->
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+                            </div>
+                            <div class="col-4">
+                                <!--Listado Parámetros - Pantalla Estructura-->
+                                <h4>{{"Parametros"|translate}} </h4>
+                                <div>
+                                    <ul class="selectRepor scroll">
+                                        <li *ngFor="let parametro of listCamposParametros">
+                                            <button [class.selected]="parametro === selectedEstaciones" type="button"
+                                                (click)="ordenEstructura(parametro)">
+                                                <span class="name">{{parametro.id}}</span>
+                                                <!-- <span class="name">{{elemento.text}}</span> -->
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+                            </div>
+                            <div class="col-4">
+                                <!--Listado Observaciones - Pantalla Estructura-->
+                                <h4>{{"observaciones"|translate}} </h4>
+                                <div>
+                                    <ul class="selectRepor scroll">
+                                        <li *ngFor="let elemento of listCamposObservaciones">
+                                            <button [class.selected]="elemento === selectedEstaciones" type="button"
+                                                (click)="ordenEstructura(elemento)">
+                                                <span class="name">{{elemento.id}}</span>
+                                                <!-- <span class="name">{{elemento.text}}</span> -->
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <div class="col-4">
+                                <!--Listado Definir Estructura - Pantalla Estructura-->
+                                <h4> {{"definirEstructura"|translate }} </h4>
+                                <div>
+                                    <ul class="selectRepor scroll">
+                                        <li *ngFor="let elemento of listEstructura">
+                                            <button [class.selectedEliminar]="elemento === selectedEstacionesEliminada"
+                                                type="button" (click)="EliminarEstructura(elemento)">
+                                                <span class="name">{{elemento.id}}</span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                               <!--Botón Eliminar Todas De la Pantalla Estructura -->
+                                <div class="btn-group mr-2" *ngIf="listEstructura.length >= 1" role="group"
+                                    aria-label="First group">
+                                    <button type="button" (click)="EliminarTodaestructura()"
+                                        class="sish-boton-cancelar">
+                                        {{ 'eliminar' | translate }} {{ 'todas' | translate }}
+                                </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <!-- <button type="button" class="sish-boton-confirmar" (click)="guardarEstaciones()"
+                    data-dismiss="modal">Agregar</button> -->
+                <!--Bóton Cerrar Pantalla Estructura-->    
+                <button type="button" class="sish-boton-cancelar" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ModalParametros" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+           
+            <!--Modal agregar Parámetros-->
+             
+            <div class="modal-header">
+                <h4 class="modal-title">{{ "Parametros" | translate }}</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid" id="main-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+
+                                <h4>{{"Parametros"|translate}} </h4>
+
+                                <!-- Pantalla Lista Parámetros-->
+                                <div>
+                                    <ul class="selectRepor scroll">
+                                        <li *ngFor="let estacion of listElemento">
+                                            <!--Agregar Parametros-->
+                                            <button [class.selected]="estacion === selectedEstaciones" type="button"
+                                                (click)="onSelect(estacion)">
+                                                <span class="badge">{{estacion.id}}</span>
+                                                <span class="name">{{estacion.text}}</span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+                            </div>
+                            <div class="col-6">
+                                <h4>{{"Parametros"|translate}} {{"agregadas"|translate}} </h4>
+                                <div>
+                                    <ul class="selectRepor scroll">
+                                        <li *ngFor="let estacion of listAgregadas">
+                                            <button [class.selectedEliminar]="estacion === selectedEstacionesEliminada"
+                                                type="button" (click)="eliminarLista(estacion)">
+                                                <span class="badgeActivo">{{estacion.id}}</span>
+                                                <span class="name">{{estacion.text}}</span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                                
+                                <!--Botón Agregar - Agregar Parametros Opción Editar Plantilla-->
+
+                                <div class="btn-group mr-2" role="group" aria-label="First group">
+                                    <button type="button" (click)="AgregarTodas()" class="sish-boton-confirmar">
+                                        {{ 'Agregar' | translate }} {{ 'todas' | translate }}
+                                    </button>
+                                </div>
+
+                                <div class="btn-group mr-2" *ngIf="listAgregadas.length >= 1" role="group"
+                                    aria-label="First group">
+                                    <button type="button" (click)="eliminarTodas()" class="sish-boton-cancelar">
+                                        {{ 'eliminar' | translate }} {{ 'todas' | translate }}
+                                    </button>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="sish-boton-confirmar" (click)="guardarParametros()"
+                    data-dismiss="modal">Agregar</button>
+                <button type="button" class="sish-boton-cancelar" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ModalEstaciones" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{elemento}} </h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid" id="main-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <h4>{{elemento}}  </h4>
+                                <div>
+                                    <ul class="selectRepor scroll">
+                                        <li *ngFor="let elemento of listElemento">
+                                            <button [class.selected]="elemento === selectedEstaciones" type="button"
+                                                (click)="onSelect(elemento)">
+                                                <span class="badge">{{elemento.id}}</span>
+                                                <span class="name">{{elemento.text}}</span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                               
+
+
+                            </div>
+                            <div class="col-6">
+                                <h4>{{elemento}} {{"agregadas"|translate}} </h4>
+                                <div>
+                                    <ul class="selectRepor scroll">
+                                        <li *ngFor="let estacion of listAgregadas">
+                                            <button [class.selectedEliminar]="estacion === selectedEstacionesEliminada"
+                                                type="button" (click)="eliminarLista(estacion)">
+                                                <span class="badgeActivo">{{estacion.id}}</span>
+                                                <span class="name">{{estacion.text}}</span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                                <div class="btn-group mr-2" role="group" aria-label="First group">
+                                    <button type="button" (click)="AgregarTodas()" class="sish-boton-confirmar">
+                                        {{ 'Agregar' | translate }} {{ 'todas' | translate }}
+                                    </button>
+
+                                </div>
+
+                                <div class="btn-group mr-2" *ngIf="listAgregadas.length >= 1" role="group"
+                                    aria-label="First group">
+                                    <button type="button" (click)="eliminarTodas()" class="sish-boton-cancelar">
+                                        {{ 'eliminar' | translate }} {{ 'todas' | translate }}
+                                    </button>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="sish-boton-confirmar" (click)="guardarEstaciones()"
+                    data-dismiss="modal">Agregar</button>
+                <button type="button" class="sish-boton-cancelar" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,399 @@
+<!-- Miga de Pan-->
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item">{{'aforosCorrientes'|translate}}
+            </li>
+        </ol>
+    </div>
+</div>
+
+<!-- Contenido -->
+<div class="container-fluid bg-white pt-5">
+    <!-- Título -->
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario text-center">{{'Calcular caudal'|translate}}
+            </h2>
+        </div>
+    </div>
+
+    <br>
+
+    <!-- Fila 1 -->
+    <div class="row">
+
+        <!-- Formulario -->
+        <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioFiltroAforo"
+            (ngSubmit)="filtrar(formularioFiltroAforo)" novalidate>
+
+            <!-- Campos -->
+            <div class="row" width="100%">
+
+                <!-- Columna 1 -->
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+                    <!-- Código EEAB -->
+                    <div class="form-group" *ngIf="elemento ==1">
+                        <label> {{ 'codigo' | translate }} EAAB</label>
+                        <ng-select2 name="CodigoEAAB" [data]="listaCodigoEAAB"
+                            formControlName="idelemento" [(ngModel)]="idElemento" [width]="'100%'" 
+                            placeholder="{{ 'Seleccionar' | translate }} {{'código EAAB' | translate}}...">
+                        </ng-select2>
+                    </div>
+
+                    <!-- Nombre Estación -->
+                    <div class="form-group ">
+                        <label> {{ 'Nombre' | translate }} *</label>
+                        <ng-select2 name="nombreElemento" [data]="listaElemento" (ngModelChange)="obtenerParametrosElemento($event,elemento)"
+                            [(ngModel)]="idElemento" formControlName="idelemento" [width]="'100%'" 
+                            placeholder="{{ 'Seleccionar' | translate }} {{'elemento' | translate}}...">
+                        </ng-select2>
+                        <p *ngIf="ngForm.submitted && idElemento==''" class="error">
+                            <sup>*</sup>{{'Nombre'|translate}} {{ "obligatorio" | translate }}
+                        </p>
+                    </div>
+
+                    <!-- Código IDEAM -->
+                    <div class="form-group" *ngIf="elemento ==1">
+                        <label> {{ 'codigo' | translate }} IDEAM</label>
+                        <ng-select2 name="CodigoIDEAM" [data]="listaCodigoIDEAM"
+                            [(ngModel)]="idElemento" formControlName="idelemento" [width]="'100%'"
+                            placeholder="{{ 'Seleccionar' | translate }} {{'código IDEAM' | translate}}...">
+                        </ng-select2>
+                    </div>
+
+                    <!-- Corriente -->
+                    <!--
+                    <div class="form-group">
+                        <label> {{ 'Nombre' | translate }} {{'corriente'|translate}}</label>
+                        <input type="text" class="form-control" name="nombreCorriente"
+                            [(ngModel)]="nombreCorriente" placeholder="{{ 'Nombre' | translate }}" />
+                    </div>
+                    -->
+                </div>
+
+                <!-- Columna 2 -->
+                <div class="col-xl-2 col-lg-4 col-md-4 col-sm-12">
+                    <!-- Departamento -->
+                    <div class="form-group">
+                        <label>{{ "Departamento" | translate }}</label>
+                        <ng-select2 name="idDepartamento" [data]="listaDepartamento" (ngModelChange)="cambioDepartamento(departamentoSelected)"
+                            [(ngModel)]="idElemento" formControlName="idelemento" [width]="'100%'" [disabled]="true" placeholder="{{ 'Departamento' | translate }}...">
+                        </ng-select2>
+                    </div>
+
+                    <!-- Municipio -->
+                    <div class="form-group">
+                        <label>{{ "Municipio" | translate }}</label>
+                        <ng-select2 name="idMunicipio" [data]="listaMunicipio" [disabled]="true"
+                            [(ngModel)]="idElemento" formControlName="idelemento" [width]="'100%'" placeholder="{{ 'Municipio' | translate }}...">
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <!-- Columna 3 -->
+                <div class="col-xl-2 col-lg-4 col-md-4 col-sm-12">
+                    <!-- Area Hidrográfica. -->
+                    <div class="form-group">
+                        <label>{{ "area" | translate }} {{" hidrográfica"|translate}} </label>
+                        <ng-select2 name="idAreaHidrografica" [data]="listaAreaHidrograficas" [disabled]="true"
+                            [(ngModel)]="idElemento" formControlName="idelemento" [width]="'100%'">
+                        </ng-select2>
+                    </div>
+
+                    <!-- Zona Hidrográfica.  -->
+                    <div class="form-group">
+                        <label>{{ "Zona hidrográfica" | translate }}</label>
+                        <ng-select2 name="idZonaHidrografica" [data]="listaZonaHidrograficas" [disabled]="true"
+                            [(ngModel)]="idElemento" formControlName="idelemento" [width]="'100%'" placeholder="{{ 'Zona hidrográfica' | translate }}...">
+                        </ng-select2>
+                    </div>
+
+                    <!-- Sub-zona Hidrográfica. -->
+                    <div class="form-group">
+                        <label>{{ "Sub zona hidrográfica" | translate }}</label>
+                        <ng-select2 name="idSubZonaHidrografica" [data]="listaSubZonaHidrograficas"
+                            [(ngModel)]="idElemento" formControlName="idelemento" [width]="'100%'" [disabled]="true" placeholder="{{ 'Sub zona hidrográfica' | translate }}...">
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <!-- Columna 4 -->
+                <div class="col-xl-2 col-lg-4 col-md-4 col-sm-12">
+                    <!-- Cuenca -->
+                    <div class="form-group">
+                        <label>{{ "Cuenca" | translate }}</label>
+                        <ng-select2 name="cuenca" [data]="listaCuencas" [disabled]="true"
+                            [(ngModel)]="idElemento" formControlName="idelemento" [width]="'100%'" placeholder="{{ 'Cuenca' | translate }}...">
+                        </ng-select2>
+                    </div>
+
+                    <!-- Microcuenca -->
+                    <div class="form-group">
+                        <label>{{ "Microcuenca" | translate }}</label>
+                        <ng-select2 name="idMicroCuenca" [data]="listaMicroCuencas" [disabled]="true"
+                            [(ngModel)]="idElemento" formControlName="idelemento" [width]="'100%'" placeholder="{{ 'Microcuenca' | translate }}...">
+                        </ng-select2>
+                    </div>
+
+                    <!-- Entidad -->
+                    <div class="form-group">
+                        <label> {{ 'Entidad'|translate}}</label>
+                        <ng-select2 name="tipo" [data]="listaEntidades" [disabled]="true"
+                            [(ngModel)]="idElemento" formControlName="idelemento" [width]="'100%'" placeholder="{{ 'Entidad' | translate }}...">
+                        </ng-select2>
+                    </div>
+                </div>
+
+                <!-- Columna 5 -->
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+                    <!-- Ecuación -->
+                    <div class="form-group" *ngIf="elemento ==1">
+                        <label> {{ 'Ecuación' | translate }} *</label>
+                        <ng-select2 name="ecuaciones" formControlName="idEcuacion" [data]="listarEcuacion"
+                        [(ngModel)]="idEcuacion" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }}...">
+                        </ng-select2>
+                        <p *ngIf="ngForm.submitted && idEcuacion==''" class="error">
+                            <sup>*</sup>{{'Ecuación'|translate}} {{ "obligatorio" | translate }}
+                        </p>
+                    </div>
+
+                    <!-- Periodo Vigente/Disponible. -->
+                    <!--
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                <!-- Periodo Disponible --
+                                <div class="form-check form-check-inline">
+                                    <input (change)="onPeriodoVigente()" class="form-check-input" type="radio" value="1"
+                                        name="periodo" id="periodo" [(ngModel)]="tipoRango" formControlName="periodo">
+                                    <label class="form-check-label" for="inperiodoRadio1">
+                                        {{'Periodo Disponible'|translate}}</label>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                <!-- Periodo Vigente --
+                                <div class="form-check form-check-inline">
+                                    <input (change)="onEstablecerRango()" class="form-check-input" type="radio" value="2"
+                                         name="periodo" id="periodo" [(ngModel)]="tipoRango" formControlName="periodo">
+                                    <label class="form-check-label" for="inperiodoRadio2">
+                                        {{'Establecer Rango'|translate}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <p *ngIf="ngForm.submitted && tipoRango==''" class="error">
+                            <sup>*</sup>{{'Tipo periodo'|translate}} {{ "obligatorio" | translate }}
+                        </p>
+                    </div>
+                    -->
+
+                    <!-- Fechas Inicio/Fin -->
+                    <div class=" row ">
+                        <!-- Fecha Inicio -->
+                        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                            <label> {{ "Desde" | translate }} </label>
+                            <input type="date" placeholder="yyyy/MM/dd" class="form-control"
+                                formControlName="fechaInicio" name="fechaInicio"
+                                placeholder="{{'Desde'|translate}}" [(ngModel)]="fechaInicio" />
+                            <p *ngIf="ngForm.submitted && tipoRango==2 && fechaInicio==''" class="error">
+                                <sup>*</sup>{{'Fecha Inicio'|translate}} {{ "obligatorio" | translate }}
+                            </p>
+                        </div>
+
+                        <!-- Fecha Fin -->
+                        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                            <label> {{ "Hasta" | translate }} </label>
+                            <input type="date" placeholder="yyyy/MM/dd" class="form-control"
+                                formControlName="fechaFin" name="fechaFin" 
+                                placeholder="{{'Hasta'|translate}}" [(ngModel)]="fechaFin" />
+                            <p *ngIf="ngForm.submitted && tipoRango==2 && fechaFin==''" class="error">
+                                <sup>*</sup>{{'Fecha Fin'|translate}} {{ "obligatorio" | translate }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Botones -->
+            <div class="row text-center">
+                <div class="form-group col-xl-12 col-lg-12 col-sm-12">
+                    <div class="btn-group mr-2" role="group" aria-label="First group">
+                        <!--Botón Consultar -->
+                        <button type="submit" class="sish-boton-confirmar">
+                            {{ 'Consultar' | translate }}
+                        </button>
+
+                        <!--Botón Cancelar -->
+                        <button type="button" class="sish-boton-cancelar" (click)="cancelar()">
+                            {{ 'Botones.Cancelar' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Fila 2 -->
+    <div class="row text-center">
+        <div>
+            <br>
+            <!-- Fila 2.1 -->
+            <div class="row text-center">
+                <!-- Columna 1 -->
+                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+
+                    <!-- Datatable Gráfico -->
+                    <app-datatable [datos]="datosTablaGrafico" [opciones]="columnasTablaGrafico" [id]="'idAforo'" 
+                        [consultarRegistros]="false" [editarRegistros]="false" [eliminarRegistros]="false" 
+                        [cambiarEstadoRegistros]="false" [verFiltros]="false" [verColumnas]="false" 
+                        [crear]="false" [copiar]="true" [imprimir]="true" [excel]="true" [seleccionarRegistro]="false">
+                    </app-datatable>
+
+                    <!-- Trajeta Pie Datatable-Gráfico -->
+                
+                </div>
+
+                <!-- Columna 2 -->
+                <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12">
+                    <div class=" text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+
+                        <br>
+
+                        <table border="1">
+                            <tbody>
+                                <tr>
+                                    <th style="color: #2c9ce1;">Tipo Ecuación</th>
+                                    <td colspan="2">&nbsp;</td>
+                                    <td>{{tipoEcuacion}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="color: #2c9ce1;">Ecuación</th>
+                                    <td colspan="2">&nbsp;</td>
+                                    <td>{{ecuacion}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="color: #2c9ce1;">R</th>
+                                    <td colspan="2">&nbsp;</td>
+                                    <td>{{ecuacionR}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="color: #2c9ce1;">MAE</th>
+                                    <td colspan="2">&nbsp;</td>
+                                    <td>{{ecuacionMAE}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <br><br>
+                    </div>
+                    <!-- Gráfico -->
+                    <div id="chart">
+                        <highcharts-chart 
+                            [Highcharts]="Highcharts"
+                            [options]="chartOptions"
+                            style="width: 100%; height: 60%; display: flex;">
+                        </highcharts-chart>
+                    </div>
+
+                    <br><br><br><br>
+                </div>
+            </div>
+
+            <!-- Fila 2.2 -->
+            <div class="row text-center">
+
+                <!-- Columna 1 -->
+                <!--
+                <div class="col-xl-2 col-lg-12 col-md-12 col-sm-12">
+                    <!-- Selector Tipo de Agregación Anual --
+                    <div class="form-group">
+                        <label> {{ 'Tipo' | translate }} agregación </label>
+                        <ng-select2 name="idTipoAgregacion" [data]="listaTiposAgregacion"
+                            [width]="'100%'" (ngModelChange)="onTipoAgregacionChange($event)"
+                            placeholder="{{ 'Seleccionar' | translate }}..." [(ngModel)]="idTipoAgregacion">
+                        </ng-select2>
+                    </div>
+                </div>
+                -->
+
+                <!-- Columna 2 -->
+                <div class="col-xl-2 col-lg-12 col-md-12 col-sm-12">
+                    <!-- Selector Parametros -->
+                    <div class="form-group">
+                        <label style="color: #2c9ce1;">Parámetros</label>
+                        <ng-select2 name="idParametro" [data]="listaParametros" 
+                            [width]="'100%'" (ngModelChange)="onParametroChange($event)"
+                            placeholder="{{ 'Seleccionar' | translate }}..." [(ngModel)]="idParametro">
+                        </ng-select2>
+                    </div>
+                </div>
+
+        
+            </div>
+
+            <div class="row text-center">
+
+                <!-- Columna 3 -->
+                <div class="col-xl-10 col-lg-12 col-md-12 col-sm-12">
+                    <!-- Datatable Agregación Anual -->
+                    <app-datatable [datos]="datosTablaAnual" [opciones]="columnasTablaAnual" [id]="'idAforo'" 
+                        [consultarRegistros]="false" [editarRegistros]="false" [eliminarRegistros]="false" 
+                        [cambiarEstadoRegistros]="false" [verFiltros]="false" [verColumnas]="false" 
+                        [crear]="false" [copiar]="true" [imprimir]="true" [excel]="true" [seleccionarRegistro]="false">
+                    </app-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fila 3 -->
+    <div class="row text-center">
+        <div>
+            <br>
+            <!-- Fila 3.1 -->
+            <div class="row text-center">
+                <!-- Columna 1 -->
+                <div class="col-xl-2 col-lg-12 col-md-12 col-sm-12">
+                    <!-- Selector Año -->
+                    <div class="form-group">
+                        <label style="color: #2c9ce1;"> {{ 'Año' | translate }} </label>
+                        <ng-select2 name="listaAnos" [data]="listaAnos" 
+                           [width]="'100%'" [(ngModel)]="idAno" (ngModelChange)="onAnoChange($event)"
+                            placeholder="{{ 'Seleccionar' | translate }}...">
+                        </ng-select2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fila 3.2 -->
+            <div class="row text-center">
+                <!-- Columna 1 -->
+                <div class="col-xl-10 col-lg-12 col-md-12 col-sm-12">
+                    <app-datatable [datos]="datosTablaMensual" [opciones]="columnasTablaMensual" [id]="'idAforo'" 
+                        [consultarRegistros]="false" [editarRegistros]="false" [eliminarRegistros]="false" 
+                        [cambiarEstadoRegistros]="false" [verFiltros]="false" [verColumnas]="false" 
+                        [crear]="false" [copiar]="true" [imprimir]="true" [excel]="true" [seleccionarRegistro]="false">
+                    </app-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botones de Guardado -->
+    <div class="row text-center">
+        <div class="form-group col-xl-12 col-lg-6 col-sm-12">
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+                <!-- Boton Guardar -->
+                <button type="button"  (click)="guardarCurva()" class="sish-boton-confirmar">
+                    {{ 'Guardar' | translate }}
+                </button>
+                
+                <!-- Boton Cancelar -->
+                <button type="button" class="sish-boton-cancelar" (click)="cancelar()" >
+                    {{ 'Botones.Cancelar' | translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

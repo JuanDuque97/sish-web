@@ -1,0 +1,166 @@
+
+
+<div class="row text-right sish-miga-de-pan">
+  <div class="col-md-12 text-right">
+      <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+          <li class="breadcrumb-item active"></li>
+          <li class="breadcrumb-item"></li>
+      </ol>
+  </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+  <div class="row">
+    <div class="col-md-12">
+        <h2 class="sish-titulo-formulario">{{ 'procesararchivos' | translate }}</h2>
+        <hr />
+    </div>
+  </div>
+</div>
+<form class="sish-form" #ngForm="ngForm" [formGroup]="fmrCargueArchivo" (ngSubmit)="subirArchivo()" >
+  <div class="row">
+  <div class="text-center form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 " width="100%">
+    <br>
+    <div class="center form-check form-check-inline">
+        <input class="form-check-input" type="radio" formControlName="rbTipoParametro" (change)="cambioParametro($event)" name="rbTipoParametro" id="rbTipoParametro" value="1">
+        <label class="form-check-label" for="inlineRadio1">Estaciones</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" formControlName="rbTipoParametro" (change)="cambioParametro($event)" name="rbTipoParametro" id="rbTipoParametro" value="2">
+        <label class="form-check-label" for="inlineRadio2">Embalses</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" formControlName="rbTipoParametro" (change)="cambioParametro($event)" name="rbTipoParametro" id="rbTipoParametro" value="3">
+        <label class="form-check-label" for="inlineRadio3">Pozos</label>
+    </div>
+  </div>
+  </div>
+  <div class="row" width="100%">
+  <!-- <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+    <label>{{'tipoArchivoConfigurado'|translate}}</label>
+    <ng-select2 name="tipo" [data]="listaArchivosConfigurados" formControlName="ctrArchivoConfigurado" [width]="'100%'" (ngModelChange)="cargarConfiguracionCampos($event)" placeholder="Seleccione el tipo">
+    </ng-select2>
+  </div> -->
+  
+
+  <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12"  *ngIf="this.fmrCargueArchivo.value.rbTipoParametro==1 ||this.fmrCargueArchivo.value.rbTipoParametro==0 ">
+    <label>{{'Estacion'|translate}}</label>
+    <ng-select2 name="estaciones" [data]="listaEstaciones" (ngModelChange)="obtenerParametrosElemento($event)" [(ngModel)]="idElemento" formControlName="ctrEstaciones" [width]="'100%'" placeholder="Seleccione la estación">
+    </ng-select2>
+    </div>
+    <div  class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12" *ngIf="this.fmrCargueArchivo.value.rbTipoParametro==2">
+      <label>{{'Embalse'|translate}}</label>
+      <ng-select2 name="embalce" [data]="listaEmbalses" (ngModelChange)="obtenerParametrosElemento($event)" [(ngModel)]="idElemento" formControlName="ctrEmbalses" [width]="'100%'" placeholder="Seleccione el embalse">
+      </ng-select2>
+      </div>
+    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12"  *ngIf="this.fmrCargueArchivo.value.rbTipoParametro==3">
+        <label>{{'Pozo'|translate}}</label>
+        <ng-select2 name="pozos" [data]="listaPozos" (ngModelChange)="obtenerParametrosElemento($event)" [(ngModel)]="idElemento" formControlName="ctrPozos" [width]="'100%'" placeholder="Seleccione la estación">
+        </ng-select2>
+    </div>
+
+    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12"  >
+      <label>{{ 'Parámetro'|translate}}</label>
+      <ng-select2 name="parametro" [data]="listParametro" formControlName="ctrParametro" [width]="'100%'" placeholder="Seleccione el parametro">
+      </ng-select2>
+  </div>
+  <!-- <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3">
+                       
+    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <label>{{'Desde'|translate}} </label>
+        <input type="date" class="form-control" formControlName="fechaInicio" name="fechaInicio" />
+       <p *ngIf="ngForm.submitted && fechaInicio!.invalid" class="error">
+            <sup>*</sup> {{ "fecha" | translate }} {{ "inicio" | translate }} {{ "obligatoria" | translate }}
+        </p>
+
+
+    </div>
+    
+  </div> -->
+
+   <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+    <label> {{ 'codigo' | translate }} {{ 'Parámetro' | translate }} </label>
+    <ng-select2 name="idParametro"  (ngModelChange)="filtrarFrecuencias($event)"  [data]="CodigoParametros" [(ngModel)]="idParametro" formControlName="idParametro" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{'codigo' | translate}}...">
+    </ng-select2>
+  </div>
+  <!--
+  <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+      <label> {{ 'Nombre' | translate }} {{ 'Parámetro' | translate }} * </label>
+      <ng-select2 name="idfrecuencia"filtrarFrecuencias  (ngModelChange)="filtrarFrecuencias($event)"  [data]="NombresParametros" [(ngModel)]="idParametro" formControlName="idParametro" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{'parametro' | translate}}...">
+      </ng-select2>
+
+      <p *ngIf="ngForm.submitted && idParametro == 0" class="error">
+          <sup>*</sup> {{ "Parámetro" | translate }} {{ "obligatorio" | translate }}
+      </p>
+
+  </div> -->
+
+  <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+    <label> {{ 'Flag' | translate }} {{ 'observacion' | translate }} * </label>
+    <ng-select2 name="idFlagObservacion" [(ngModel)]="flag" [data]="listaflag" formControlName="idFlagObservacion" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{'parametro' | translate}}...">
+    </ng-select2>
+
+    <p *ngIf="ngForm.submitted && flag  == 0" class="error">
+        <sup>*</sup> {{ "Flag" | translate }} {{ "obligatorio" | translate }}
+    </p>
+  </div>
+    
+  <div class="row">
+      <div class="progress form-group col-xl-4 col-lg-6 col-md-6 col-sm-12" >
+        <div class="progress-bar" role="barraProgreso" [style.width.%]="[porcentaje]" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{porcentaje}}%</div>
+      </div>
+      <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12" *ngIf="porcentaje==100">
+        <section class="section-preview">        
+          <div class="input-group my-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroupFileAddon01">Total registros en el archivo: {{totalRegistrosCargados}}</span>
+            </div>
+          </div>    
+        </section>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+        <section class="section-preview">        
+          <div class="input-group my-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroupFileAddon01">Seleccione el archivo</span>
+            </div>
+            <div class="custom-file">
+              <input type="file" accept="txt/csv"  class="custom-file-input" id="inputFileServer" (change)="cargarArchivo($event)" aria-describedby="inputGroupFileAddon01">
+              <label class="custom-file-label" for="inputGroupFile01">Examinar</label>
+            </div>
+          </div>    
+        </section>
+      </div>
+      <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12" *ngIf="porcentaje==100">
+        <section class="section-preview">        
+          <div class="input-group my-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroupFileAddon01">Total registros a cargar: {{totalRegistrosCargados-totalRegistrosErrores}}</span>
+            </div>
+          </div>    
+        </section>
+      </div>
+    </div> 
+    <div class="row">
+      <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+          <button class="sish-boton-confirmar" [disabled]="datosObservacionList.length==0" type="submit">{{'cargarInformacion'|translate}}</button>
+        </div>
+
+        <div class="btn-group mr-2" role="group" aria-label="Second group">
+            <button type="button" class="sish-boton-cancelar" [routerLink]="['/procesararchivos/consultararchivos']">
+                    {{ 'Botones.Cancelar' | translate }}
+                </button>
+        </div>
+    </div>
+    </div>
+    <div class="row" *ngIf="totalRegistrosErrores > 0">
+      <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+      <textarea class="form-control" style="color:red;"  id="txtErrores" readonly rows="10">{{arrayErrores}}</textarea>
+    </div>
+    </div>
+  </div>
+</form>
+

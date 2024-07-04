@@ -1,0 +1,68 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active"></li>
+            <li class="breadcrumb-item"></li>
+        </ol>
+    </div>
+  </div>
+  <div class="container-fluid bg-white pt-5">
+    <div class="row">
+      <div class="col-md-12">
+          <h2 class="sish-titulo-formulario">Cargar archivos</h2>
+          <hr />
+      </div>
+    </div>
+  </div>
+<div>
+    <app-parametros *ngIf="informacionArchivo" [informacionArchivo]="informacionArchivo"></app-parametros>
+</div>
+
+<!-- Botones Temporales -->
+<div class="row">
+    <div class="form-group col-xl-3 col-lg-3 col-sm-12 ">
+        <div class="btn-group mr-2" role="group" aria-label="First group" *ngIf="validarPermiso('CrearArchivosConfigurados')">
+            <button id="quickLoadButton" name="myQuickLoadButton" class="dt-button" type="button" (click)="onCargaRapida()">
+                Carga rápida
+            </button>
+        </div>
+        <div class="btn-group mr-2" role="group" aria-label="Second group" *ngIf="validarPermiso('CrearArchivosConfigurados')">
+            <button id="loadFileWithFormatButton" name="myLoadFileWithFormatButton" class="dt-button" type="button" (click)="onCargarConFormato()">
+                Carga con formatos
+            </button>
+        </div>
+    </div>
+</div>
+<!--
+<app-datatable 
+    [datos]="datosFilter" 
+    [opciones]="columnas" 
+    [id]="'idArchivo'" 
+    [rutaGeneral]="rutaGeneral"
+    [condicionEstado]="'No'" 
+    [consultarRegistros]="false" 
+    [editarRegistros]="false" 
+    [eliminarRegistros]="false" 
+    [cambiarEstadoRegistro]="validarPermiso('ActualizarArchivo')" 
+    [cambiarEstadoRegistros]="validarPermiso('ActualizarArchivo')"
+    [columnaEstado]="'activo'"
+    (accion)="accionRegistro($event)"
+    [verColumnas]="validarPermiso('ConsultarArchivosConfigurados')"
+    [verFiltros]="validarPermiso('ConsultarArchivosConfigurados')"
+    [crear]="false" 
+    [copiar]="validarPermiso('ConsultarArchivosConfigurados')" 
+    [imprimir]="validarPermiso('ConsultarArchivosConfigurados')" 
+    [excel]="validarPermiso('ConsultarArchivosConfigurados')" 
+    [botones]="botones"
+    [seleccionarRegistro]="false"
+    [transformaciones]="{ activo: { S: 'Si', N: 'No' }}">
+</app-datatable>
+-->
+<!--<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Consulta archivos</li>
+            <li class="breadcrumb-item"></li>
+        </ol>
+    </div>
+</div>-->

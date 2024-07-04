@@ -1,0 +1,23 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active"> {{ 'Columnas' | translate }}</li>
+            <li class="breadcrumb-item"> {{ 'Columnas' | translate }}</li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario"> {{ 'Columnas' | translate }}</h2>
+            <hr />
+        </div>
+    </div>
+
+    <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'idTipoArchivoColumna'" [columnaEstado]="'activo'" [condicionEstado]="'No'" [transformaciones]="{ activo: { S: 'Si', N: 'No' }, nombre: {'Administrador 1': 'W'}}" [botonesGenerales]="botonesGenerales"
+        (accionGeneral)="accionGeneral($event)" [consultarRegistros]="true" [rutaGeneral]="rutaGeneral" [rutaConsulta]="rutaConsulta" [rutaEdicion]="rutaEdicion" [cambiarEstadoRegistros]="false" [editarRegistros]="true" [eliminarRegistros]="true" [verFiltros]="true"
+        [verColumnas]="true" [crear]="true" [copiar]="true" [imprimir]="true" [excel]="true" (accion)="accionRegistroColumnas($event)"></app-datatable>
+
+
+
+</div>

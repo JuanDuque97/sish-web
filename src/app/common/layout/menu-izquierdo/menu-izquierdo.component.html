@@ -1,0 +1,448 @@
+<div class="sidebar">
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="info">
+            <!-- <a href="#" class="d-block">[{{'Usuario'|translate}}]</a> -->
+            <a href="#" class="d-block">{{userMail}}</a>
+        </div>
+    </div>
+    <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item menu-close" *ngIf="validarPermiso('menuConfiguracion')">
+                <a href="#" class="nav-link">
+                    <em class="nav-icon fas fa-cogs"></em>
+                    <p>
+                        {{'Configuracion'|translate}}
+                        <em class="right fas fa-angle-left"></em>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview pl-3">
+                    <li class="nav-item" *ngIf="validarPermiso('menuDominio')">
+                        <a class="nav-link" [routerLink]="'configuracion/dominios'">
+                            <em class="fas fa-list-ol mr-2"></em>
+                            <p>{{'Dominios'|translate}}</p>
+                        </a>
+                    </li>
+                    <li class="nav-item" *ngIf="validarPermiso('menuCapas')">
+                        <a class="nav-link" [routerLink]="['configuracion/capas']">
+                            <em class="fas fa-layer-group mr-2"></em>
+                            <p>{{'capas'|translate}}</p>
+                        </a>
+                    </li>
+                    <!--
+                    <li class="nav-item" *ngIf="validarPermiso('menuArchivos')">
+                        <a class="nav-link" [routerLink]="['configuracion/tipoarchivos/configurados']">
+                            <em class="fas fa-book mr-2"></em> {{'tipoArchivos'|translate}}
+                        </a>
+                    </li>
+                    -->
+                    <!--
+                    <li class="nav-item" *ngIf="validarPermiso('menuEjemplo')">
+                        <a class="nav-link" [routerLink]="'configuracion/ejemplo'">
+                            <em class="fas fa-info mr-2"></em>
+                            <p>{{'Ejemplo'|translate}}</p>
+                        </a>
+                        <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('subMenuArchivoConfigurados')">
+                            <li class="nav-item">
+                                <a class="nav-link" [routerLink]="['configuracion/tipoarchivos/configurados']">
+                                    <em class="fas fa-file-signature mr-2"></em>
+                                    <p>{{'archivosconfigurados'|translate}}</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('subMenuPublicarInfo')">
+                            <li class="nav-item">
+                                <a class="nav-link" [routerLink]="['publicacion/consultarPrecipitacion']">
+                                    <em class="fas fa-file-signature mr-2"></em>
+                                    <p>Publicar Información</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    -->
+                </ul>
+            </li>
+            <li class="nav-item menu-close" *ngIf="validarPermiso('menuElementos')">
+                <a href="#" class="nav-link">
+                    <em class="fab fa-elementor mr-2"></em>
+                    <p>
+                        {{'elementos'|translate}}
+                        <em class="right fas fa-angle-left"></em>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuEmbalses')">
+                    <li class="nav-item" *ngIf="validarPermiso('menuEstaciones')">
+                        <a class="nav-link" [routerLink]="['configuracion/embalses']">
+                            <em class="fas fa-water mr-2"></em>
+                            <p>{{'embalses'|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuEstaciones')">
+                    <li class="nav-item" *ngIf="validarPermiso('menuEstaciones')">
+                        <a class="nav-link" [routerLink]="['configuracion/estaciones']">
+                            <em class="far fa-building mr-2"></em>
+                            <p>{{'Estaciones'|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuPozos')">
+                    <li class="nav-item" *ngIf="validarPermiso('menuEstaciones')">
+                        <a class="nav-link" [routerLink]="['configuracion/pozos']">
+                            <em class="fas fa-swimming-pool mr-2"></em>
+                            <p>{{'pozos'|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item menu-close" *ngIf="validarPermiso('menuParametros')">
+                <a href="#" class="nav-link">
+                    <em class="fas fa-book mr-2"></em>
+                    <p>
+                        <p>{{'Parametros'|translate}}
+                            <em class="right fas fa-angle-left"></em>
+                        </p>
+                </a>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuParametro')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/parametros']">
+                            <em class="fas fa-file-powerpoint mr-2"></em>
+                            <p>{{'Parametros'|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuTipoParametro')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/parametros/tipoParametros']">
+                            <em class="fas fa-file-alt mr-2"></em>
+                            <p>{{'Tipo'|translate}} {{'Parametros'|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item menu-close" *ngIf="validarPermiso('menuObservaciones')">
+                <a href="#" class="nav-link">
+                    <em class="fas fa-file-alt mr-2"></em>
+                    <p>
+                        {{'observaciones'|translate}}
+                        <em class="right fas fa-angle-left"></em>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuObservacionesManual')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/gestionObservaciones']">
+                            <em class="fas fa-edit mr-2"></em>
+                            <p>{{'manual'|translate}} </p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuImportarDatos')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['procesararchivos/consultararchivos']">
+                            <em class="fas fa-file-upload mr-2"></em>
+                            <p>{{'Importar Datos '|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuGestionAgregaciones')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/gestionAgregacion']">
+                            <em class="fas fa-file-upload mr-2"></em>
+                            <p>{{'Gestión agregaciones '|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuConfParametros')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/configuracionParametro']">
+                            <em class="fas fa-file-upload mr-2"></em>
+                            <p>{{'Conf. parámetros'|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item menu-close" *ngIf="validarPermiso('menuSeriesTiempo')">
+                <a href="#" class="nav-link">
+                    <em class="fas fa-history mr-2"></em>
+                    <p>
+                        {{'Serie de tiempo'|translate}}
+                        <em class="right fas fa-angle-left"></em>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuSeriesTiempoManual')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['seriestiempo/consultarserie']">
+                            <em class="fas fa-edit mr-2"></em>
+                            <p>{{'manual'|translate}} </p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item menu-close" *ngIf="validarPermiso('menuGestionNivelCaudal')">
+                <a href="#" class="nav-link">
+                    <em class="fas fa-ship mr-2"></em>
+                    <p>
+                        {{'Gestión nivel caudal'|translate}}
+                        <em class="right fas fa-angle-left"></em>
+                    </p>
+                </a>
+                <!--
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuRegistrarAforo')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['aforo/cargaraforo']">
+                            <em class="fa fa-faucet mr-2"></em>
+                            <p>{{'cargaraforo'|translate}} </p>
+                        </a>
+                    </li>
+                </ul>
+                -->
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuRegistrarAforo')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['aforo/cargaraforonuevo']">
+                            <em class="fa fa-faucet mr-2"></em>
+                            <p>{{'Cargar aforo'|translate}} </p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuConsultarAforo')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/gestionAforo']">
+                            <em class="fa fa-faucet mr-2"></em>
+
+                            <p>{{'Consultar aforos'|translate}} </p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuGestionarTablas')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/gestionTablas']">
+                          <em class="fa fa-faucet mr-2"></em>
+                            <p>{{'Gestionar tablas'|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuCalcularRegresiones')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/calcularRegresecion']">
+                          <em class="fa fa-faucet mr-2"></em>
+                            <p>{{'Calcular regresiones '|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+
+
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuCalcularRegresiones')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/gestionCaudal']">
+                          <em class="fa fa-faucet mr-2"></em>
+                            <p>{{'Calcular caudal '|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuConsultarMolinete')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/gestionMolinete']">
+                            <em class="fa fa-fan mr-2"></em>
+                            <p>{{'Consultar molinete'|translate}} </p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuCurvaDuracion')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/curvaDuracion']">
+                            <em class="fa fa-fan mr-2"></em>
+                            <p>Curva de duración</p>
+                        </a>
+                    </li>
+                </ul>
+                <!--
+                <ul class="nav nav-treeview pl-3" >
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/curvaDuracionAjuste']">
+                            <em class="fa fa-fan mr-2"></em>
+                            <p>Curva de duración ajuste</p>
+                        </a>
+                    </li>
+                </ul>
+                -->
+            </li>
+            <li class="nav-item menu-close" *ngIf="validarPermiso('menuAnalisisConsistencia')">
+                <a href="#" class="nav-link">
+                    <em class="fas fa-ship mr-2"></em>
+                    <p>
+                        {{'analisisConsis'|translate}}
+                        <em class="right fas fa-angle-left"></em>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuDoblesMasas')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['analisisconsistencia/doblesmasas']">
+                            <em class="fa fa-faucet mr-2"></em>
+                            <p>{{'Dobles masas'|translate}} </p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuPruebasBondad')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['analisisconsistencia/pruebasbondad']">
+                            <em class="fa fa-faucet mr-2"></em>
+                            <p>{{'Pruebas de bondad'|translate}} </p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item menu-close" *ngIf="validarPermiso('menuAnalisisHidrometereologico')">
+                <a href="#" class="nav-link">
+                    <em class="fas fa-ship mr-2"></em>
+                    <p>
+                        {{'Analisis hidrometereológico'|translate}}
+                        <em class="right fas fa-angle-left"></em>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuGenerarSeriesMixtas')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['seriestiempo/generarseriemixta']">
+                            <em class="fa fa-faucet mr-2"></em>
+
+                            <p><!--{{'generarseries'|translate}} -->Generar s. mixtas</p>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li class="nav-item menu-close" *ngIf="validarPermiso('menuSeguridad')">
+                <a href="#" class="nav-link">
+                    <em class="fas fa-unlock mr-2"></em>
+                    <p>
+                        {{'Seguridad'|translate}}
+                        <em class="right fas fa-angle-left"></em>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('subMenuRoles')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/seguridad/roles']">
+                            <em class="fas fa-user-lock mr-2"></em>
+                            <p>{{'Roles'|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('subMenuPermisos')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/seguridad/permisos']">
+                            <em class="fas fa-address-card mr-2"></em>
+                            <p>{{'Permisos'|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item menu-close">
+                <a href="#" class="nav-link">
+                    <em class="fas fa-file-alt mr-2"></em>
+                    <p>
+                        {{'Publicar información'|translate}}
+                        <em class="right fas fa-angle-left"></em>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview pl-3">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['publicacion/consultarPrecipitacion']">
+                            <em class="fas fa-file-alt mr-2"></em>
+                            <p>{{'Información'|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+
+            </li>
+
+            <li class="nav-item menu-close" *ngIf="validarPermiso('menuGestionHidrologica')" >
+                <a href="#" class="nav-link">
+                    <em class="fas fa-book mr-2"></em>
+                    <p>
+                        {{'Gestión hidrológica'|translate}}
+                        <em class="right fas fa-angle-left"></em>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuCriteriosCalidad')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/gestionCriterios']">
+                            <em class="fa fa-book-open mr-2"></em>
+                            <p>{{'criterios'|translate}} {{'de calidad'|translate}} </p>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuAlertasCalidad')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/gestionAlertas']">
+                            <em class="fas fa-bell mr-2"></em>
+                            <p>{{'alertascalidad'|translate}} </p>
+                        </a>
+                    </li>
+                </ul>
+
+                 <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuInventarioDatos')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/gestionInventario']">
+                            <em class="fa fa-database mr-2"></em>
+
+                            <p>{{'Inventario de datos'|translate}} </p>
+                        </a>
+                    </li>
+                </ul>
+
+            </li>
+            <li class="nav-item menu-close" *ngIf="validarPermiso('menuGestionReportes')">
+                <a href="#" class="nav-link">
+                    <em class="fas fa-book mr-2"></em>
+                    <p>
+                        {{'Gestion de reportes'|translate}}
+                        <em class="right fas fa-angle-left"></em>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuReportes')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/gestionReportes']">
+                            <em class="fa fa-book-open mr-2"></em>
+                            <p>{{'reportes'|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuReportesEstaticos')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/reportesEstaticos']">
+                            <em class="fa fa-book-open mr-2"></em>
+                            <p>Reportes estáticos</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item menu-close" *ngIf="validarPermiso('menuIdfs')">
+                <a href="#" class="nav-link">
+                    <em class="fas fa-book mr-2"></em>
+                    <p>
+                        {{'IDFs'|translate}}
+                        <em class="right fas fa-angle-left"></em>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuIdfs')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/consultarIdfs']">
+                            <em class="fa fa-book-open mr-2"></em>
+                            <p>{{'Consulrar IDFs'|translate}}</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview pl-3" *ngIf="validarPermiso('menuIdfsConsulta')">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['configuracion/idfs']">
+                            <em class="fa fa-book-open mr-2"></em>
+                            <p>Consultar busqueda</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>

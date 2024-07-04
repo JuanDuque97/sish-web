@@ -1,0 +1,359 @@
+<div class="row text-right sish-miga-de-pan" style="margin-top: 60px;">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item">{{'aforosCorrientes'|translate}}
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario text-center">Curva Duración
+            </h2>
+            <h2 class="sish-titulo-formulario text-center">{{'Aforo corriente de agua'|translate}}
+            </h2>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="text-center form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 " width="100%">
+            <h2 class="sish-titulo-formulario"> {{"Elemento"|translate}} </h2>
+            <div class="form-check form-check-inline" *ngIf="te == '1' ||  te == '0'">
+                <input class="form-check-input" type="radio" (change)="obtenerElementos(elemento)" [(ngModel)]="elemento" name="elemento" id="elemento" value="1" checked>
+                <label class="form-check-label" for="inlineRadio1">{{"Estacion"|translate}}</label>
+            </div>
+            <div class="form-check form-check-inline" *ngIf="te == '2' ||  te == '0'">
+                <input class="form-check-input" type="radio" (change)="obtenerElementos(elemento)" [(ngModel)]="elemento" name="elemento" id="elemento" value="2">
+                <label class="form-check-label" for="inlineRadio2">{{"Embalses"|translate}} </label>
+            </div>
+            
+
+        <!--INICIA FORMULARIO-->
+        <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioFiltroAforo" (ngSubmit)="agregarlista(formularioFiltroAforo)" novalidate>
+          
+           
+      
+            <div class="row" width="100%">
+
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+                    
+                <div class="form-group" *ngIf="elemento ==1">
+                    <label> {{ 'codigo' | translate }} EAAB</label>
+                    <ng-select2 name="codigoEstacionEaab" formControlName="codigoEstacionEaab" [data]="listaCodigoEAAB"
+                     [(ngModel)]="idElemento" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                        'categoriaEstacion' | translate
+                      }}...">
+                    </ng-select2>
+                </div>
+    
+                     <div class="form-group ">
+                        <label> {{ 'Nombre' | translate }} *</label>
+                        <ng-select2 name="nombreElemento" [data]="listaElemento" formControlName="idelemento" 
+                        (ngModelChange)="obtenerParametrosElemento($event,elemento)" [(ngModel)]="idElemento" 
+                        [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }}...">
+                        </ng-select2>
+                      
+                        
+                    </div>
+                    
+                    <div class="form-group" *ngIf="elemento ==1">
+                        <label> {{ 'codigo' | translate }} IDEAM</label>
+                        <ng-select2 name="CodigoIDEAM" [data]="listaCodigoIDEAM" [(ngModel)]="idElemento" formControlName="idelemento" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                            'categoriaEstacion' | translate
+                          }}...">
+                        </ng-select2>
+                    </div>
+                    <div class="form-group">
+                        <label> {{ 'Nombre' | translate }} {{'corriente'|translate}}</label>
+                        <input type="text" class="form-control" formControlName="nombreCorriente"
+                        name="nombreCorriente" placeholder="{{ 'Nombre' | translate }}" />
+                    </div>
+                      
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+
+                    <div class="form-group">
+                        <label>{{ "departamento" | translate }}</label>
+                        <ng-select2 name="idDepartamento"  [data]="listaDepartamentos"
+                        formControlName="idDepartamento" [width]="'100%'"
+                        [(ngModel)]="departamentoSelected"
+                        (ngModelChange)="cambioDepartamento(departamentoSelected)"
+                        placeholder="{{ 'Seleccionar' | translate }} {{
+            'departamento' | translate
+            }}...">
+                        </ng-select2>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>{{ "municipio" | translate }}</label>
+                        <ng-select2 name="idMunicipio" [data]="listaMunicipios"
+                        formControlName="idMunicipio" [width]="'100%'"
+                         placeholder="{{ 'Seleccionar' | translate }} {{
+             'municipio' | translate
+             }}...">
+                        </ng-select2>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ "area" | translate }}  {{" hidrográfica"|translate}} </label>
+                        <ng-select2 name="idAreaHidrografica" [data]="listaAreaHidrografica" formControlName="idAreaHidrografica" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                  ' área hidrográfica' | translate}}...">l
+                        </ng-select2>
+    
+                      
+    
+                    </div>
+                    <div class="form-group">
+                        <label>{{ "Zona hidrográfica" | translate }}</label>
+                        <ng-select2 name="idZonaHidrografica" [data]="listaZonaHidrografica" formControlName="idZonaHidrografica" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                  'Zona Hidrografica' | translate}}...">
+                        </ng-select2>
+    
+                       
+    
+                    </div>
+
+                    
+                    
+                </div>
+
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+                
+                    <div class="form-group">
+                        <label>{{ "SubzonaHidrografica" | translate }}</label>
+                        <ng-select2 name="idSubZonaHidrografica" [data]="listaSubzonaHidrografica" formControlName="idSubZonaHidrografica" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                  'Subzona Hidrografica' | translate
+                }}...">
+                        </ng-select2>
+                        
+    
+                    </div>
+                     <div class="form-group">
+                    <label>{{ "Cuenca" | translate }}</label>
+                    <ng-select2 name="cuenca" [data]="listaCuenca" formControlName="idCuenca" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              'cuenca' | translate
+            }}...">
+                    </ng-select2>
+                </div>
+                <div class="form-group">
+                    <label>{{ "Subcuenca" | translate }}</label>
+                    <ng-select2 name="idSubCuenca" [data]="listaSubcuenca" formControlName="idSubCuenca" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              'Subcuenca' | translate
+            }}...">
+                    </ng-select2>
+                </div>
+                    <div class="form-group">
+                        <label>{{ "Microcuenca" | translate }}</label>
+                        <ng-select2 name="idMicroCuenca" [data]="listaMicrocuenca" formControlName="idMicroCuenca" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                  'Microcuenca' | translate
+                }}...">
+                        </ng-select2>
+                    </div>
+                    <div class="form-group">
+                        <label> {{ 'Entidad'|translate}}</label>
+                        <ng-select2 name="tipo" [data]="listaEntidad" formControlName="idEntidad"
+                        [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{'Microcuenca'|translate}}...">
+                        </ng-select2>
+                    </div>
+
+                  
+    
+                   
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label>{{ "Aforo" | translate }} No.</label>
+                        <ng-select2 name="idAforo" [data]="listaNumeroAforo"
+                        formControlName="idAforo" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+             'Subzona Hidrografica' | translate
+             }}...">
+                        </ng-select2>
+                    </div>
+
+    
+                <div class="form-group">
+    
+
+                  
+              </div>
+             
+              <div class="form-group">
+                <label> {{'Frecuencia Media'|translate}} {{ "" | translate }}</label>
+                <ng-select2 name="media" [data]="listaMedia" formControlName="media" [(ngModel)]="media1" 
+                     [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                        'frecuencia' | translate
+                        }}...">
+                    </ng-select2>
+                </div>
+              <div class=" row "  *ngIf="media1 == 1">
+                
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12" >
+                    <label> {{ 'Desde' | translate }} *</label>
+                    <ng-select2 name="idFlagObservacion"  [max]=fechaActual  [data]="listAnos" [(ngModel)]="fechaAno" formControlName="fechaInicio" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{'año' | translate}}...">
+                    </ng-select2>
+
+                    <p *ngIf="ngForm.submitted && fechaAno  == undefined " class="error">
+                        <sup>*</sup> {{ "fecha" | translate }} {{ "obligatorio" | translate }}
+                    </p>
+                
+                </div>
+
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12" >
+                    <label> {{ 'Hasta' | translate }} *</label>
+                    <ng-select2 name="idFlagObservacion"  [max]=fechaActual  [data]="listAnos" [(ngModel)]="fechaAnoFin" formControlName="fechaFin" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{'año' | translate}}...">
+                    </ng-select2>
+
+                    <p *ngIf="ngForm.submitted && fechaAno  == undefined " class="error">
+                        <sup>*</sup> {{ "fecha" | translate }} {{ "obligatorio" | translate }}
+                    </p>
+            
+                </div>
+              </div>
+            
+        
+              <div class=" row "  *ngIf="media1 == 3 || media1 == 2">
+                
+              
+                
+            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+              <label> {{ "Desde" | translate }} </label>
+              <input type="date"   placeholder="yyyy-MM-ddTHH:mm:ss" class="form-control"
+              formControlName="fechaInicio" name="fechaInicio" placeholder="{{ 'Desde' | translate }}" />
+  
+          </div>
+
+
+          <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+              <label> {{ "Hasta" | translate }} </label>
+              <input type="date"   placeholder="yyyy/MM/dd HH:mm:ss"  class="form-control" 
+              formControlName="fechaFin" name="fechaFin"
+               placeholder="{{ 'Hasta' | translate }}" />
+
+          </div>
+
+          
+  
+        </div>
+    
+    
+                    <div class="form-group">
+                        <label>{{ "Aforador" | translate }} </label>
+                        <ng-select2 name="aforador" [data]="listaAforodor" formControlName="aforador"
+                         [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+             'Aforador' | translate
+             }}...">
+                        </ng-select2>
+                    </div>
+                    <div class="form-group">
+                        <label> {{'Metodo de medición'|translate}} {{ "" | translate }}</label>
+                        <ng-select2 name="idtipoAforo" [data]="tipoMedida" formControlName="idtipoAforo"
+                         [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                            'tipo' | translate
+                            }}...">
+                        </ng-select2>
+                    </div>
+                    
+                    </div>
+
+                
+                
+
+
+             
+                <!-- <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                    <label> {{ "origen" | translate }} *</label>
+                    <input type="text"
+                    autocomplete="off"  maxlength="50" class="form-control" [(ngModel)]="origen" formControlName="origen" name="origen" placeholder="{{ 'origen' | translate }}" />
+
+                    <p *ngIf="ngForm.submitted && origen  == undefined || origen  == '' " class="error">
+                        <sup>*</sup> {{ "origen" | translate }} {{ "obligatorio" | translate }}
+                    </p>
+                </div> -->
+
+            </div>
+
+            
+
+
+
+            <!--BOTONES-->
+            <div class="row text-center">
+
+                
+                <div class="form-group col-xl-12 col-lg-12 col-sm-12">
+                    <div class="btn-group mr-2" role="group" aria-label="First group">
+                        <button type="submit"   class="sish-boton-confirmar">
+                            Filtrar
+                        </button>
+
+            <button type="button"   (click)="regresar()"   class="sish-boton-cancelar" >
+                      {{ 'Botones.Cancelar' | translate }}
+                      </button>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+    
+        </form>
+        <!--FINALIZA FORMULARIO-->
+
+
+    </div>
+    <div>
+        <br> <br>  <br> <br>
+          <div class="row text-center">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+  
+  
+  
+                  <div id="chart">
+                    <apx-chart
+                      [series]="chartOptions.series"
+                      [chart]="chartOptions.chart"
+                      [xaxis]="chartOptions.xaxis"
+                      [markers]="chartOptions.markers"
+                      [stroke]="chartOptions.stroke"
+                      [yaxis]="chartOptions.yaxis"
+                      [dataLabels]="chartOptions.dataLabels"
+                      [title]="chartOptions.title"
+                      [fill]="chartOptions.fill"
+                      [tooltip]="chartOptions.tooltip"
+                      [legend]="chartOptions.legend"
+                    ></apx-chart>
+                  </div>
+          </div>
+          <br> <br>  <br> <br>
+         
+      </div>
+
+
+
+</div>
+
+<app-datatable [datos]="datosTabla" [opciones]="columnas" [id]="'idAforo'" 
+    [consultarRegistros]="false" [editarRegistros]="false" [eliminarRegistros]="true" 
+    [cambiarEstadoRegistros]="false" (accion)="accionRegistroColumnas($event)" 
+    [verFiltros]="false" [verColumnas]="true" [crear]="false" [copiar]="true" [imprimir]="true" [excel]="true"
+    [seleccionarRegistro]="false">
+</app-datatable>
+
+<button type="button" id="btn_1"  style="visibility: hidden;" (click)="eliminarRegistros()">
+</button>
+
+<div class="row text-center" *ngIf="pintarBG == 1 " >
+    <div class="form-group col-xl-12 col-lg-6 col-sm-12">
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+            <button type="button"  (click)="guardarCurvaDuracion()"   class="sish-boton-confirmar">
+      {{ 'Guardar' | translate }}
+      </button>
+
+<button type="button" class="sish-boton-cancelar"  (click)="cancelar()" >
+        {{ 'Botones.Cancelar' | translate }}
+        </button>
+        </div>
+    </div>

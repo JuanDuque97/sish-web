@@ -1,0 +1,18 @@
+/* import the required JSAPI css */
+@import 'https://js.arcgis.com/4.14/esri/css/main.css';
+
+.esri-view {
+  height: 350px;  
+  max-height: 350px;
+  width: 100%;
+}
+
+.esri-ui-corner.esri-expand.esri-widget--panel, .esri-ui-corner.esri-expand.esri-widget--panel-height-only, .esri-ui-corner.esri-component.esri-widget--panel, .esri-ui-corner.esri-component.esri-widget--panel {
+  width: auto !important;
+}
+
+.panel-layers {
+  height: 350px;  
+  max-height: 350px;
+  overflow-y: auto;
+}

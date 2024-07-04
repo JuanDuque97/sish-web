@@ -1,0 +1,66 @@
+<div class="row text-right sish-miga-de-pan" style="margin-top: 60px;">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active"> {{'Configuracion'|translate}}</li>
+            <li class="breadcrumb-item"> {{ 'GestionReportes' | translate }}</li>
+        </ol>
+    </div>
+</div>
+
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12" style="position: relative;">
+            <h2 class="sish-titulo-formulario" style="float: left; position: relative; ">Reporte Precipitaciones</h2>
+            <hr style="margin-top: 40px;" />
+        </div>
+    </div>
+    <br><hr>
+
+    <div class="row">
+        <div class="col-md-12" style="position: relative;">
+            <div class="row" id="pdfTable" #pdfTable>
+                <div class="col-1"></div>
+                <div class="col-10">
+                    <button type="button" class="btn btn-primary" (click)="exportartxt()">Descargar</button>
+                </div>
+''
+                <br>
+
+                <div class="col-1"></div>
+                <br>
+                <div class="row" id="pdfTable" #pdfTable>
+                    <div class="col-1"></div>
+                    <div class="notes col-10">
+                        <table class="sish-tabla">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="text-align: center;">Nesplu</th>
+                                    <th scope="col" style="text-align: center;">PRECIPITACIÓN (mm)</th>
+                                    <th scope="col" style="text-align: center;">Fecha</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let dato of datosFilter">
+                                    <td style="text-align: center;">{{dato.idcodigo}}</td>
+                                    <td style="text-align: center;">{{dato.valor}}</td>
+                                    <td style="text-align: center;">{{dato.fecha}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-1"></div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="text-center">
+                <button class="sish-boton-cancelar" (click)="goBack()">
+                    {{"Botones.Regresar"|translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

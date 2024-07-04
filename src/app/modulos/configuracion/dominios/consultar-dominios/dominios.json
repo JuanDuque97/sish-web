@@ -1,0 +1,16 @@
+[
+    {
+      "id": 1,
+      "dominio": "Entidad",
+      "descripcion": "Entidad u Organismo propietaria de la estación",
+      "fechaCreacion": "01-01-2021",
+      "fechaModificacion": "03-05-2021"
+    },
+    {
+        "id": 2,
+        "dominio": "tipo",
+        "descripcion": "tipo de parametro",
+        "fechaCreacion": "01-01-2021",
+        "fechaModificacion": "03-05-2021"
+      }
+  ]

@@ -1,0 +1,90 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item">{{'aforosCorrientes'|translate}}
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario text-center">Consulta Series Mixtas
+            </h2>
+        </div>
+    </div>
+    <div><label>{{ 'periodo' | translate }}</label></div>
+    <div class="row">
+        <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioFiltros" (ngSubmit)="filtrar(elemento)" novalidate>
+            <div class="row" width="100%">
+                
+                <div class="col-xl-6 col-lg-6 col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label> Tipo Elemento *</label>
+                        <ng-select2 name="nombreElemento" [data]="listaElementos" formControlName="idTipoElemento" (ngModelChange)="obtenerElementos($event)" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }}...">
+                        </ng-select2>
+                    </div> 
+                    <div class="form-group" >
+                        <label> {{ 'codigo' | translate }} IDEAM</label>
+                        <ng-select2 name="codigoIDEAM" [data]="listaCodigoIDEAM"  formControlName="codigoIDEAM" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                     'categoriaEstacion' | translate
+                     }}...">
+                        </ng-select2>
+                    </div>                   
+
+                    <div class="form-group" >
+                        <label> {{ 'codigo' | translate }} EAAB</label>
+                        <ng-select2 name="CodigoEAAB" formControlName="idElemento"  [disabled]="idTipoElemento !=466" [data]="listaCodigoEAAB" [(ngModel)]="idElemento" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+             'categoriaEstacion' | translate
+             }}...">
+                        </ng-select2>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label>{{ 'Parámetro'|translate}}</label>
+                        <ng-select2 name="tipo" [data]="listParametro" [(ngModel)]="parametro" formControlName="idParametro" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{'parametro'|translate}}...">
+                        </ng-select2>
+                    </div>
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <label>Periodo {{'Desde'|translate}} </label>
+                        <input type="date" class="form-control" formControlName="fechaInicio" name="fechaInicio" />
+                    </div>
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <label>Periodo {{'Hasta'|translate}} </label>
+                        <input type="date" class="form-control" formControlName="fechaFin" name="fechaFin" />
+                    </div>
+                   
+                </div>
+               <!-- <div class="col-xl-6 col-lg-6 col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label> {{ 'Nombre' | translate }} Elemento *</label>
+                        <ng-select2 name="nombreElemento" [data]="listaElemento" formControlName="idElemento" [(ngModel)]="idElemento" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }}..." [disabled]="idTipoElemento == undefined">
+                        </ng-select2>
+                        <p *ngIf="ngForm.submitted && idElemento == '0'" class="error">
+                            <sup>*</sup> {{ "Nombre" | translate }} {{ "obligatorio" | translate }}
+                        </p>
+                    </div>            
+                 </div>   -->             
+            </div>
+        </form>
+    </div>
+    <div>
+       <!-- <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                <ngx-charts-line-chart [view]="view" [scheme]="colorScheme" [legend]="legend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline"
+                    [results]="multi">
+                </ngx-charts-line-chart>
+            </div>
+        </div>-->
+        <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'idCriterio'" 
+        [rutaGeneral]="rutaGeneral" 
+        [rutaConsulta]="rutaConsulta" [rutaEdicion]="rutaEdicion"
+         [columnaEstado]="'activo'" [condicionEstado]="'No'"
+            [consultarRegistros]="false"
+             [editarRegistros]="false" [eliminarRegistros]="true" [cambiarEstadoRegistros]="false"
+              [verFiltros]="true" [verColumnas]="false" [crear]="false" [copiar]="true" [imprimir]="true"
+               [excel]="true" (accion)="accionRegistro($event)"
+               [seleccionarRegistro]="false"></app-datatable>
+    </div>

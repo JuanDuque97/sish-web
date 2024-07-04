@@ -1,0 +1,60 @@
+<header class="sish-logos-header mt-5" role="banner" tabindex="-1" aria-label="Side nav header">
+    <div class="container sish-img-logos sish-ancho1200">
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <img src="assets/logos/eaab.png" alt="Empresa de Acueducto y Alcantarillado de Bogotá, EAAB -ESP" />
+            </div>
+            <div class="col-md-6 text-center">
+                <img class="sish-logo-alcaldia-bta" src="assets/logos/bogota.png" alt="Alcaldía de Bogotá" />
+            </div>
+        </div>
+    </div>
+</header>
+<div class="sish-pie-tuberia">
+    <div class="row">
+        <div class="offset-md-3 col-md-6">
+
+            <div class="sish-titulo-portada text-center" *ngIf="visible" >
+                <h1>{{'SistemInformacionIdrico'| translate | titlecase }}</h1>
+                <hr/>
+                <h5>Hidrología aplicada</h5>
+            </div>
+
+            <div class="wrapper fadeInDown" *ngIf="!visible">
+                <div id="formContent">
+                    <!-- Login Form -->
+                    <!--INICIA FORMULARIO-->
+                    <form (ngSubmit)="login( f )" #f="ngForm">
+
+                        <!-- <h4>
+                            Login
+                        </h4>
+
+
+                        <input type="text" class="fadeIn second" name="email" [(ngModel)]="usuario.username" required email
+                            placeholder="Email">
+
+                        <p *ngIf="f.submitted && f.controls['email'].errors" class="text-danger animated fadeIn">
+                            El correo es obligatorio
+                        </p>
+
+                        <input type="password" name="password" [(ngModel)]="usuario.password" required minlength="6"
+                            class="fadeIn second" placeholder="Password" class="fadeIn third" placeholder="password">
+
+                        <p *ngIf="f.submitted && f.controls['password'].errors" class="text-danger animated fadeIn">Ingrese la
+                            Contraseña</p> -->
+
+
+
+                      <hr>
+                         <input type="submit" class="fadeIn fourth" value="Ingresar">
+                    </form>
+
+                    <!--FINALIZA FORMULARIO-->
+
+                </div>
+        </div>
+
+        </div>
+    </div>
+</div>

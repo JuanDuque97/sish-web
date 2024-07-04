@@ -1,0 +1,216 @@
+<div class="row text-right sish-miga-de-pan">
+  <div class="col-md-12 text-right">
+      <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+          <li class="breadcrumb-item active">Configuración</li>
+          <li class="breadcrumb-item">{{'aforosCorrientes'|translate}}
+          </li>
+      </ol>
+  </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+  <div class="row">
+    <div class="col-md-12">
+        <h2 class="sish-titulo-formulario">
+            {{ 'aforosCorrientes' | translate }} : {{ id === "0" ? "Nuevo" : id }}
+        </h2>
+    </div>
+ </div>
+ 
+  <form class="sish-form">
+   
+
+    <div class="text-center form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 " width="100%">
+       
+      <div class="row col-xl-12">
+
+        <div class="row" width="100%">
+
+          <div class="text-center  col-xl-12 col-lg-12 col-md-12 col-sm-12 " width="100%">
+
+              <div class="col-xl-12 row">
+                 
+                  <p>   <label>Punto   &nbsp;  </label>  {{listaCalculo.caudal}}  </p>
+              </div>
+              <div class=" col-xl-12">
+                 
+                  <p> <label>Corriente   &nbsp;  </label> {{aforoLocal.nombreElemento }}  </p>
+              </div>
+              <div class="col-xl-12">
+              
+                <p>   <label>Identificación del equipo &nbsp;  </label> Marcar  {{marca}}   &nbsp;  Serie  &nbsp; {{serie}} &nbsp;   Helice &nbsp;  {{listahelice.serieHelice}}  </p>
+              </div>
+              <div class="col-xl-12">
+              
+                <p>   <label>Fecha y hora  &nbsp;  </label> {{aforoLocal.fecha }}  </p>
+              </div>
+              <div class="col-xl-12">
+              
+                <p>   <label> Aforador &nbsp;  </label> {{aforoLocal.aforador }}   </p>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 ">
+                  <label > Resultado &nbsp;  </label> 
+                 </div>
+                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 ">
+                  <a  style="color:#0000FF;" (click)="verdetalleAforo()">  Ver detalle afoto   &nbsp;  </a> 
+                 </div>
+                 
+              </div>
+
+          </div>
+          <br>
+
+
+        
+        </div>
+
+
+
+
+
+
+
+      </div>
+      </div>
+    </form>
+  <div>
+    <br> <br>
+    <div class=" text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+   
+    <div class=" col-xl-12">
+        <label>H (m) = {{h}} </label>
+        <label> </label>
+    </div> 
+      <div class="col-xl-12">
+        <label>Q caudal (㎥/s) = {{caudal}}  </label>
+        <label> </label>
+    </div>
+    <div class=" col-xl-12">
+        <label>Vel.media (m/s) =     {{velocidadMedia}} </label>
+        <label> </label>
+    </div>
+
+    <div class="col-xl-12">
+      <label>Area (㎡) =   {{listaCalculo.area}}   </label>
+      <label> </label>
+    </div>
+
+    <div class="col-xl-12">
+      <label>Radio hidráulico (m) =    </label>
+      <label>  {{radio}} </label>
+    </div>
+
+    <div class="col-xl-12">
+      <label>Perímetro mojado (m) =    </label>
+      <label>  {{perimetroMojado}}  </label>
+    </div>
+
+    <div class="col-xl-12">
+      <label>Ancho superficial (m) =  </label>
+      <label>  {{ancho}}  </label>
+    </div>
+
+
+    </div>
+      <hr>
+
+      <div class="row text-center">
+
+          <div class="col-xl-12 text-center col-lg-5 col-md-12 col-sm-12 ">
+
+              <div id="chart" class="chart" #chart (contextmenu)="onRightClick4(chart, chart.id, $event)">
+                <apx-chart
+                  id="chart"
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [xaxis]="chartOptions.xaxis"
+                  [markers]="chartOptions.markers"
+                  [stroke]="chartOptions.stroke"
+                  [yaxis]="chartOptions.yaxis"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [title]="chartOptions.title"
+                  [fill]="chartOptions.fill"
+                  [tooltip]="chartOptions.tooltip"
+                  [legend]="chartOptions.legend"
+                ></apx-chart>
+
+              </div>
+  
+
+          </div>
+          <div class="col-xl-10 text-center col-lg-5 col-md-12 col-sm-12 ">
+
+            <div id="chart1"  *ngIf="ecuacion  == 0 "  >
+                <apx-chart
+                id="chart1"
+                (contextmenu)="onRightClick($event)"
+                [series]="chartOptions1.series"
+                [chart]="chartOptions1.chart"
+                [xaxis]="chartOptions1.xaxis"
+                [markers]="chartOptions1.markers"
+                [stroke]="chartOptions1.stroke"
+                [yaxis]="chartOptions1.yaxis"
+                [dataLabels]="chartOptions1.dataLabels"
+                [title]="chartOptions1.title"
+                [fill]="chartOptions1.fill"
+                [tooltip]="chartOptions1.tooltip"
+                [legend]="chartOptions1.legend"
+              ></apx-chart>
+
+
+              </div>
+
+
+              <div  id="chart2" *ngIf="ecuacion  == 1 "  >
+                <apx-chart
+                (contextmenu)="onRightClick($event)"
+                [series]="chartOptions2.series"
+                [chart]="chartOptions2.chart"
+                [xaxis]="chartOptions2.xaxis"
+                [markers]="chartOptions2.markers"
+                [stroke]="chartOptions2.stroke"
+                [yaxis]="chartOptions2.yaxis"
+                [dataLabels]="chartOptions2.dataLabels"
+                [title]="chartOptions2.title"
+                [fill]="chartOptions2.fill"
+                [tooltip]="chartOptions2.tooltip"
+                [legend]="chartOptions2.legend"
+              ></apx-chart>
+
+
+            </div>
+    
+          </div>
+          <form class="sish-form" >
+          <div class="col-xl-12 col-lg-2 col-md-2 col-sm-2 ">
+            <label>Observación   </label>
+            <div class="col-xl-12">
+              <textarea id="w3review"  [(ngModel)]="observacion"  name="w3review" rows="5" cols="110"></textarea>
+          </div>
+         
+        </div>
+
+          </form>
+
+      </div>
+      <div class="row text-center">
+        <div class="form-group col-xl-12 col-lg-6 col-sm-12">
+         <div class="btn-group mr-2" role="group" aria-label="First group">
+         <button type="button" class="sish-boton-confirmar" (click)="validadoAforo()" >
+          Validar
+         </button>
+         <button type="button" class="sish-boton-cancelar" (click)="rechazadoAforo()" >
+           Rechazar 
+         </button>
+        </div>
+       </div>
+       </div>
+  </div>
+
+
+  
+    
+
+  <button type="button" id="btn"  style="visibility: hidden;" (click)="infoAforo()">
+  </button>
+

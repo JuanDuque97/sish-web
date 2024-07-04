@@ -1,0 +1,59 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">{{'Configuracion'|translate}}</li>
+            <li class="breadcrumb-item active" [routerLink]="['/configuracion/estaciones']">
+                {{"Parametros"|translate}} X {{'Estaciones'|translate}}
+            </li>
+            <li class="breadcrumb-item">
+                {{ id === "0" ? "Crear" : "Editar" }}
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">
+                {{"Parametros"|translate}} {{"de las"|translate}} {{'estaciones'|translate}}
+            </h2>
+            <hr />
+        </div>
+    </div>
+
+    <form class="sish-form">
+        <div class="row" width="100%">
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="codigo"> {{'codigo'|translate}} </label>
+                <input name="codigoEstacion" [(ngModel)]="objEstacion.codigoEstacionEaab" type="text" class="form-control" disabled />
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="NuevoValor"> {{'Estación'|translate}} </label>
+                <input name="nombreEstacion" [(ngModel)]="objEstacion.estacion" type="text" class="form-control" disabled />
+            </div>
+        </div>
+        <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+                <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/estaciones']">
+                    {{ 'Botones.Cancelar' | translate }}
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- TABLA VALORES -->
+    <div class="row" width="100%">
+        <div class="col-md-12">
+            <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'idParametroXEstacion'" [columnaEstado]="'activo'" 
+                [condicionEstado]="'No'" [transformaciones]="{ activoPermiso: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}" 
+                [consultarRegistros]="false" [editarRegistros]="false" [eliminarRegistros]="validarPermiso('EliminarParametroXEstacion')" 
+                [cambiarEstadoRegistros]="false" [verFiltros]="validarPermiso('ConsultarParametroXEstacion')" 
+                [verColumnas]="validarPermiso('ConsultarParametroXEstacion')" [copiar]="validarPermiso('ConsultarParametroXEstacion')" 
+                [imprimir]="validarPermiso('ConsultarParametroXEstacion')" [excel]="validarPermiso('ConsultarParametroXEstacion')" 
+                 (accionGeneral)="accionGeneral($event)" (accion)="accionRegistro($event)" [verFiltros]="false"
+                [seleccionarRegistro]="false" [botonesGenerales]="botonesGenerales" (accionGeneral)="accionGeneral($event)" [crear]="false">
+            </app-datatable>
+        </div>
+    </div>
+</div>

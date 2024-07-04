@@ -1,0 +1,92 @@
+<div class="row text-right sish-miga-de-pan" style ="margin-top: 60px;">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active"> {{'Configuracion'|translate}}</li>
+            <li class="breadcrumb-item"> {{ 'GestionReportes' | translate }}</li>
+        </ol>
+    </div>
+</div>
+
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12" style="position: relative;">
+            <h2 class="sish-titulo-formulario" style="float: left; position: relative; "> {{ 'Gestion reportes' | translate }}</h2> 
+            <hr style="margin-top: 40px;"/>
+        </div>
+    </div>
+
+    <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'idEstructura'" [rutaGeneral]="rutaGeneral"
+        [rutaConsulta]="rutaConsulta" [rutaEdicion]="rutaEdicion" [columnaEstado]="'activo'" [condicionEstado]="'No'"
+        [transformaciones]="{ activo: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}"
+        [consultarRegistros]="validarPermiso('ConsultarReporte')"
+        [editarRegistros]="validarPermiso('ActualizarReporte')" [eliminarRegistros]="validarPermiso('EliminarReporte')"
+        [cambiarEstadoRegistros]="false" (accion)="accionRegistro($event)"
+        [verFiltros]="validarPermiso('ConsultarReporte')" [verColumnas]="validarPermiso('ConsultarReporte')"
+        [crear]="validarPermiso('CrearReporte')" [copiar]="validarPermiso('ConsultarReporte')"
+        [imprimir]="validarPermiso('ConsultarReporte')" [excel]="validarPermiso('ConsultarReporte')" [botones]="botones"
+        [seleccionarRegistro]="false">
+    </app-datatable>
+
+    <div class="invisible">
+        <button type="button" #ModalReporte class="invisible" data-toggle="modal" data-target="#ModalReporte"></button>
+    </div>
+
+    <div id="ModalReporte" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ "exportar" | translate }} {{"reporte"|translate}} </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="modalForm" class="sish-form" #ngForm="ngForm" [formGroup]="formularioFiltros" (ngSubmit)="onNavegar($event)"
+                        novalidate>
+
+                        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <label for=""> {{nombreReporte}}</label>
+                            <div class="form-group col-xl-3 col-lg-4 col-md-12 col-sm-12">
+                                <label>{{'Desde'|translate}} </label>
+                                <input type="date" class="form-control" formControlName="fechaInicio" [max]=fechaActual [(ngModel)]="inp_FechaInicio" (change) = "validarFecha($event)" 
+                                    name="fechaInicio" />
+                                <p *ngIf="ngForm.submitted && fechaInicio!.invalid" class="error">
+                                    <sup>*</sup> {{ "fecha" | translate }} {{ "fin" | translate }} {{ "obligatoria" |
+                                    translate }}
+                                </p>
+                            </div>
+
+                            <div class="form-group col-xl-3 col-lg-4 col-md-12 col-sm-12">
+                                <label>{{'Hasta'|translate}} </label>
+                                <input type="date" class="form-control" formControlName="fechaFInal" [max]=fechaActual [(ngModel)]="inp_FechaFinal" (change) = "validarFecha($event)" 
+                                    name="fechaFin" />
+                                <!-- <p *ngIf="ngForm.submitted && fechaFInal!.invalid" class="error">
+                                    <sup>*</sup> {{ "fecha" | translate }} {{ "fin" | translate }} {{ "obligatoria" |
+                                    translate }}
+                                </p> -->
+                                <p *ngIf="!esFechaMayor" class="error">
+                                    <sup>*</sup> La fecha inicio no puede ser mayor o igual a la fecha final.
+                                </p>
+                                <p *ngIf="fechasNoValidas" class="error">
+                                    <sup>*</sup>Los datos de las fechas NO son válidos.
+                                </p>
+                            </div>
+
+
+                            <button type="button" class="sish-boton-cancelar" (click)="onCancelarModal()" 
+                                data-dismiss="modal">{{"Botones.Cancelar"|translate}}</button>
+
+                            <!-- <button *ngIf="esFechaMayor" type="submit" class="sish-boton-confirmar">{{"Botones.Filtrar"|translate}}</button> -->
+                            <button type="submit" class="sish-boton-confirmar">{{"Botones.Filtrar"|translate}}</button>
+
+                            <div class="invisible">
+                                <button type="button" #ModalReporte class="invisible" data-toggle="modal"
+                                    data-target="#ModalReporte"></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

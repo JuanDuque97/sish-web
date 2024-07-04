@@ -1,0 +1,551 @@
+<div class="row text-right sish-miga-de-pan" style="margin-top: 60px;"> 
+  <div class="col-md-12 text-right">
+    <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+      <li class="breadcrumb-item active">Configuración</li>
+      <li class="breadcrumb-item">{{'aforosCorrientes'|translate}}
+      </li>
+    </ol>
+  </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="sish-titulo-formulario text-center">{{'Aforos corrientes de agua'|translate}}
+      </h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="text-center form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 " width="100%">
+      <h2 class="sish-titulo-formulario"> {{"Elemento"|translate}} </h2>
+      <div class="form-check form-check-inline" *ngIf="te == '1' ||  te == '0'">
+        <input class="form-check-input" type="radio" (change)="obtenerElementos(elemento)" [(ngModel)]="elemento"
+          name="elemento" id="elemento" value="1" checked>
+        <label class="form-check-label" for="inlineRadio1">{{"Estacion"|translate}}</label>
+      </div>
+      <div class="form-check form-check-inline" *ngIf="te == '2' ||  te == '0'">
+        <input class="form-check-input" type="radio" (change)="obtenerElementos(elemento)" [(ngModel)]="elemento"
+          name="elemento" id="elemento" value="2">
+        <label class="form-check-label" for="inlineRadio2">{{"Embalses"|translate}} </label>
+      </div>
+      <div class="form-check form-check-inline" *ngIf="te == '3' ||  te == '0'">
+        <input class="form-check-input" type="radio" (change)="obtenerElementos(elemento)" [(ngModel)]="elemento"
+          name="elemento" id="elemento" value="3">
+        <label class="form-check-label" for="inlineRadio2">{{"Pozos"|translate}} </label>
+
+      </div>
+    </div>
+    <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioFiltroAforo"
+      (ngSubmit)="agregarlista(formularioFiltroAforo)" novalidate>
+
+
+
+      <div class="row" width="100%">
+
+        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+
+
+
+          <div class="form-group" *ngIf="elemento ==1">
+            <label> {{ 'codigo' | translate }} EAAB</label>
+
+            <ng-select2 name="codigoEstacionEaab" formControlName="codigoEstacionEaab" [data]="listaCodigoEAAB"
+              (ngModelChange)="obtenerParametrosElemento($event,elemento)" [(ngModel)]="idElemento" [width]="'100%'"
+              placeholder="{{ 'Seleccionar' | translate }} {{
+                        'categoriaEstacion' | translate
+                      }}...">
+            </ng-select2>
+          </div>
+
+
+          <div class="form-group ">
+            <label> {{ 'Nombre' | translate }} *</label>
+            <ng-select2 name="nombreElemento" [data]="listaElemento" formControlName="idelemento"
+              (ngModelChange)="obtenerParametrosElemento($event,elemento)" [(ngModel)]="idElemento" [width]="'100%'"
+              placeholder="{{ 'Seleccionar' | translate }}...">
+            </ng-select2>
+
+
+
+          </div>
+
+          <div class="form-group" *ngIf="elemento ==1">
+            <label> {{ 'codigo' | translate }} IDEAM</label>
+            <ng-select2 name="CodigoIDEAM" (ngModelChange)="obtenerParametrosElemento($event,elemento)"
+              [data]="listaCodigoIDEAM" [(ngModel)]="idElemento" formControlName="idelemento" [width]="'100%'"
+              placeholder="{{ 'Seleccionar' | translate }} {{
+                            'categoriaEstacion' | translate
+                          }}...">
+            </ng-select2>
+
+          </div>
+          <div class="form-group">
+            <label> {{ 'Nombre' | translate }} {{' corriente'|translate}}</label>
+            <input type="text" class="form-control" formControlName="nombreCorriente" name="nombreCorriente"
+              placeholder="{{ 'Nombre' | translate }}" />
+          </div>
+
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+
+          <div class="form-group">
+            <label>{{ "Departamento" | translate }}</label>
+            <ng-select2 name="idDepartamento" [data]="listaDepartamento"
+              (ngModelChange)="cambioDepartamento(departamentoSelected)" [(ngModel)]="idElemento"
+              formControlName="idelemento" [width]="'100%'" [disabled]="true"
+              placeholder="{{ 'Departamento' | translate }}...">
+            </ng-select2>
+          </div>
+
+          <!-- Municipio -->
+          <div class="form-group">
+            <label>{{ "Municipio" | translate }}</label>
+            <ng-select2 name="idMunicipio" [data]="listaMunicipio" [disabled]="true" [(ngModel)]="idElemento"
+              formControlName="idelemento" [width]="'100%'" placeholder="{{ 'Municipio' | translate }}...">
+            </ng-select2>
+          </div>
+          <div class="form-group">
+            <label>{{ "area" | translate }} {{" hidrográfica"|translate}} </label>
+            <ng-select2 name="idAreaHidrografica" [data]="listaAreaHidrografica" [disabled]="true"
+              [(ngModel)]="idElemento" formControlName="idelemento" [width]="'100%'">
+            </ng-select2>
+          </div>
+
+          <!-- Zona Hidrográfica.  -->
+          <div class="form-group">
+            <label>{{ "Zona hidrográfica" | translate }}</label>
+            <ng-select2 name="idZonaHidrografica" [data]="listaZonaHidrografica" [disabled]="true"
+              [(ngModel)]="idElemento" formControlName="idelemento" [width]="'100%'"
+              placeholder="{{ 'Zona hidrográfica' | translate }}...">
+            </ng-select2>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+
+          <div class="form-group">
+            <label>{{ "Sub zona hidrográfica" | translate }}</label>
+            <ng-select2 name="idSubZonaHidrografica" [data]="listaSubzonaHidrografica" [(ngModel)]="idElemento"
+              formControlName="idelemento" [width]="'100%'" [disabled]="true"
+              placeholder="{{ 'Sub zona hidrográfica' | translate }}...">
+            </ng-select2>
+          </div>
+          <div class="form-group">
+            <label>{{ "Cuenca" | translate }}</label>
+            <ng-select2 name="cuenca" [data]="listaCuenca" [disabled]="true" [(ngModel)]="idElemento"
+              formControlName="idelemento" [width]="'100%'" placeholder="{{ 'Cuenca' | translate }}...">
+            </ng-select2>
+          </div>
+
+          <!-- Microcuenca -->
+          <div class="form-group">
+            <label>{{ "Microcuenca" | translate }}</label>
+            <ng-select2 name="idMicroCuenca" [data]="listaMicrocuenca" [disabled]="true" [(ngModel)]="idElemento"
+              formControlName="idelemento" [width]="'100%'" placeholder="{{ 'Microcuenca' | translate }}...">
+            </ng-select2>
+          </div>
+
+          <!-- Entidad -->
+          <div class="form-group">
+            <label> {{ 'Entidad'|translate}}</label>
+            <ng-select2 name="tipo" [data]="listaEntidades" [disabled]="true" [(ngModel)]="idElemento"
+              formControlName="idelemento" [width]="'100%'" placeholder="{{ 'Entidad' | translate }}...">
+            </ng-select2>
+          </div>
+
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+          <div class="form-group">
+            <label>{{ "Aforo" | translate }} No.</label>
+            <ng-select2 name="idAforo" [data]="listaNumeroAforo" formControlName="idAforo" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                        ' aforo' | translate
+             }}...">
+            </ng-select2>
+          </div>
+
+          <div class="form-group">
+
+
+            <br>
+            <div class="form-check form-check-inline">
+                <input (change)="perriodoBigente()" class="form-check-input" type="radio" value="1"
+                    [(ngModel)]="periodo" name="periodo" id="periodo">
+                <label class="form-check-label" for="inperiodoRadio1">{{' Periodo
+                    disponible'|translate}}</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input (change)="establecerRngo()" class="form-check-input" type="radio" value="2"
+                    [(ngModel)]="periodo" name="periodo" id="periodo">
+                <label class="form-check-label" for="inperiodoRadio2">{{'establecer'|translate}}
+                    {{'rango'|translate}}</label>
+            </div>
+        </div>
+        <div class=" row " *ngIf="verFechas">
+
+
+            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ "Desde" | translate }} </label>
+                <input type="date" placeholder="yyyy/MM/dd" class="form-control"
+                    formControlName="fechaInicio" name="fechaInicio"
+                    placeholder="{{'Desde'|translate}}" [(ngModel)]="fechaInicio" />
+                <p *ngIf="ngForm.submitted && tipoRango==2 && fechaInicio==''" class="error">
+                    <sup>*</sup>{{'Fecha Inicio'|translate}} {{ "obligatorio" | translate }}
+                </p>
+            </div>
+
+            <!-- Fecha Fin -->
+            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ "Hasta" | translate }} </label>
+                <input type="date" placeholder="yyyy/MM/dd" class="form-control"
+                    formControlName="fechaFin" name="fechaFin" 
+                    placeholder="{{'Hasta'|translate}}" [(ngModel)]="fechaFin" />
+                <p *ngIf="ngForm.submitted && tipoRango==2 && fechaFin==''" class="error">
+                    <sup>*</sup>{{'Fecha Fin'|translate}} {{ "obligatorio" | translate }}
+                </p>
+            </div>
+
+        </div>
+
+
+          <div class="form-group">
+            <label>{{ "Aforador" | translate }} </label>
+            <ng-select2 name="aforador" [data]="listaAforodor" formControlName="aforador" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+             ' aforador' | translate
+             }}...">
+            </ng-select2>
+          </div>
+          <div class="form-group">
+            <label> {{'Metodo de medición'|translate}} {{ " aforo" | translate }}</label>
+            <ng-select2 name="idtipoAforo" [data]="tipoMedida" formControlName="idtipoAforo" [width]="'100%'"
+              placeholder="{{ 'Seleccionar' | translate }} {{
+             'tipo' | translate
+             }}...">
+            </ng-select2>
+          </div>
+        </div>
+
+
+
+
+
+
+        <!-- <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                    <label> {{ "origen" | translate }} *</label>
+                    <input type="text"
+                    autocomplete="off"  maxlength="50" class="form-control" [(ngModel)]="origen" formControlName="origen" name="origen" placeholder="{{ 'origen' | translate }}" />
+
+                    <p *ngIf="ngForm.submitted && origen  == undefined || origen  == '' " class="error">
+                        <sup>*</sup> {{ "origen" | translate }} {{ "obligatorio" | translate }}
+                    </p>
+                </div> -->
+
+      </div>
+
+
+
+      <!--BOTONES-->
+      <div class="row text-center">
+
+
+        <div class="form-group col-xl-12 col-lg-12 col-sm-12">
+          <div class="btn-group mr-2" role="group" aria-label="First group">
+            <button type="submit" class="sish-boton-confirmar">
+              {{ 'Filtrar' | translate }}
+            </button>
+
+            <button type="button" (click)="regresar()" class="sish-boton-cancelar">
+              {{ 'Botones.Cancelar' | translate }}
+            </button>
+          </div>
+        </div>
+
+
+
+      </div>
+
+
+    </form>
+  </div>
+  <div>
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+
+          <div id="chart">
+            <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
+              [markers]="chartOptions.markers" [stroke]="chartOptions.stroke" [yaxis]="chartOptions.yaxis"
+              [dataLabels]="chartOptions.dataLabels" [title]="chartOptions.title" [fill]="chartOptions.fill"
+              [tooltip]="chartOptions.tooltip" [legend]="chartOptions.legend"></apx-chart>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+        <app-esri-map *ngIf="capas.length > 0" [capas]="capas" [center]="mapCenter" [basemap]="basemapType"
+          [zoom]="mapZoomLevel" (clickMapa)="clickMapa($event)" (seleccionMapa)="seleccionMapa($event)"
+          (mapLoadedEvent)="mapLoadedEvent($event)">
+        </app-esri-map>
+      </div>
+    </div>
+  </div>
+
+  <app-datatable [botones]="botones" [name]="'ResultadoConsulta'" [datos]="listAforos" [opciones]="columnas"
+    [id]="'idAforo'" [rutaGeneral]="rutaGeneral" [rutaConsulta]="rutaConsulta" [rutaEdicion]="rutaEdicion"
+    [columnaEstado]="'activo'" [condicionEstado]="'No'" [transformaciones]="{ activo: { S: 'Sí', N: 'No' }}"
+    [consultarRegistros]="validarPermiso('ConsultarAforo')" [editarRegistros]="false"
+    [eliminarRegistros]="validarPermiso('EliminarAforo')" [cambiarEstadoRegistros]="validarPermiso('ActualizarAforo')"
+    (accion)="accionRegistro($event)" [verColumnas]="validarPermiso('ConsultarAforo')"
+    [botonesAdicionales]="validarPermiso('ActualizarAforo')" [crear]="validarPermiso('CrearAforo')"
+    [copiar]="validarPermiso('ConsultarAforo')" [imprimir]="validarPermiso('ConsultarAforo')"
+    [excel]="validarPermiso('ConsultarAforo')" [verFiltros]="validarPermiso('ConsultarAforo')" [verFiltros]="false"
+    [seleccionarRegistro]="validarPermiso('ActualizarAforo')" [cambiarEstadoRegistros]="false">
+  </app-datatable>
+
+  <button id="validarBtn" style="visibility: hidden;" type="button" class="btn btn-primary" data-toggle="modal"
+    data-target="#validar">
+
+  </button>
+  <button id="validarBtn1" style="visibility: hidden;" type="button" class="btn btn-primary" data-toggle="modal"
+    data-target="#validar1">
+  </button>
+  <div class="modal fade " id="validar1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl verybigmodal" style=" display: block; min-width:100vh !important;"
+      role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+
+          <h5 class="modal-title" id="exampleModalLabel">Calcular Aforo</h5>
+          <button type="button" (click)="regresar()" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+
+
+
+          <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" [src]="urlSafe" allowfullscreen></iframe>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="sish-boton-cancelar" (click)="regresar()" data-dismiss="modal">Regresar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade " id="validar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl verybigmodal" style=" display: block; min-width:100vh !important;"
+      role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Validar aforo</h5>
+          <button type="button" (click)="regresar()" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+
+
+
+
+
+          <div class="container-fluid bg-white pt-5">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="sish-titulo-formulario">
+                  {{ 'Aforo #' | translate }} : {{ id === "0" ? "Nuevo" : id }}
+                </h2>
+              </div>
+            </div>
+
+            <form class="sish-form">
+
+
+              <div class="text-center form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 " width="100%">
+
+                <div class="row col-xl-12">
+
+                  <div class="row" width="100%">
+
+                    <div class="text-center  col-xl-12 col-lg-12 col-md-12 col-sm-12 " width="100%">
+
+                      <div class="col-xl-12 row">
+
+                        <p> <label>Punto &nbsp; </label> {{listaCalculo.caudal}} </p>
+                      </div>
+                      <div class=" col-xl-12">
+
+                        <p> <label>Corriente &nbsp; </label> {{aforoLocal.nombreElemento }} </p>
+                      </div>
+                      <div class="col-xl-12">
+
+                        <p> <label>Identificación del equipo &nbsp; </label> Marcar {{marca}} &nbsp; Serie &nbsp;
+                          {{serie}} &nbsp; Helice &nbsp; {{listahelice.serieHelice}} </p>
+                      </div>
+                      <div class="col-xl-12">
+
+                        <p> <label>Fecha y hora &nbsp; </label> {{aforoLocal.fecha }} </p>
+                      </div>
+                      <div class="col-xl-12">
+
+                        <p> <label> Aforador &nbsp; </label> {{aforoLocal.aforador }} </p>
+                      </div>
+                      <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 ">
+                          <label> Resultado &nbsp; </label>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 ">
+                          <a style="color:#0000FF;" data-dismiss="modal" (click)="verdetalleAforo()"> Ver detalle afoto
+                            &nbsp; </a>
+                        </div>
+
+                      </div>
+
+                    </div>
+                    <br>
+
+
+
+                  </div>
+
+
+
+
+
+
+
+                </div>
+              </div>
+            </form>
+            <div>
+
+              <div class=" text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+
+                <div class=" col-xl-12">
+                  <label>H (m) = {{h}} </label>
+                  <label> </label>
+                </div>
+                <div class="col-xl-12">
+                  <label>Q caudal (㎥/s) = {{caudal}} </label>
+                  <label> </label>
+                </div>
+                <div class=" col-xl-12">
+                  <label>Vel.Media (m/s) = {{velocidadMedia1}} </label>
+                  <label> </label>
+                </div>
+
+                <div class="col-xl-12">
+                  <label>Area (㎡) = {{listaCalculo.area}} </label>
+                  <label> </label>
+                </div>
+
+                <div class="col-xl-12">
+                  <label>Radio Hidráulico (m) = </label>
+                  <label> {{radio}} </label>
+                </div>
+
+                <div class="col-xl-12">
+                  <label>Perímetro mojado (m) = </label>
+                  <label> {{perimetroMojado}} </label>
+                </div>
+
+                <div class="col-xl-12">
+                  <label>Ancho superficial (m) = </label>
+                  <label> {{ancho}} </label>
+                </div>
+
+
+              </div>
+              <hr>
+
+              <div class="row text-center">
+
+                <div class="col-xl-12 text-center col-lg-5 col-md-12 col-sm-12 ">
+
+                  <div id="chart" class="chart" #chart (contextmenu)="onRightClick4(chart, chart.id, $event)">
+                    <apx-chart id="chart" [series]="chartOptions.series" [chart]="chartOptions.chart"
+                      [xaxis]="chartOptions.xaxis" [markers]="chartOptions.markers" [stroke]="chartOptions.stroke"
+                      [yaxis]="chartOptions.yaxis" [dataLabels]="chartOptions.dataLabels" [title]="chartOptions.title"
+                      [fill]="chartOptions.fill" [tooltip]="chartOptions.tooltip"
+                      [legend]="chartOptions.legend"></apx-chart>
+
+                  </div>
+
+
+                </div>
+                <div class="col-xl-10 text-center col-lg-5 col-md-12 col-sm-12 ">
+
+                  <div id="chart1" *ngIf="ecuacion  == 0 ">
+                    <apx-chart id="chart1" (contextmenu)="onRightClick($event)" [series]="chartOptions1.series"
+                      [chart]="chartOptions1.chart" [xaxis]="chartOptions1.xaxis" [markers]="chartOptions1.markers"
+                      [stroke]="chartOptions1.stroke" [yaxis]="chartOptions1.yaxis"
+                      [dataLabels]="chartOptions1.dataLabels" [title]="chartOptions1.title" [fill]="chartOptions1.fill"
+                      [tooltip]="chartOptions1.tooltip" [legend]="chartOptions1.legend"></apx-chart>
+
+
+                  </div>
+
+
+                  <div id="chart2" *ngIf="ecuacion  == 1 ">
+                    <apx-chart (contextmenu)="onRightClick($event)" [series]="chartOptions2.series"
+                      [chart]="chartOptions2.chart" [xaxis]="chartOptions2.xaxis" [markers]="chartOptions2.markers"
+                      [stroke]="chartOptions2.stroke" [yaxis]="chartOptions2.yaxis"
+                      [dataLabels]="chartOptions2.dataLabels" [title]="chartOptions2.title" [fill]="chartOptions2.fill"
+                      [tooltip]="chartOptions2.tooltip" [legend]="chartOptions2.legend"></apx-chart>
+
+
+                  </div>
+
+                </div>
+                <form class="sish-form">
+                  <div class="col-xl-12 col-lg-2 col-md-2 col-sm-2 ">
+                    <label>Observación </label>
+                    <div class="col-xl-12">
+                      <textarea id="w3review" [(ngModel)]="observacion" name="w3review" rows="5" cols="110"></textarea>
+                    </div>
+
+                  </div>
+
+                </form>
+
+              </div>
+
+            </div>
+
+
+
+
+            <button type="button" id="btn" style="visibility: hidden;" (click)="infoAforo()">
+            </button>
+
+          </div>
+
+
+
+          <div class="modal-footer">
+
+            <div *ngIf="estado == 'Registrado'" class="btn-group mr-2" role="group" aria-label="First group">
+              <button type="button" class="sish-boton-confirmar" (click)="validadoAforo()">
+                Validar
+              </button>
+              <button type="button" class="sish-boton-cancelar" (click)="rechazadoAforo()">
+                Rechazar
+              </button>
+            </div>
+            <button type="button" class="sish-boton-cancelar" id="cerrar" (click)="regresar()"
+              data-dismiss="modal">Regresar</button>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button type="button" id="btn_ver" style="visibility: hidden;" (click)="bntverdetalleAforo()">
+  </button>

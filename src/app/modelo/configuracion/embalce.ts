@@ -1,0 +1,72 @@
+export interface IEmbalce {
+  idEmbalse: number,
+  anchoCresta: number,
+  areaHidrografica: string,
+  cuenca: string,
+  elevacion: number,
+  embalse: string,
+  fechaCreacion: string,
+  fechaInicioOperacion: string,
+  fechaModificacion: string,
+  idEntidad: number,
+  idMunicipio: number,
+  logintudCresta: number,
+  microcuenca: string,
+  nivelSubsiguiente: string,
+  subZonaHidrografica: string,
+  usuarioCreacion: string,
+  usuarioModificacion: string,
+  volumenMuerto: number,
+  volumenTotal: number,
+  volumenUtil: number,
+  zonaHidrografica: string,
+  zonaOperativaEaab: string 
+  activo:string,
+  fechaEstado: string;
+  usuarioEstado: string;
+  idDepartamento : number;
+}
+export interface IEmbalceDTO {
+  activo: string,
+  alturaPresa: number,
+  anchoCresta: number,
+  areaHidrografica: string,
+  cuenca: string,
+  elevacion: number,
+  embalse: string,
+  entidad: string,
+  fechaCreacion: number,
+  fechaEstado: number,
+  fechaInicioOperacion: string,
+  fechaModificacion: number,
+  idAreaHidrografica: string,
+  idCuenca: string,
+  idEmbalse: number,
+  idEntidad: number,
+  idMicroCuenca: string,
+  idMunicipio: number,
+  idSubCuenca: string,
+  idSubZonaHidrografica: string,
+  idZonaHidrografica: string,
+  longitudCresta: number,
+  microcuenca: string,
+  municipio: string,
+  nivelSubsiguiente: string,
+  subCuenca: string,
+  subZonaHidrografica: string,
+  usuarioCreacion: string,
+  usuarioEstado: string,
+  usuarioModificacion: string,
+  volumenMuerto: number,
+  volumenTotal: number,
+  volumenUtil: number,
+  zonaHidrografica: string,
+  zonaOperativaEaab: string
+}
+
+export interface IParametrosEmbalse{
+  
+    idEmbalse: number,
+    idParametro: number,
+    idParametroXEmbalse: number,  
+}

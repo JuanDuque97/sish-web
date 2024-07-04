@@ -1,0 +1,200 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item active" [routerLink]="['/configuracion/parametros']">
+                {{ 'Parametros' | translate }}
+            </li>
+            <li class="breadcrumb-item">
+                {{ id === "0" ? "Crear" : ac == 'V' ? "Detalle" : "Editar" }}
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">
+
+                {{ id === "0" ? "Crear" : ac == 'V' ? "Detalle" : "Editar" }} {{ ' parámetro' | translate }} {{ id ===
+                "0" ? "Nuevo" : descripcion?.value }}
+            </h2>
+            <hr />
+        </div>
+    </div>
+    <!--INICIA FORMULARIO-->
+    <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioParametros" (ngSubmit)="guardar()" novalidate>
+     
+        <div class="row" width="100%">
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'codigo' | translate }} {{ ' parametros' | translate }} *</label>
+                <input type="number" class="form-control"  
+           formControlName="codigo" 
+           [disabled]="bloquear"
+                name="CodgioParametro"
+                placeholder="{{'codigo'|translate}}" />
+                <p *ngIf="ngForm.submitted && codigo!.invalid" class="error">
+                    <sup>*</sup> {{ 'codigo' | translate }} {{'obligatoria'|translate}}
+                </p>
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+
+                <label>{{ 'variable' | translate }} *</label>
+                <ng-select2 name="tipo" [data]="listVariables" formControlName="idVariable" [disabled]="bloquear"
+                    [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{'variable'|translate}}...">
+                </ng-select2>
+
+            </div>
+
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label>{{ 'Unidad medida' | translate }} *</label>
+                <ng-select2 name="tipo" [data]="listUnidadesMedidad" formControlName="idUnidadMedida" 
+                [width]="'100%'"  placeholder="{{'Seleccionar'|translate}} {{'UnidadMedida'|translate}}...">
+                </ng-select2>
+
+                <p *ngIf="ngForm.submitted && idUnidadMedida!.invalid" class="error">
+                    <sup>*</sup> {{'Parametros.UnidadMedida'|translate}} {{'obligatoria'|translate}}
+                </p>
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-sm-12">
+                <label>{{ 'Tipo' | translate }} *</label>
+                <ng-select2 name="tipo" [data]="listTipos" formControlName="idTipoParametro" [width]="'100%'"
+                    [(ngModel)]="tipoSelected" (ngModelChange)="tipoModelo(tipoSelected)"
+                    placeholder="{{'Seleccionar'|translate}} {{'Tipo'|translate}}...">
+                </ng-select2>
+
+                <p *ngIf="ngForm.submitted && idTipoParametro!.invalid" class="error">
+                    <sup>*</sup>{{ 'Tipo' | translate }} {{'obligatoria'|translate}}
+                </p>
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-sm-12">
+                <label>{{ 'Metodo' | translate }} *</label>
+                <ng-select2 name="Metodo" [data]="listMetodos" formControlName="idMetodo" [width]="'100%'"
+                    placeholder="{{'Seleccionar'|translate}}  {{'Metodo'|translate}}...">
+                </ng-select2>
+                <p *ngIf="ngForm.submitted && idMetodo!.invalid" class="error">
+                    <sup>*</sup>{{ 'Metodo' | translate }} {{'obligatoria'|translate}}
+                </p>
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-sm-12">
+                <label>{{'frecuencia'| translate}} *</label>
+                <ng-select2 name="Periodo" [data]="listPeriodos" formControlName="idPeriodo"
+                    [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{'frecuencia'|translate}}...">
+                </ng-select2>
+                <p *ngIf="ngForm.submitted && codigo!.invalid" class="error">
+                    <sup>*</sup> {{'frecuencia'| translate}} {{'obligatoria'|translate}}
+                </p>
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-sm-12">
+                <label>{{'Estado'| translate}} *</label>
+                <ng-select2 name="estado" [data]="listEstados" formControlName="activo" [width]="'100%'"
+                    placeholder="{{'Seleccionar'|translate}} {{'Estado'|translate}}...">
+                </ng-select2>
+                <p *ngIf="ngForm.submitted && codigo!.invalid" class="error">
+                    <sup>*</sup> {{'Estado'| translate}} {{'obligatoria'|translate}}
+                </p>
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label>{{ "categoriaEstacion" | translate }} *</label>
+
+                <ng-select2 name="Categoria" [data]="listaCategorias" formControlName="idCategoria" [width]="'100%'"
+                placeholder="{{'Seleccionar'|translate}}  {{'categoria'|translate}}...">
+            </ng-select2>
+ 
+                <p *ngIf="ngForm.submitted && idCategoria!.invalid" class="error">
+                    <sup>*</sup> {{ "categoria" | translate }} {{ "obligatoria" | translate }}
+                </p>
+            </div>
+
+
+            <div class="form-group col-xl-4 col-lg-6 col-sm-12">
+                <label> {{'Descripcion'|translate}}</label>
+                <input rows="5" class="form-control" maxlength="500" autocomplete="off" formControlName="descripcion"
+                    placeholder="{{'Descripcion detallada'|translate}} {{' parámetro'|translate}}">
+            </div>
+          
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <div class="form-group"> 
+                   <br>
+                    <div class="form-check form-check-inline">
+                        <input  (change)="patametroOrigen()" class="form-check-input" type="radio"
+                         value="2" [(ngModel)]="origen" name="origen" id="origen">
+                        <label class="form-check-label"
+                         for="inperiodoRadio1">{{'Parámetro origen'|translate}}</label>
+                    </div>
+
+                    
+                    <div class="form-check form-check-inline">
+                        <input     (change)="patametroAgregado()"  class="form-check-input" 
+                        type="radio"
+                          value="1" [(ngModel)]="origen" name="origen" id="origen">
+                        <label class="form-check-label"
+                        for="inperiodoRadio2">{{'Parámetro agregado'|translate}}</label>
+                    </div>
+                </div>
+                <div class=" row "   *ngIf="origen!=1">
+                    <div class="form-group">
+                        <label>{{ 'Parámetro'|translate}}</label>
+                        <ng-select2  [(ngModel)]="parametro1"   name="idParametro" [data]="listParametro"  formControlName="codigoOrigen" [width]="'100%'" placeholder="Seleccionar parametro ">
+                        </ng-select2>
+                    </div>
+              
+                </div>
+                
+               
+            </div>
+          
+
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="sish-datos-auditoria">
+                    <strong>{{'Auditoria'|translate}}</strong> | {{'Fecha'|translate}} {{'creacion'|translate}}:<label controlName="fechaCreacion"></label> | {{'Fecha'|translate}} {{'modificación'|translate}}: <label controlName="fechaModificacion"></label>                    | {{'Fecha'|translate}} {{'estado'|translate}}: <label controlName="fechaEstado"></label> | {{'Usuario'|translate}} {{'creacióo'|translate}}:
+                    <label controlName="usuarioCreacion"></label> | {{'Usuario'|translate}} {{'modificación'|translate}}: <label controlName="usuarioModificacion"></label> | {{'Usuario'|translate}} {{'estado'|translate}}: <label controlName="usuarioEstado"></label>
+                </p>
+            </div>
+        </div>
+       
+        <!--BOTONES-->
+        <div class="row">
+            <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                <div class="btn-group mr-2" role="group" aria-label="First group" *ngIf="ac!='V'">
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id== '0'">
+
+                        {{ 'Botones.Crear' | translate }}
+                    </button>
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id!= '0'">
+                        {{ 'Botones.Guardar' | translate }}
+                    </button>
+                </div>
+
+
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/parametros']"
+                        *ngIf="ac!='V'">
+                        {{ 'Botones.Cancelar' | translate }}
+                    </button>
+
+                    <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/parametros']"
+                        *ngIf="ac =='V'">
+                        {{ 'Botones.Regresar' | translate }}
+                    </button>
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+    <!--FINALIZA FORMULARIO-->
+
+</div>

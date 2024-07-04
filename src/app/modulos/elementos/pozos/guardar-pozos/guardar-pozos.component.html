@@ -1,0 +1,262 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">{{'pozos'|translate}}</li>
+            <li class="breadcrumb-item active" [routerLink]="['/configuracion/parametros']">
+                {{'pozos'|translate}}
+            </li>
+            <li class="breadcrumb-item">
+                {{ id === "0" ? "Crear" : "Editar" }}
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">
+                {{ id === "0" ? "Crear" :  ac == 'V' ? "Detalle" : "Editar"  }} {{ ' pozo' | translate }} {{ id === "0" ? "nuevo" : pozo?.value }}
+            </h2>
+            <hr />
+        </div>
+    </div>
+
+
+    <!--INICIA FORMULARIO-->
+    <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioPozo" (ngSubmit)="guardar()" novalidate>
+        <input name="id" formControlName="idPozo" type="hidden" />
+        <div class="row" width="100%">
+
+            <!-- <div class="col-md-12">
+                <h3 class="sish-titulo-formulario"> {{ 'informacion' | translate }} {{ 'pozo' | translate }} </h3>
+            </div> -->
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'Nombre' | translate }} {{ ' pozo' | translate }} {{'del'|translate}} {{' exploratorio' |translate}}*</label>
+                <input type="text"   autocomplete="off"  maxlength="50" class="form-control" formControlName="pozo" name="pozo" placeholder="{{'pozo'|translate}}" />
+
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'zona'|translate}} {{ ' operativa'|translate}} EAAB *</label>
+                <!-- <input type="text" class="form-control" formControlName="zonaOperativaEaab" name="zonaOperativaEaab" placeholder="{{ 'zona'|translate}} {{ 'Operativa'|translate}} " /> -->
+
+                <ng-select2 name="zonaOperativa" [data]="listZonaEAAB" formControlName="zonaOperativaEaab" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{ 'zona'|translate}}...">
+                </ng-select2>
+
+                <p *ngIf="ngForm.submitted && zonaOperativaEaab!.invalid" class="error">
+                    <sup>*</sup> {{ 'zona'|translate}} {{ 'Operativa'|translate}} {{'obligatoria'|translate}}
+                </p>
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'Fecha'|translate}} {{ ' inicio'|translate}} {{ 'operacion'|translate}} *</label>
+                <input type="date" class="form-control" formControlName="fechaInicioOperacion" name="FechaInOperacion" placeholder="{{ 'Fecha'|translate}} {{ 'Inicio'|translate}}" />
+                <p *ngIf="ngForm.submitted && fechaInicioOperacion!.invalid" class="error">
+                    <sup>*</sup> {{ 'Fecha'|translate}} {{ 'Inicio'|translate}}{{'obligatoria'|translate}}
+                </p>
+
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'cota'|translate}}  {{ ' boca'|translate}} (m.s.n.m) *</label>
+                <input type="number" class="form-control" formControlName="cotaBoca" name="cotaBoca" placeholder="{{ 'cota'|translate}}  {{ 'boca'|translate}}" />
+                <p *ngIf="ngForm.submitted && cotaBoca!.invalid" class="error">
+                    <sup>*</sup> {{ 'cota'|translate}} {{ 'boca'|translate}}{{'obligatoria'|translate}}
+                </p>
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'cota'|translate}}  {{ ' medidor'|translate}} (m.s.n.m) *</label>
+                <input type="number" class="form-control" formControlName="cotaMedidor" name="cotaMedidor" placeholder="{{ 'cota'|translate}}  {{ 'medidor'|translate}}" />
+                <p *ngIf="ngForm.submitted && cotaMedidor!.invalid" class="error">
+                    <sup>*</sup> {{ 'cota'|translate}} {{ 'medidor'|translate}}{{'obligatoria'|translate}}
+                </p>
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'profundidad'|translate}} (m) *</label>
+                <input type="number" class="form-control" formControlName="profundidad" name="profundidad" placeholder="{{ 'cota'|translate}}  {{ 'medidor'|translate}}" />
+                <p *ngIf="ngForm.submitted && profundidad!.invalid" class="error">
+                    <sup>*</sup> {{ 'profundidad'|translate}} {{'obligatoria'|translate}}
+                </p>
+            </div>
+
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'Tipo'|translate}} {{ ' pozo'|translate}}</label>
+                <ng-select2 name="idTipoPozo" [data]="listTipoPozo" formControlName="idTipoPozo" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{ 'Tipo'|translate}}...">
+                </ng-select2>
+
+                <p *ngIf="ngForm.submitted && idTipoPozo!.invalid" class="error">
+                    <sup>*</sup> {{ 'zona'|translate}} {{ 'Operativa'|translate}} {{'obligatoria'|translate}}
+                </p>
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'categoria'|translate}} </label>
+                <ng-select2 name="idCategoria" [data]="listCategoriaPozo" formControlName="idCategoria" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{ 'categoria'|translate}}...">
+                </ng-select2>
+
+                <p *ngIf="ngForm.submitted && idCategoria!.invalid" class="error">
+                    <sup>*</sup> {{ 'categoria'|translate}} {{'obligatoria'|translate}}
+                </p>
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'condicion'|translate}} </label>
+                <ng-select2 name="idCondicion" [data]="listCondicionPozo" formControlName="idCondicion" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{ 'condicion'|translate}}...">
+                </ng-select2>
+
+                <p *ngIf="ngForm.submitted && idCondicion!.invalid" class="error">
+                    <sup>*</sup> {{ 'zona'|translate}} {{ 'Operativa'|translate}} {{'obligatoria'|translate}}
+                </p>
+            </div>
+
+            <div class="col-md-12">
+                <h3 class="sish-titulo-formulario">{{ 'ubicar'|translate}} {{ ' pozo'|translate}} {{' exploratorio'|translate}} </h3>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 pr-5">
+                <div class="form-group">
+                    <label>{{ "departamento" | translate }}</label>
+                    <ng-select2 name="idDepartamento" *ngIf="listaDepartamentos" [data]="listaDepartamentos" formControlName="idDepartamento" [width]="'100%'" [(ngModel)]="departamentoSelected" (ngModelChange)="cambioDepartamento(departamentoSelected)" placeholder="{{ 'Seleccionar' | translate }} {{
+              'departamento' | translate
+            }}...">
+                    </ng-select2>
+                </div>
+                <div class="form-group">
+                    <label>{{ "municipio" | translate }}</label>
+                    <ng-select2 name="idMunicipio" [data]="listaMunicipios" formControlName="idMunicipio" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              'municipio' | translate
+            }}...">
+                    </ng-select2>
+                </div>
+                <div class="form-group">
+                    <label>{{ "area" | translate }} {{" hidrográfica"|translate}} *</label>
+                    <ng-select2 name="areaHidrografica" [data]="listaAreaHidrografica" formControlName="idAreaHidrografica" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              'Area Hidrografica' | translate
+            }}...">
+                    </ng-select2>
+                </div>
+                <div class="form-group">
+                    <label>{{ "Zona hidrográfica" | translate }} *</label>
+                    <ng-select2 name="zonaHidrografica" [data]="listaZonaHidrografica" formControlName="idZonaHidrografica" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              'Zona Hidrografica' | translate
+            }}...">
+                    </ng-select2>
+                </div>
+                <div class="form-group">
+                    <label>{{ "Sub zona hidrográfica" | translate }} *</label>
+                    <ng-select2 name="subzonaHidrografica" [data]="listasubZonaHidrografica" formControlName="idSubZonaHidrografica" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              'Subzona Hidrografica' | translate
+            }}...">
+                    </ng-select2>
+                </div>
+                <div class="form-group">
+                    <label>{{ "Cuenca" | translate }} *</label>
+                    <ng-select2 name="cuenca" [data]="listaCuenca" formControlName="idCuenca" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              'cuenca' | translate
+            }}...">
+                    </ng-select2>
+                </div>
+                <div class="form-group">
+                    <label>{{ "Sub cuenca" | translate }} *</label>
+                    <ng-select2 name="subCuenca" [data]="listaSubcuenca" formControlName="idSubCuenca" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              'Subcuenca' | translate
+            }}...">
+                    </ng-select2>
+                </div>
+                <div class="form-group">
+                    <label>{{ "Microcuenca" | translate }} *</label>
+                    <ng-select2 name="idMicroCuenca" [data]="listaMicrocuenca" formControlName="idMicroCuenca" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              'Microcuenca' | translate
+            }}...">
+                    </ng-select2>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ "nivel" | translate }} {{" subsiguiente"|translate}} *</label>
+                    
+                    <input class="form-control" 
+                    maxlength="50" autocomplete="off"
+                    type="text" name="nivelSubsiguiente" formControlName="nivelSubsiguiente" />
+                </div>
+
+                <div class="form-group">
+                    <label>{{ "Tipo coordenada" | translate }} </label>
+
+                    <ng-select2 name="tipoCoordenada" *ngIf="listaTipoCoordenada" [data]="listaTipoCoordenada" formControlName="idTipoCoordenada" [width]="'100%'" [(ngModel)]="tipoCoordenadaSelect" placeholder="{{ 'Seleccionar' | translate }} {{
+              ' tipo de coordenada'
+            }}...">
+                    </ng-select2>
+                </div>
+                <div class="row" *ngIf="tipoCoordenadaSelect == 192">
+                    <div class="form-group col-6">
+                        <label> {{ "latitud" | translate }} *</label>
+                        <input type="number" class="form-control" formControlName="latitud" name="Latitud" placeholder="{{ 'Latitud' | translate }}" />
+                    </div>
+                    <div class="form-group col-6">
+                        <label> {{ "longitud" | translate }} *</label>
+                        <input type="number" class="form-control" formControlName="longitud" name="longitud" placeholder="{{ 'Longitud' | translate }}" />
+                    </div>
+                </div>
+                <div class="row" *ngIf="tipoCoordenadaSelect == 191">
+                    <div class="form-group col-6">
+                        <label> {{ "Norte" | translate }}</label>
+                        <input type="number" class="form-control" formControlName="norte" name="Norte" placeholder="{{ 'Norte' | translate }}" />
+                    </div>
+                    <div class="form-group col-6">
+                        <label> {{ "Este" | translate }}</label>
+                        <input type="number" class="form-control" formControlName="este" name="Este" placeholder="{{ 'Este' | translate }}" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <app-esri-map *ngIf="capas.length > 0" [capas]="capas" [center]="mapCenter" [basemap]="basemapType" [zoom]="mapZoomLevel" (clickMapa)="clickMapa($event)" (seleccionMapa)="seleccionMapa($event)" (mapLoadedEvent)="mapLoadedEvent($event)">
+                </app-esri-map>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <p class="sish-datos-auditoria">
+                    <strong>{{'Auditoria'|translate}}</strong> | {{'Fecha'|translate}} {{'creacion'|translate}}:<label controlName="fechaCreacion"></label> | {{'Fecha'|translate}} {{'modificación'|translate}}: <label controlName="fechaModificacion"></label>                    | {{'Fecha'|translate}} {{'estado'|translate}}: <label controlName="fechaEstado"></label> | {{'Usuario'|translate}} {{'creacion'|translate}}:
+                    <label controlName="usuarioCreacion"></label> | {{'Usuario'|translate}} {{'modificación'|translate}}: <label controlName="usuarioModificacion"></label> | {{'Usuario'|translate}} {{'estado'|translate}}: <label controlName="usuarioEstado"></label>
+                </p>
+            </div>
+        </div>
+
+
+
+        <!--BOTONES-->
+        <div class="row">
+            <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                <div class="btn-group mr-2" role="group" aria-label="First group" *ngIf="ac!='V'">
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id== '0'">
+                      
+                      {{ 'Botones.Crear' | translate }}
+                    </button>
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id!= '0'">
+                    {{ 'Botones.Guardar' | translate }}
+                    </button>
+                </div>
+
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/pozos']" *ngIf="ac!='V'">
+                        {{ 'Botones.Cancelar' | translate }}
+                    </button>
+
+                    <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/pozos']" *ngIf="ac =='V'">
+                        {{ 'Botones.Regresar' | translate }}
+                    </button>
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+    <!--FINALIZA FORMULARIO-->
+
+</div>

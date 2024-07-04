@@ -1,0 +1,170 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item active" [routerLink]="['/configuracion/parametros']">
+                {{ 'archivo' | translate }}
+            </li>
+            <li class="breadcrumb-item">
+                {{ id === "0" ? "Crear" : "Editar" }}
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">
+                {{ 'archivo' | translate }} : {{ id === "0" ? "Nuevo" : id }}
+            </h2>
+            <hr />
+        </div>
+    </div>
+
+    <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioArchivoConfigurados" (ngSubmit)="guardar()" novalidate>
+        <input name="idTipoArchivoConfigurado" formControlName="idTipoArchivoConfigurado" type="hidden" />
+
+        <div class="row" width="100%">
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'archivo' | translate }} {{'configurado'| translate}} *</label>
+                <input type="text" class="form-control" formControlName="tipoArchivoConfigurado" name="tipoarchivoconfigurado" placeholder="{{'Nombre'|translate}} {{'archivo'|translate}}" />
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label>{{ 'Tipo' | translate }} {{ 'archivo' | translate }} *</label>
+                <ng-select2 name="idTipoArchivo" [data]="listTipoArchivo" formControlName="idTipoArchivo" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{ 'Tipo' | translate }} {{ 'archivo' | translate }}...">
+                </ng-select2>
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label>{{ 'Tipo' | translate }} {{ 'fraccionamiento' | translate }} *</label>
+                <ng-select2 name="idTipoFraccionamiento" [data]="listTipoFraccionamiento" formControlName="idTipoFraccionamiento" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{ 'Tipo' | translate }} {{ 'archivo' | translate }}...">
+                </ng-select2>
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label>{{ 'ubicacion' | translate }} {{ 'datos' | translate }} *</label>
+                <ng-select2 name="idUbicacionDatos" [data]="listUbicacionDatos" formControlName="idUbicacionDatos" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{ 'Tipo' | translate }} {{ 'archivo' | translate }}...">
+                </ng-select2>
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'separador' | translate }}*</label>
+                <input type="text" class="form-control" formControlName="separador" name="separador" placeholder="{{'separador'|translate}}" />
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'calificador' | translate }}*</label>
+                <input type="text" class="form-control" formControlName="calificadorTexto" name="calificadorTexto" placeholder="{{'calificador'|translate}}" />
+            </div>
+
+
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'contiene' | translate }}  {{'encabezado'|translate}} *</label>
+                <ng-select2 name="contieneEncabezado" [data]="listEstados" formControlName="contieneEncabezado" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{ 'encabezado' | translate }} {{ 'archivo' | translate }}...">
+                </ng-select2>
+
+
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'contiene' | translate }}  {{'resumen'|translate}} *</label>
+                <ng-select2 name="contieneResumen" [data]="listEstados" formControlName="contieneResumen" [width]="'100%'" placeholder="{{'Seleccionar'|translate}}...">
+                </ng-select2>
+            </div>
+
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'separador' | translate }}  {{'decimal'|translate}} *</label>
+                <input type="text" class="form-control" formControlName="separadorDecimal" name="separadorDecimal" placeholder="{{ 'separador' | translate }}  {{'decimal'|translate}}" />
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'calificador' | translate }}  {{'texto'|translate}} *</label>
+                <input type="text" class="form-control" formControlName="calificadorTexto" name="calificadorTexto" placeholder="{{ 'calificador' | translate }}  {{'texto'|translate}} " />
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'frecuencia' | translate }}  {{'temporal'|translate}} *</label>
+                <ng-select2 name="idFrecuenciaTemporal" [data]="listfrecuencias" formControlName="idFrecuenciaTemporal" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{ 'Tipo' | translate }} {{ 'frecuencia' | translate }}...">
+                </ng-select2>
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{'intervalo'|translate}} {{ 'frecuencia' | translate }}  {{'temporal'|translate}} *</label>
+                <input type="number" class="form-control" formControlName="intervaloFrecuenciaTemporal" name="intervaloFrecuenciaTemporal" placeholder="{{'intervalo'|translate}} {{ 'frecuencia' | translate }}" />
+
+
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{'Tipo'|translate}} {{ 'Codificacion' | translate }}  *</label>
+                <ng-select2 name="idTipoCodificacion" [data]="listTipoCodificacion" formControlName="idTipoCodificacion" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{ 'Tipo' | translate }} {{ 'Codificacion' | translate }}...">
+                </ng-select2>
+            </div>
+
+
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <p class="sish-datos-auditoria">
+                    <strong>{{'Auditoria'|translate}}</strong> | {{'Fecha'|translate}} {{'creacion'|translate}}:<label controlName="fechaCreacion"></label> | {{'Fecha'|translate}} {{'modificación'|translate}}: <label controlName="fechaModificacion"></label>                    | {{'Fecha'|translate}} {{'estado'|translate}}: <label controlName="fechaEstado"></label> | {{'Usuario'|translate}} {{'creacion'|translate}}:
+                    <label controlName="usuarioCreacion"></label> | {{'Usuario'|translate}} {{'modificación'|translate}}: <label controlName="usuarioModificacion"></label> | {{'Usuario'|translate}} {{'estado'|translate}}: <label controlName="usuarioEstado"></label>
+                </p>
+            </div>
+        </div>
+        <!--BOTONES-->
+        <div class="row">
+            <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+
+
+
+
+                    <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <button type="button" class="sish-boton-ver" [routerLink]="['/configuracion/tipoarchivos/columnas/'+id]">
+                         
+                                    {{ 'Ver Columnas' | translate }}
+                                </button>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <button type="button" class="sish-boton-ver" [routerLink]="['/configuracion/tipoarchivos/Campos/'+id]">
+                                    {{ 'Ver campos' | translate }}
+                                </button>
+                    </div>
+
+
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id== '0'">
+
+                        {{ 'Botones.Crear' | translate }}
+                        </button>
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id!= '0'">
+                        {{ 'Botones.Guardar' | translate }}
+                        </button>
+                </div>
+
+                <div class="btn-group mr-2" role="group" aria-label="Second group">
+                    <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/tipoarchivos/configurados']">
+                                {{ 'Botones.Cancelar' | translate }}
+                            </button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </form>
+    <br>
+    <!-- <div>
+        <app-consultar-columnas>
+
+        </app-consultar-columnas>
+    </div> -->
+
+    <br>
+    <!-- <div>
+
+
+        <app-consultar-campos>
+        </app-consultar-campos>
+
+    </div> -->
+</div>

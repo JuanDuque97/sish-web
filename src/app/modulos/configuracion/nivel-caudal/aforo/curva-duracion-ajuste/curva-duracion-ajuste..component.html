@@ -1,0 +1,250 @@
+<!-- Miga de Pan -->
+<div class="row text-right sish-miga-de-pan">  
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item">{{'aforosCorrientes'|translate}}
+            </li>
+        </ol>
+    </div>
+</div>
+
+<!-- Cotenido -->
+<div class="container-fluid bg-white pt-5">
+
+    <!-- Título -->
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario text-center">Ajuste Curva Duración
+            </h2>
+            <h2 class="sish-titulo-formulario text-center">{{'Aforo corriente de agua'|translate}}
+            </h2>
+        </div>
+    </div>
+    
+    <br>
+
+    <!-- Fila 1 -->
+    <div class="row">
+
+        <!-- Extensor -->
+        <div class="text-center form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 " width="100%">
+            <h2 class="sish-titulo-formulario"> {{"Elemento"|translate}} </h2>
+            <!-- Selector Tipo Elemento por Estaciones -->
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" (change)="obtenerElementos(elemento)" [(ngModel)]="elemento" name="elemento" id="elemento" value="1" checked>
+                <label class="form-check-label" for="inlineRadio1">{{"Estacion"|translate}}</label>
+            </div>
+            <!-- Selector Tipo Elemento por Embalses -->
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" (change)="obtenerElementos(elemento)" [(ngModel)]="elemento" name="elemento" id="elemento" value="2">
+                <label class="form-check-label" for="inlineRadio2">{{"Embalses"|translate}} </label>
+            </div>
+        </div>
+            
+        <!-- Formulario -->
+        <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioFiltroAforo" (ngSubmit)="obtener()" novalidate>
+            <div>
+                <!-- Sección Filtros Estación -->
+                <div class="row" width="100%">
+                    <!-- Extensor -->
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-4 ">
+                        <!-- Filtro Codigo EEAB -->
+                        <div class="form-group " *ngIf="elemento ==1">
+                            <label> {{ 'codigo' | translate }} EAAB</label>
+                            <ng-select2 name="codigoEstacionEaab" formControlName="codigoEstacionEaab" [data]="listaCodigoEAAB"
+                            [(ngModel)]="idElemento" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                                'categoriaEstacion' | translate
+                            }}...">
+                            </ng-select2>
+                        </div>
+                    </div>
+        
+                    <!-- Filtro Nombre Estación -->
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-4 ">
+                        <div class="form-group">
+                            <label> {{ 'Nombre' | translate }} *</label>
+                            <ng-select2 name="nombreElemento" [data]="listaElemento" formControlName="idelemento" 
+                                (ngModelChange)="obtenerCurvasPorElemento($event,elemento)" [(ngModel)]="idElemento" 
+                                [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }}...">
+                            </ng-select2>
+                        </div>
+                    </div>   
+                    <!-- Filtro Codigo IDEAM -->
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-4 ">
+                        <div class="form-group " *ngIf="elemento ==1">
+                            <label> {{ 'codigo' | translate }} IDEAM</label>
+                            <ng-select2 name="CodigoIDEAM" [data]="listaCodigoIDEAM" [(ngModel)]="idElemento" formControlName="idelemento" 
+                                [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{'categoriaEstacion' | translate}}...">
+                            </ng-select2>
+                        </div>
+                    </div>
+
+                    <!-- Fecha Desde -->
+                    <div  class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-4"> 
+                        <div class="form-group" >
+                            <label> {{ "Desde" | translate }} </label>
+                            <input type="date"   placeholder="yyyy-MM-dd" class="form-control" [(ngModel)]="fechaInicio"
+                                formControlName="fechaInicioCTR" name="fechaInicio" placeholder="{{ 'Desde' | translate }}" 
+                                (ngModelChange)="onFechaInicioChange($event)" />
+                        </div>
+                    </div>
+
+                    <!-- Fecha Hasta -->
+                    <div  class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-4">
+                        <div class="form-group" >
+                            <label> {{ "Hasta" | translate }} </label>
+                            <input type="date"   placeholder="yyyy/MM/dd"  class="form-control" [(ngModel)]="fechaFin" 
+                                formControlName="fechaFinCTR" name="fechaFin" placeholder="{{ 'Hasta' | translate }}"
+                                (ngModelChange)="onFechaFinChange($event)" />
+                        </div>
+                    </div>
+
+                    <!-- Filtro Curva de Duracion -->
+                     <div  class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-4"> 
+                        <div class="form-group" >
+                            <label> {{ 'Curva de duración' | translate }} </label>
+                            <ng-select2 name="curvaDuracionFiltro" [data]="listaCurvas" [width]="'100%'" 
+                                formControlName="curvaDuracionCTR" 
+                                [(ngModel)]="idCurvaDuracion" 
+                                (ngModelChange)="onCurvaDuracionChange($event)" 
+                                placeholder="Seleccione una curva de duración...">
+                            </ng-select2>
+                        </div>
+                    </div>
+                </div>
+
+                        
+                <!-- Fila 1.2. -->
+                <div class="row text-center">
+                    <!-- Extensor -->
+                    <div  class="form-group col-xl-12 col-lg-12 col-sm-12">
+                        <!-- Sección Botones del Formulario -->
+                        <div class="btn-group mr-2" role="group" aria-label="First group">
+                            <!-- Botoón Filtrar -->
+                            <button type="submit"   class="sish-boton-confirmar">
+                                Filtrar
+                            </button>
+                            <!-- Botoón Cancelar -->
+                            <button type="button"   (click)="regresar()" class="sish-boton-cancelar" >
+                        {{ 'Botones.Cancelar' | translate }}
+                        </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <button type="button" id="btn"  style="visibility: hidden;" (click)="infoAforo()"></button>
+
+    <!-- Fila 2 -->
+    <div>
+        <br>
+        <br>
+        <br>
+        <br>
+        
+        <!-- Sección Gráfico -->
+        <div class="row text-center">
+            <!-- Extensor -->
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <!-- Gráfico -->
+                <div id="chart">
+                    <apx-chart
+                    [series]="chartOptions.series"
+                    [chart]="chartOptions.chart"
+                    [xaxis]="chartOptions.xaxis"
+                    [markers]="chartOptions.markers"
+                    [stroke]="chartOptions.stroke"
+                    [yaxis]="chartOptions.yaxis"
+                    [dataLabels]="chartOptions.dataLabels"
+                    [title]="chartOptions.title"
+                    [fill]="chartOptions.fill"
+                    [tooltip]="chartOptions.tooltip"
+                    [legend]="chartOptions.legend"
+                  ></apx-chart>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+    <!-- Data-Table -->
+    <app-datatable [datos]="datosTabla" [opciones]="columnas" [id]="'idCurvaDuracionDetalle'" 
+        [consultarRegistros]="false" [editarRegistros]="false" [eliminarRegistros]="false" 
+        [cambiarEstadoRegistros]="false" [verFiltros]="false" [verColumnas]="true" 
+        [crear]="false" [copiar]="true" [imprimir]="true" [excel]="true" 
+        [seleccionarRegistro]="false" [botones]="botones" (accion)="accionRegistroColumnas($event)">
+    </app-datatable>
+    
+    <!-- Fila 3 -->
+    <div class="row text-center">
+        <!-- Extensor -->
+        <div class="form-group col-xl-12 col-lg-6 col-sm-12">
+            <!-- Sección Botones de Guardado -->
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+                <!-- Botón Guardar -->
+                <button type="button"  (click)="guardarCurvaDuracion()"   class="sish-boton-confirmar">
+                    {{ 'Guardar' | translate }}
+                </button>
+                <!-- Botón Cancelar -->
+                <button type="button" class="sish-boton-cancelar"  (click)="cancelar()">
+                    {{ 'Botones.Cancelar' | translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL -->
+<div id="modalEdicion" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Detalle Curva Duración</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="sish-form">
+                    <div class="row" width="100%">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Promedio</th>
+                                    <th>Cantidad</th>
+                                    <th>Porcentaje</th>
+                                    <th>Número Aforo</th>
+                                    <th>Nombre Elemento</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{detalleRegistro.fechaGrupo}}</td>
+                                    <td>{{detalleRegistro.promedioCaudal}}</td>
+                                    <td>{{detalleRegistro.cantidadCaudal}}</td>
+                                    <td>{{detalleRegistro.porcentaje}}</td>
+                                    <td>{{detalleRegistro.numeroAforo>=0 ? detalleRegistro.numeroAforo : ''}}</td>
+                                    <td>{{detalleRegistro.nombreElemento}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="invisible">
+                <button type="button" #modalEdicion class="invisible" data-toggle="modal"
+                    data-target="#modalEdicion"></button>
+            </div>
+            <div class="modal-footer text-center" style="display: inline;">
+                <button type="button" class="sish-boton-confirmar" (click)="actualizar()" data-dismiss="modal">Actualizar</button>
+                <button type="button" class="sish-boton-cancelar" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

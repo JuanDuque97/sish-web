@@ -1,0 +1,35 @@
+<div class="row text-right sish-miga-de-pan" style ="margin-top: 60px;">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active"> {{'Configuracion'|translate}}</li>
+            <li class="breadcrumb-item"> {{ 'GestionReportes' | translate }}</li>
+            <li class="breadcrumb-item"> {{ 'ConsultaDatosReportePozo' | translate }}</li>
+
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario"> {{ 'Datos Reporte Pozo' | translate }}</h2>
+            <button class="sish-boton-cancelar" style="float: right; position: relative;" (click) = "goBack()">{{"Botones.Regresar"|translate}}</button>
+            <hr style="margin-top: 40px;"/>
+        </div>
+    </div>
+
+    <!-- Mostrar Periodo -->
+    <!--PENDIENTE-->
+
+    <!-- Mostrar Tipo Objeto -->
+    <!--PENDIENTE-->
+
+    <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'id_OBSERVACION_X_POZO_INICIAL'" 
+        [rutaGeneral]="rutaGeneral" [rutaConsulta]="rutaConsulta" [rutaEdicion]="rutaEdicion" 
+        [columnaEstado]="'activo'" [condicionEstado]="'No'" 
+        [transformaciones]="{ activo: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}"
+        [consultarRegistros]="false" [editarRegistros]="false" [eliminarRegistros]="false" 
+        [cambiarEstadoRegistros]="false" (accion)="accionRegistro($event)" 
+        [verFiltros]="false" [verColumnas]="false" [crear]="false" [copiar]="true" [imprimir]="true" [excel]="true"
+        [seleccionarRegistro]="false">
+    </app-datatable>
+</div>

@@ -1,0 +1,75 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">{{"embalses"|translate}}</li>
+            <li class="breadcrumb-item">{{"embalses"|translate}}</li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">{{"Parametros"|translate}} {{"de los"|translate}} {{" embalses"|translate}}</h2>
+            <hr />
+        </div>
+    </div>
+
+
+
+    <!--INICIA FORMULARIO-->
+
+    <form class="sish-form" [formGroup]="formularioEmbalse" novalidate>
+        <input name="idEmbalse" formControlName="idEmbalse" type="hidden" />
+        <div class="row" width="100%">
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="rol">{{"embalse"|translate}}</label>
+                <input name="rol" formControlName="embalse" type="text" class="form-control" [attr.disabled]="true"/>
+
+            </div>
+
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="sish-datos-auditoria">
+                    <strong>{{"Auditoria"|translate}}</strong> | {{"Fecha"|translate}} {{"creacion"|translate}}:<label controlName="fechaCreacion"></label> | {{"Fecha"|translate}} {{"modificación"|translate}}:
+                    <label controlName="fechaModificacion"></label> | {{"Fecha"|translate}} {{"estado"|translate}}:
+                    <label controlName="fechaEstado"></label> | {{"Usuario"|translate}} {{"creacióo"|translate}}:
+                    <label controlName="usuarioCreacion"></label> | {{"Usuario"|translate}} {{"modificación"|translate}}: <label controlName="usuarioModificacion"></label> | {{"Usuario"|translate}} {{"estado"|translate}}: <label controlName="usuarioEstado"></label>
+                </p>
+            </div>
+        </div>
+
+
+    </form>
+    <!--FINALIZA FORMULARIO-->
+
+    <div class="btn-group mr-2" role="group" aria-label="Second group">
+        <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/embalses']">
+            {{ "Botones.Regresar" | translate }}
+        </button>
+    </div>
+    <!-- TABLA VALORES -->
+    <div class="row" width="100%">
+        <div class="col-md-12">
+
+
+            <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'idParametroXEmbalse'" [columnaEstado]="'activo'" 
+                [condicionEstado]="'No'" 
+                [transformaciones]="{ activoPermiso: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}" 
+                [consultarRegistros]="false" [editarRegistros]="false" [eliminarRegistros]="validarPermiso('EliminarParametroXEmbalse')" 
+                [cambiarEstadoRegistros]="false" [verFiltros]="validarPermiso('ConsultarParametroXEmbalse')" 
+                [verColumnas]="validarPermiso('ConsultarParametroXEmbalse')" [crear]="false" [copiar]="validarPermiso('ConsultarParametroXEmbalse')" 
+                [imprimir]="validarPermiso('ConsultarParametroXEmbalse')" [excel]="validarPermiso('ConsultarParametroXEmbalse')" 
+                [botonesGenerales]="botonesGenerales" (accionGeneral)="accionGeneral($event)" (accion)="accionRegistro($event)
+                "[seleccionarRegistro]="false" [verFiltros]="false">
+            </app-datatable>
+
+        </div>
+
+    </div>
+    <!-- FIN TABLA VALORES  -->
+
+    <!-- Agregar Parámetro -->
+    <app-modal-select [mostrar]="mostrar" [datos]="datosParametros" [titulo]="'Agregar Parámetro'" (clickAceprtar)="agregarParametro($event)"></app-modal-select>
+</div>

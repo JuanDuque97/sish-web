@@ -1,0 +1,33 @@
+[{
+        "id": 1,
+        "nombreParametro": "Prametro 1",
+        "codigo": "par 1",
+        "descripcion": "parametro de prueba 1 ",
+        "unidaMedidad": "2",
+        "tipoParametro": "Fisico-quimico",
+        "metodo": "Muestreo",
+        "usuarioCreacion": "Administrator",
+        "usuarioModificacion": "",
+        "usuarioEstado": "",
+        "estado": "Activo",
+        "fechaCreacion": "01-01-2021",
+        "fechaModificacion": "03-05-2021"
+
+    },
+    {
+        "id": 2,
+        "nombreParametro": "TEST ",
+        "codigo": "par 2",
+        "descripcion": "parametro de prueba 12 ",
+        "unidaMedidad": "METROS",
+        "tipoParametro": "Fisico-quimico",
+        "metodo": "Muestreo",
+        "usuarioCreacion": "Administrator",
+        "usuarioModificacion": "",
+        "usuarioEstado": "",
+        "estado": "Activo",
+        "fechaCreacion": "01-01-2021",
+        "fechaModificacion": "03-05-2021"
+
+    }
+]

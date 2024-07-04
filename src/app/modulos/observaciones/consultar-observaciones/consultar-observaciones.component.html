@@ -1,0 +1,296 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item">{{ 'observaciones' | translate }} {{ 'de' | translate }} {{'los'|translate}} {{'Parametros'|translate}} {{'monitoreados'|translate}} }
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario text-center">{{ 'observaciones' | translate }} {{ ' de' | translate }} {{' los'|translate}} {{' parámetros'|translate}} {{' monitoreados'|translate}}
+            </h2>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="text-center form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 " width="100%">
+            <br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" (change)="obtenerElementos(elemento)" [(ngModel)]="elemento" name="elemento" id="elemento" value="1">
+                <label class="form-check-label" for="inlineRadio1">{{"Estaciones"|translate}}</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" (change)="obtenerElementos(elemento)" [(ngModel)]="elemento" name="elemento" id="elemento" value="2">
+                <label class="form-check-label" for="inlineRadio2">{{"embalses"|translate}}</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" (change)="obtenerElementos(elemento)" [(ngModel)]="elemento" name="elemento" id="elemento" value="3">
+                <label class="form-check-label" for="inlineRadio3">{{"pozos"|translate}}</label>
+            </div>
+
+            <p *ngIf="ngForm.submitted && elemento == 0" class="error">
+                <sup>*</sup> {{ "elemento" | translate }} {{ "obligatoria" | translate }}
+            </p>
+
+        </div>
+
+        <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioFiltros" (ngSubmit)="filtrar(elemento)" novalidate>
+            <div class="row" width="100%">
+
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                    <hr />
+                    <div class="btn-group mr-2" role="group" aria-label="First group" *ngIf="elemento == 1">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" (click)="obtenerEstaciones()" data-target="#ModalEstaciones"> 
+             {{ 'Agregar' | translate }}  estaciones
+             </button>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="First group" *ngIf="elemento == 2">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" (click)="obtenerEmbalses()" data-target="#ModalEmbalses"> 
+             {{ 'Agregar' | translate }}  embalses
+             </button>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="First group" *ngIf="elemento == 3">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" (click)="obtenerPozos()" data-target="#ModalPozos"> 
+             {{ 'Agregar' | translate }} pozos
+             </button>
+                    </div>
+                    <br>
+                    <table class="table">
+                        <tr>
+                            <tr *ngFor="let dato of listaBusqueda">
+                                <th scope="row" *ngIf="elemento ==1"> {{dato.idEstacion}}</th>
+                                <th scope="row" *ngIf="elemento ==1"> {{dato.estacion}}</th>
+                                <th scope="row" *ngIf="elemento ==2"> {{dato.idEmbalse}}</th>
+                                <th scope="row" *ngIf="elemento ==2"> {{dato.embalse}}</th>
+                                <th scope="row" *ngIf="elemento ==3"> {{dato.idPozo}}</th>
+                                <th scope="row" *ngIf="elemento ==3"> {{dato.pozo}}</th>
+                                <th scope="row">
+                                    <a class="sish-boton-rojo" title="eliminar">
+                                        <em class="fas fa-trash-alt" (click)="eliminarLista(dato)"></em></a>
+                                </th>
+                            </tr>
+                    </table>
+
+                    <p *ngIf="ngForm.submitted && listaBusqueda.length == 0" class="error">
+                        <sup>*</sup> {{'DebeingresarunElemento'|translate}}
+                    </p>
+
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label>{{ "departamento" | translate }}</label>
+                        <ng-select2 name="idDepartamento" *ngIf="listaDepartamentos" [data]="listaDepartamentos" formControlName="idDepartamento" [width]="'100%'" [(ngModel)]="departamentoSelected" (ngModelChange)="cambioDepartamento(departamentoSelected)" placeholder="{{ 'Seleccionar' | translate }} {{
+             'departamento' | translate
+             }}...">
+                        </ng-select2>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ "municipio" | translate }}</label>
+                        <ng-select2 name="idMunicipio" [data]="listaMunicipios" formControlName="idMunicipio" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+             'municipio' | translate
+             }}...">
+                        </ng-select2>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ "area" | translate }} {{" hidrográfica"|translate}}</label>
+                        <ng-select2 name="areaHidrografica" [data]="listaAreaHidrografica" formControlName="areaHidrografica" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+             'Area Hidrografica' | translate
+             }}...">
+                        </ng-select2>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ "Zona hidrográfica" | translate }}</label>
+                        <ng-select2 name="zonaHidrografica" [data]="listaZonaHidrografica" formControlName="zonaHidrografica" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+             'Zona Hidrografica' | translate
+             }}...">
+                        </ng-select2>
+                    </div>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label>{{ "Sub zona hidrográfica" | translate }}</label>
+                        <ng-select2 name="subzonaHidrografica" [data]="listasubZonaHidrografica" formControlName="subZonaHidrografica" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+             'Subzona Hidrografica' | translate
+             }}...">
+                        </ng-select2>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ "Cuenca" | translate }}</label>
+                        <ng-select2 name="cuenca" [data]="listaCuenca" formControlName="cuenca" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+             'cuenca' | translate
+             }}...">
+                        </ng-select2>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ "Sub cuenca" | translate }}</label>
+                        <ng-select2 name="subcuenca" [data]="listaSubcuenca" formControlName="subCuenca" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+             'Subcuenca' | translate
+             }}...">
+                        </ng-select2>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ "Microcuenca" | translate }}</label>
+                        <ng-select2 name="microcuenca" [data]="listaMicrocuenca" formControlName="microcuenca" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+             'Microcuenca' | translate
+             }}...">
+                        </ng-select2>
+                    </div>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                    <hr />
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <label> {{ 'Entidad'|translate}}</label>
+                        <ng-select2 name="tipo" [data]="listaEntidad" formControlName="idEntidad" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{'Microcuenca'|translate}}...">
+                        </ng-select2>
+                    </div>
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <label> {{ 'Parámetro'|translate}}</label>
+                        <ng-select2 name="tipo" [data]="listParametro" [(ngModel)]="parametro" formControlName="idParametro" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{'parametro'|translate}}...">
+                        </ng-select2>
+                        <br>
+                        <a class="sish-boton-verde" title="Agregar">
+                            <em class="fas fa-plus-circle" (click)="agregarlistaParametros(parametro)"> </em>
+                        </a>
+
+                        <p *ngIf="ngForm.submitted && listParametroXElemento.length == 0" class="error">
+                            <sup>*</sup> {{'DebeingresarunParametro'|translate}}
+                        </p>
+                    </div>
+                    <label>{{ 'Periodo' | translate }}</label>
+                    <br>
+
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <label>{{'Desde'|translate}} </label>
+                            <input type="date" class="form-control" formControlName="fechaInicio" [max]=fechaActual name="fechaInicio" />
+                            <p *ngIf="ngForm.submitted && fechaInicio!.invalid" class="error">
+                                <sup>*</sup> {{ "fecha" | translate }} {{ "inicio" | translate }} {{ "obligatoria" | translate }}
+                            </p>
+
+
+                        </div>
+                        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <label>{{'Hasta'|translate}} </label>
+                            <input type="date" class="form-control" [max]=fechaActual formControlName="fechaFin" name="fechaFin" />
+
+                            <p *ngIf="ngForm.submitted && fechaFin!.invalid" class="error">
+                                <sup>*</sup> {{ "fecha" | translate }} {{ "fin" | translate }} {{ "obligatoria" | translate }}
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                    <table class="table">
+                        <tr>
+                            <tr *ngFor="let dato of listParametroXElemento">
+                                <ng-select2 name="tipo" [data]="listParametro" (ngModel)="dato.id" formControlName="idParametro" [disabled]="true" [width]="'100%'">
+                                </ng-select2>
+                                <th scope="row">
+                                    <a class="sish-boton-rojo" title="eliminar">
+                                        <em class="fas fa-trash-alt" (click)="eliminarListaParametros(dato)"></em></a>
+                                </th>
+                            </tr>
+                    </table>
+
+
+
+                </div>
+                <!--BOTONES-->
+                <div class="row">
+                    <div class="form-group col-xl-12 col-lg-6 col-sm-12">
+                        <div class="btn-group mr-2" role="group" aria-label="First group">
+                            <button type="submit" class="sish-boton-confirmar"> 
+                {{ 'Botones.Filtrar' | translate }}
+                </button>
+                        </div>
+                        <div class="btn-group mr-2" role="group" aria-label="Second group">
+                            <button type="button" class="sish-boton-cancelar" (click)="resetfiltro()" >
+                {{ 'Botones.Cancelar' | translate }}
+                </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <app-esri-map [capas]="capas" [center]="mapCenter" [basemap]="basemapType" [zoom]="mapZoomLevel" (clickMapa)="clickMapa($event)" (seleccionMapa)="seleccionMapa($event)" (mapLoadedEvent)="mapLoadedEvent($event)">
+    </app-esri-map>
+
+    <app-datatable [name]="'ResultadoConsulta'" [datos]="datosFilter" [opciones]="columnas" 
+        [id]="'idObservacionXElemento'" [rutaGeneral]="rutaGeneral" [rutaConsulta]="rutaConsulta"
+        [rutaEdicion]="rutaEdicion" [columnaEstado]="'activo'" [condicionEstado]="'No'"
+        [transformaciones]="{ activo: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}" 
+        [consultarRegistros]="validarConsultaElemento()" [editarRegistros]="validarEdicionElemento()"
+        [eliminarRegistros]="false" [cambiarEstadoRegistros]="validarEdicionElemento()" (accion)="accionRegistro($event)" 
+        [verFiltros]="false" [verColumnas]="validarConsultaElemento()" [crear]="validarCreacionElemento()" 
+        [copiar]="validarConsultaElemento()" [imprimir]="validarConsultaElemento()" [excel]="validarConsultaElemento()"
+        [botonesGenerales]="botonesGenerales" (accionGeneral)="accionGeneral($event)"
+        [seleccionarRegistro]="validarEdicionElemento()" (listaSelect)="lista($event)">
+    </app-datatable>
+
+    <!-- MODAL -->
+    <div id="ModalEstaciones" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ "Estaciones" | translate }}</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <app-datatable [datos]="datosFilterEstaciones" [opciones]="columnasEstaciones" [id]="'idEstacion'" [columnaEstado]="'false'" [condicionEstado]="'No'" [transformaciones]="{ activo: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}" [consultarRegistros]="false"
+                        [name]="'Modal3'" [editarRegistros]="false" [eliminarRegistros]="false" [cambiarEstadoRegistros]="false" (accion)="accionRegistroModal($event)" [verFiltros]="true" [verColumnas]="false" [crear]="false" [copiar]="false" [imprimir]="false"
+                        [excel]="false" [botones]="botones"
+                        [seleccionarRegistro]="false" 
+                        ></app-datatable>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ModalEmbalses" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ "embalses" | translate }}</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <app-datatable [datos]="datosFilterEmbalses" [opciones]="columnasEmbalses" [id]="'idEmbalse'" [columnaEstado]="'false'" [condicionEstado]="'No'" [transformaciones]="{ activo: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}" [consultarRegistros]="false"
+                        [name]="'Modal1'" [editarRegistros]="false" [eliminarRegistros]="false" [cambiarEstadoRegistros]="false" (accion)="accionRegistroModal($event)" [verFiltros]="true" [verColumnas]="false" [crear]="false" [copiar]="false" [imprimir]="false"
+                        [excel]="false" [botones]="botones"  [seleccionarRegistro]="false">
+                    </app-datatable>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ModalPozos" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ "pozos" | translate }}</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <app-datatable [datos]="datosFilterPozos" [opciones]="columnasPozos" [id]="'idPozo'" [columnaEstado]="'false'" [condicionEstado]="'No'" [transformaciones]="{ activo: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}" [consultarRegistros]="false"
+                        [name]="'Modal2'" [editarRegistros]="false" [eliminarRegistros]="false" [cambiarEstadoRegistros]="false" (accion)="accionRegistroModal($event)" [verFiltros]="true" [verColumnas]="false" [crear]="false" [copiar]="false" [imprimir]="false"
+                        [excel]="false" [botones]="botones"  [seleccionarRegistro]="false"></app-datatable>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>

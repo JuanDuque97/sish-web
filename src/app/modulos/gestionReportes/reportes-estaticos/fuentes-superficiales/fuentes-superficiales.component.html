@@ -1,0 +1,356 @@
+<!-- Miga de Pan -->
+<div class="row text-right sish-miga-de-pan" style="margin-top: 60px;">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active"> {{'Configuracion'|translate}}</li>
+            <li class="breadcrumb-item"> {{ 'GestionReportes' | translate }}</li>
+        </ol>
+    </div>
+</div>
+
+<!--Contenido -->
+<div class="container-fluid bg-white pt-5">
+
+    <!-- Título -->
+    <div class="row">
+        <div class="col-md-12" style="position: relative;">
+            <h2 class="sish-titulo-formulario" style="float: left; position: relative; ">Reporte Fuentes Superficiales
+            </h2>
+            <hr style="margin-top: 40px;" />
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-2">
+            <button type="button" class="btn btn-primary" (click)="exportexcel()">Export to Excel</button>
+        </div>
+        <div class="col-2">
+            <button type="button" class="btn btn-primary" (click)="downloadAsPDF();">Export to PDF</button>
+        </div>
+
+    </div>
+    <br>
+    <div class="row">
+        <div class="row">
+            <div class="col-6">
+                <table class="excel-table" width="100%" border="0" cellspacing="0" cellpadding="0"
+                    style="font-size:14px">
+                    <tbody>
+                        <tr>
+                            <th colspan="6" style="text-align: center;">Reporte Caudales Medios Diarios (m3/seg)
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Valor Maximo:</th>
+                            <td>{{anoSTR}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Fecha:</th>
+                            <td>{{fechaActualSTR}}</td>
+                        </tr>
+                        <tr>
+                            <th>Valor Minimo:</th>
+                            <td>{{estacion}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Fecha:</th>
+                            <td>{{latitud}}</td>
+                        </tr>
+                        <tr>
+                            <th>Longitud:</th>
+                            <td>{{longitud}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Elevación:</th>
+                            <td>{{elevacion}}</td>
+                        </tr>
+                        <tr>
+                            <th>Departamento:</th>
+                            <td>{{departamento}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Municipio:</th>
+                            <td>{{municipio}}</td>
+                        </tr>
+                        <tr>
+                            <th>Tipo Estación:</th>
+                            <td>{{tipoEstacion}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Entidad:</th>
+                            <td>{{entidad}}</td>
+                        </tr>
+                        <tr>
+                            <th>Cuenca:</th>
+                            <td>{{cuenca}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Subcuenca:</th>
+                            <td>{{subCuenca}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-6">
+                <table class="excel-table" width="100%" border="0" cellspacing="0" cellpadding="0"
+                    style="font-size:16px">
+                    <tbody>
+                        <tr>
+                            <th colspan="6" style="text-align: center;">Valores en Hora</th>
+                        </tr>
+                        <tr>
+                            <th>Valor Maximo:</th>
+                            <td>{{valorMaximoHora}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Fecha:</th>
+                            <td>{{fechaMaximasDia}}</td>
+                        </tr>
+                        <tr>
+                            <th>Valor Minimo:</th>
+                            <td>{{valorMinimoHora}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Fecha:</th>
+                            <td>{{fechaMinimasDia}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <br>
+                <table class="excel-table" width="100%" border="0" cellspacing="0" cellpadding="0"
+                    style="font-size:16px">
+                    <tbody>
+                        <tr>
+                            <th colspan="6" style="text-align: center;">Valores en Dia</th>
+                        </tr>
+                        <tr>
+                            <th>Valor Maximo:</th>
+                            <td>{{valorMaximoAnual}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Fecha:</th>
+                            <td>{{fechaMaximasDia}}</td>
+                        </tr>
+                        <tr>
+                            <th>Valor Minimo:</th>
+                            <td>{{valorMinimoAnual}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Fecha:</th>
+                            <td>{{fechaMinimasDia}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+
+        </div>
+    </div>
+    
+    <!-- DataTable Reporte General -->
+    <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'id'" [consultarRegistros]="false"
+        [editarRegistros]="false" [eliminarRegistros]="false" [cambiarEstadoRegistros]="false" [verFiltros]="false"
+        [verColumnas]="validarPermiso('ConsultarReporte')" [crear]="false" [copiar]="validarPermiso('ConsultarReporte')"
+        [imprimir]="validarPermiso('ConsultarReporte')" [excel]="validarPermiso('ConsultarReporte')"
+        [seleccionarRegistro]="false" style="font-size:10px">
+    </app-datatable>
+
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <table class="sish-tabla">
+                <thead>
+                    <tr>
+                        <th scope="col" style="text-align: center;">Promedio</th>
+                        <th scope="col" style="text-align: center;">Máximo</th>
+                        <th scope="col" style="text-align: center;">Mínimo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td scope="row" style="text-align: center;">{{valorPromedioAnual}}</td>
+                        <td scope="row" style="text-align: center;">{{valorMaximoAnual}}</td>
+                        <td scope="row" style="text-align: center;">{{valorMinimoAnual}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-4"></div>
+    </div>
+    <div class="row">
+        <div class="text-center">
+            <button class="sish-boton-cancelar" (click)="goBack()">
+                {{"Botones.Regresar"|translate}}
+            </button>
+        </div>
+    </div>
+    <div id="pdfTable" #pdfTable class="row" style="visibility: hidden;">
+        <div class="row">
+            <div class="col-6">
+                <table class="excel-table" width="100%" border="0" cellspacing="0" cellpadding="0"
+                    style="font-size:14px">
+                    <tbody>
+                        <tr>
+                            <th colspan="6" style="text-align: center;">Reporte Caudales Medios Diarios (m3/seg)
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Valor Maximo:</th>
+                            <td>{{anoSTR}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Fecha:</th>
+                            <td>{{fechaActualSTR}}</td>
+                        </tr>
+                        <tr>
+                            <th>Valor Minimo:</th>
+                            <td>{{estacion}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Fecha:</th>
+                            <td>{{latitud}}</td>
+                        </tr>
+                        <tr>
+                            <th>Longitud:</th>
+                            <td>{{longitud}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Elevación:</th>
+                            <td>{{elevacion}}</td>
+                        </tr>
+                        <tr>
+                            <th>Departamento:</th>
+                            <td>{{departamento}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Municipio:</th>
+                            <td>{{municipio}}</td>
+                        </tr>
+                        <tr>
+                            <th>Tipo Estación:</th>
+                            <td>{{tipoEstacion}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Entidad:</th>
+                            <td>{{entidad}}</td>
+                        </tr>
+                        <tr>
+                            <th>Cuenca:</th>
+                            <td>{{cuenca}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Subcuenca:</th>
+                            <td>{{subCuenca}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-6">
+                <table class="excel-table" width="100%" border="0" cellspacing="0" cellpadding="0"
+                    style="font-size:16px">
+                    <tbody>
+                        <tr>
+                            <th colspan="6" style="text-align: center;">Valores en Hora</th>
+                        </tr>
+                        <tr>
+                            <th>Valor Maximo:</th>
+                            <td>{{valorMaximoHora}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Fecha:</th>
+                            <td>{{fechaMaximasDia}}</td>
+                        </tr>
+                        <tr>
+                            <th>Valor Minimo:</th>
+                            <td>{{valorMinimoHora}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Fecha:</th>
+                            <td>{{fechaMinimasDia}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <br>
+                <table class="excel-table" width="100%" border="0" cellspacing="0" cellpadding="0"
+                    style="font-size:16px">
+                    <tbody>
+                        <tr>
+                            <th colspan="6" style="text-align: center;">Valores en Dia</th>
+                        </tr>
+                        <tr>
+                            <th>Valor Maximo:</th>
+                            <td>{{valorMaximoAnual}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Fecha:</th>
+                            <td>{{fechaMaximasDia}}</td>
+                        </tr>
+                        <tr>
+                            <th>Valor Minimo:</th>
+                            <td>{{valorMinimoAnual}}</td>
+                            <td colspan="2">&nbsp;</td>
+                            <th>Fecha:</th>
+                            <td>{{fechaMinimasDia}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+
+        </div>
+        <div class="row">
+            <div class="col-10">
+
+                <table class="table" class="excel-table" width="100%" border="0" cellspacing="0" cellpadding="0"
+                    style="font-size:4px">
+                    <thead>
+                        <tr>
+                            <th scope="col">Dia</th>
+                            <th scope="col">Enero</th>
+                            <th scope="col">Febrero</th>
+                            <th scope="col">Marzo</th>
+                            <th scope="col">Abril</th>
+                            <th scope="col">Mayo</th>
+                            <th scope="col">Junio</th>
+                            <th scope="col">Julio</th>
+                            <th scope="col">Agosto</th>
+                            <th scope="col">Septiembre</th>
+                            <th scope="col">Octubre</th>
+                            <th scope="col">Noviembre</th>
+                            <th scope="col">Diciembre</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let dato of datosFilter">
+                            <th scope="row">{{dato.id}}</th>
+                            <td>{{dato.valorEnero}}</td>
+                            <td>{{dato.valorFebrero}}</td>
+                            <td>{{dato.valorMarzo}}</td>
+                            <td>{{dato.valorAbril}}</td>
+                            <td>{{dato.valorMayo}}</td>
+                            <td>{{dato.valorJunio}}</td>
+                            <td>{{dato.valorJulio}}</td>
+                            <td>{{dato.valorAgosto}}</td>
+                            <td>{{dato.valorSeptiembre}}</td>
+                            <td>{{dato.valorOctubre}}</td>
+                            <td>{{dato.valorNoviembre}}</td>
+                            <td>{{dato.valorDiciembre}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <table class="sish-tabla">
+                    <thead>
+                        <tr>
+                            <th scope="col">Promedio</th>
+                            <th scope="col">Máximo</th>
+                            <th scope="col">Mínimo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td scope="row">{{valorPromedioAnual}}</td>
+                            <td scope="row">{{valorMaximoAnual}}</td>
+                            <td scope="row">{{valorMinimoAnual}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-4"></div>
+        </div>
+        
+    </div>
+
+    
+</div>

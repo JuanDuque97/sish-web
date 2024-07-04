@@ -1,0 +1,57 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Dominios</li>
+            <li class="breadcrumb-item">Ejemplo</li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">Ejemplo tabla consulta 0...0</h2>
+            <hr />
+        </div>
+    </div>
+</div>
+
+String {{fecha_y_hora}}
+<br/> Date {{fechaHora}}
+<br> Fecha pipe {{fechaHora | date: 'short' }}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <ngx-charts-bar-vertical-2d [view]="view" scheme="aqua" [results]="single" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [legendPosition]="legendPosition"
+                [showGridLines]=false [yAxisLabel]="yAxisLabel">
+            </ngx-charts-bar-vertical-2d>
+
+        </div>
+        <div class="col">
+            <ngx-charts-bar-vertical-2d [view]="view2" scheme="neons" [results]="single2" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [legendPosition]="legendPosition"
+                [showGridLines]=false [yAxisLabel]="yAxisLabel">
+            </ngx-charts-bar-vertical-2d>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div>
+    <app-datatable [name]="'Table1'" [datos]="datosFilter" [opciones]="columnas" [id]="'id'" [rutaGeneral]="rutaGeneral" [rutaConsulta]="rutaConsulta" [rutaEdicion]="rutaEdicion" [columnaEstado]="'activo'" [condicionEstado]="'No'" [transformaciones]="{ activo: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}"
+        [consultarRegistros]="true" 
+        [editarRegistros]="true" [eliminarRegistros]="true" [cambiarEstadoRegistros]="true" (accion)="accionRegistro($event)" [verFiltros]="true" [verColumnas]="true" [crear]="true" [copiar]="true" [imprimir]="true" [excel]="false"
+        [botones]="botones" [botonesGenerales]="botonesGenerales" (accionGeneral)="accionGeneral($event)" 
+        [seleccionarRegistro]="true"
+        
+        (listaSelect)="lista($event)" ></app-datatable>
+
+    <app-datatable [name]="'Table2'" [datos]="datosFilter" [opciones]="columnas" [id]="'id'" [rutaGeneral]="rutaGeneral" [rutaConsulta]="rutaConsulta" [rutaEdicion]="rutaEdicion" [columnaEstado]="'activo'" [condicionEstado]="'No'" [transformaciones]="{ activo: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}"
+        [consultarRegistros]="true" [editarRegistros]="true" [eliminarRegistros]="true" [cambiarEstadoRegistros]="true" (accion)="accionRegistroTabla2($event)" [verFiltros]="true" [verColumnas]="true" [crear]="true" [copiar]="true" [imprimir]="true" [excel]="true"
+        [botones]="botones" [botonesGenerales]="botonesGenerales" (accionGeneral)="accionGeneral($event)"></app-datatable>
+
+</div>

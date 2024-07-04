@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "nombre": "Administrador",
+    "descripcion": "Rol de administrador",
+    "estado": "Activo",
+    "fechaCreacion": "01-01-2021",
+    "fechaModificacion": "03-05-2021"
+  },
+  {
+    "id": 2,
+    "nombre": "Administrador 1",
+    "descripcion": "Rol de consultor",
+    "estado": "Activo",
+    "fechaCreacion": "01-01-2021",
+    "fechaModificacion": "03-05-2021"
+  },
+  {
+    "id": 3,
+    "nombre": "Administrador 2",
+    "descripcion": "Rol de consultista",
+    "estado": "inactivo",
+    "fechaCreacion": "01-01-2021",
+    "fechaModificacion": "03-05-2021"
+  },
+  {
+    "id": 4,
+    "nombre": "Administrador 3",
+    "descripcion": "Rol de administradores",
+    "estado": "Activo",
+    "fechaCreacion": "01-01-2021",
+    "fechaModificacion": "03-05-2021"
+  }
+]

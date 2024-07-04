@@ -1,0 +1,396 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">{{'Configuracion'|translate}}</li>
+            <li class="breadcrumb-item active" [routerLink]="['/configuracion/dominios']">
+                {{'Molinetes'|translate}}
+            </li>
+            <li class="breadcrumb-item">
+
+                {{ id === "0" ? "Crear" : ac == 'V' ? "Detalle" : "Editar" }}
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">
+                <em class="fa fa-question mr-2" data-toggle="tooltip" data-placement="top"
+                    title="Correntómetro: Un correntómetro es un instrumento de precisión calibrado para medir la velocidad de flujo del agua. Hay muchos tipos de correntómetros incluyendo los de rotación mecánica (p.ej. molinetes), los electromagnéticos, los de onda acústica y los ópticos. Todos estos instrumentos cuando tienen un apropiado mantenimiento y calibración son considerados adecuados y precisos para la medición de caudales en corrientes hídricas (WMO, 2010). Para determinar la velocidad del fluido, el correntómetro se ubica en un punto de la corriente y se cuenta el número de revoluciones del rotor durante un intervalo de tiempo específico o el tiempo requerido por el rotor para dar un número determinado de giros. La velocidad se obtiene de una tabla de calibración o ecuación establecida experimentalmente durante su calibración (ISO 2537:2007(E), 2007).">
+                </em> {{ 'Molinetes' | translate }} : {{ id === "0" ? "Crear" : ac == 'V' ? "Detalle" : "Editar" }} {{
+                id === "0" ? "nuevo" : id }}
+            </h2>
+            <hr />
+        </div>
+    </div>
+    <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioMolinete" (ngSubmit)="guardar()" novalidate>
+        <input name="id" formControlName="idMolinete" type="hidden" />
+        <div class="row" width="50%">
+            <div class="col-xl-12 col-lg-4 col-md-4 col-sm-12">
+                <div class="row" width="50%">
+
+                    <div class="form-group  col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                        <label for="dominio"> {{'Tipo'|translate}} {{ 'molinetes' | translate }} *</label>
+                        <ng-select2 name="idTipoMolinete" [data]="listaTipoMolinete" formControlName="idTipoMolinete"
+                            [(ngModel)]="TipoMolinete" [width]="'100%'"
+                            placeholder="{{ 'Seleccionar' | translate }}...">
+                        </ng-select2>
+                        <p *ngIf="ngForm.submitted && TipoMolinete == 0 " class="error">
+                            <sup>*</sup>{{'tipo'|translate}} {{ "obligatoria" | translate }}
+                        </p>
+
+                    </div>
+                    <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                        <label for="serie"> {{'serie'|translate}} *</label>
+                        <input name="serie" formControlName="serie" type="text"  maxlength="10"
+                            class="form-control" placeholder="{{'serie'|translate}}" />
+
+                        <p *ngIf="ngForm.submitted && serie!.invalid" class="error">
+                            <sup>*</sup>{{'serie'|translate}} {{ "obligatoria" | translate }}
+                        </p>
+
+                    </div>
+                    <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12 ">
+                        <label for="marca"> {{'marca'|translate}} *</label>
+                        <input name="marca" formControlName="marca" autocomplete="off" maxlength="30" type="text"
+                            class="form-control" placeholder="{{'marca'|translate}}" />
+
+                        <p *ngIf="ngForm.submitted && marca!.invalid" class="error">
+                            <sup>*</sup>{{'marca'|translate}} {{ "obligatoria" | translate }}
+                        </p>
+
+                    </div>
+                    <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12 ">
+                        <label for="fechaAdquisicion"> {{'Fecha adquisición'|translate}} *</label>
+                        
+                        <input type="date" name="fechaAdquisicion" [max]="fechaActual" class="form-control"
+                            formControlName="fechaAdquisicion"> 
+
+                        <p *ngIf="ngForm.submitted && fechaAdquisicion!.invalid" class="error">
+                            <sup>*</sup>{{'fechaAdquisicion'|translate}} {{ "obligatoria" | translate }}
+                        </p>
+                    </div>
+
+                    <div class="form-group  col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                        <label for="descripcion"> {{'descripcion'|translate}} *</label>
+                        <input type="text" name="descripcion" autocomplete="off" maxlength="500" class="form-control"
+                            placeholder="{{ 'descripcion' | translate }}..." formControlName="descripcion">
+
+                        <p *ngIf="ngForm.submitted && descripcion!.invalid" class="error">
+                            <sup>*</sup>{{'descripcion'|translate}} {{ "obligatoria" | translate }}
+                        </p>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br />
+        <div class="row" width="100%" *ngIf="TipoMolinete == 505 || TipoMolinete == 506">
+            <!-- <div class="row" width="100%"> -->
+            <div class="col-md-12">
+                <h3 class="sish-titulo-formulario">{{ 'Helices'|translate}} {{'y'|translate}} {{ ' ecuación'|translate}}
+                </h3>
+                <hr>
+            </div>
+            <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12" *ngIf="ac != 'V'">
+                <button type="button" class="sish-boton-confirmar" data-toggle="modal" data-target="#ModalMolinete">
+                    {{ 'Agregar' | translate }} </button>
+            </div>
+            <div class="row">
+                <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12">
+                    <table datatable class="sish-tabla">
+                        <thead>
+                            <tr>
+                                <th scope="col">{{"serie"|translate}} {{"helice"|translate}} </th>
+                                <th scope="col">M </th>
+                                <th scope="col">b </th>
+                                <th scope="col">N>= </th>
+                                <th scope="col"> 'N
+                                    <=' </th>
+                                <th scope="col">V>=</th>
+                                <th scope="col">' V<=' </th>
+                                <th scope="col">{{ "observaciones" |translate}} </th>
+                                <th scope="col">{{ "estado" |translate}} </th>
+                                <th scope="col" *ngIf="ac != 'V'"> {{'accion' |translate}} </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center">
+                            <tr class="text-center" *ngFor="let dato of listaHelices">
+                                <th scope="row"> {{dato.serieHelice }} </th>
+                                <th scope="row"> {{dato.constanteM }} </th>
+                                <th scope="row"> {{dato.constanteB }} </th>
+                                <th scope="row"> {{dato.numeroRevolucionesMin }} </th>
+                                <th scope="row"> {{dato.numeroRevolucionesMax }} </th>
+                                <th scope="row"> {{dato.velocidadExpresadaMin }} </th>
+                                <th scope="row"> {{dato.velocidadExpresadaMax }} </th>
+                                <th scope="row"> {{dato.observaciones }} </th>
+                                <th scope="row"> {{dato.activo }} </th>
+                                <th scope="row"  *ngIf="ac != 'V'">
+                                    <a class="sish-boton-rojo" title="eliminar">
+
+                                        <em class="fas fa-trash-alt" (click)="eliminarLista(dato)"
+                                            *ngIf="dato.idHelice == null"></em>
+                                        <em class="fas fa-trash-alt" (click)="cambiarEstado(dato)"
+                                            *ngIf="dato.idHelice != null "></em>
+
+                                    </a>
+
+                                    <a class="sish-boton-rojo" title="Editar">
+                                        <em class="fas fa-edit" type="button" data-toggle="modal"
+                                            data-target="#ModalMolinete" (click)="EditarLista(dato)"></em></a>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-md-12">
+                    <p class="sish-datos-auditoria">
+                        <strong>{{'Auditoria'|translate}}</strong> | {{'Fecha'|translate}} {{'creacion'|translate}}:<label controlName="fechaCreacion"></label> | {{'Fecha'|translate}} {{'modificación'|translate}}: <label controlName="fechaModificacion"></label>                    | {{'Fecha'|translate}} {{'estado'|translate}}: <label controlName="fechaEstado"></label> | {{'Usuario'|translate}} {{'creacion'|translate}}:
+                        <label controlName="usuarioCreacion"></label> | {{'Usuario'|translate}} {{'modificación'|translate}}: <label controlName="usuarioModificacion"></label> | {{'Usuario'|translate}} {{'estado'|translate}}: <label controlName="usuarioEstado"></label>
+                    </p>
+                </div>
+            </div>
+        <div class="row">
+            <div class="form-group col-xl-12 col-lg-6 col-sm-12">
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id== '0' ">
+
+                        {{ "Botones.Crear" | translate }}
+                    </button>
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id != '0' && ac !='V'" >
+                        {{ "Botones.Guardar" | translate }}
+                    </button>
+
+                    <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/gestionMolinete']">
+                        {{ "Botones.Regresar"| translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<div id="ModalMolinete" class="modal fade" role="dialog">
+
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{"Helices"|translate}} </h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="sish-form" #ngForm2="ngForm" [formGroup]="formularioHelice" (ngSubmit)="agregarlista()"
+                    novalidate>
+                    <input name="id" formControlName="idMolinete" type="hidden" />
+                    <input name="id" formControlName="idHelice" type="hidden" />
+                    <div class="row" width="50%">
+                        <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                            <label for="serie"> {{"serie"|translate}} {{"helice"|translate}} *</label>
+                            <input name="serie" autocomplete="off" maxlength="10" formControlName="serieHelice"
+                                type="text" class="form-control" placeholder="{{'serie '|translate}}" />
+
+                            <p *ngIf="ngForm2.submitted && serieHelice!.invalid" class="error">
+                                <sup>*</sup>{{"serie"|translate}} {{ "obligatoria" | translate }}
+                            </p>
+
+                        </div>
+
+                        <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                            <label for="constanteM"> M </label>
+                            <input name="constanteM" formControlName="constanteM" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+                                step="0.01" type="number" class="form-control" placeholder="Ingrese valor" />
+
+                            <p *ngIf="ngForm2.submitted && constanteM!.invalid" class="error">
+                                <sup>*</sup>{{ "valor"|translate}} M {{ "obligatoria" | translate }}
+                            </p>
+
+
+                        </div>
+                        <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                            <label for="constanteB"> b </label>
+                            <input name="constanteb" formControlName="constanteB" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+                                step="0.01" type="number" class="form-control" placeholder="Ingrese valor " />
+
+                            <p *ngIf="ngForm2.submitted && constanteB!.invalid" class="error">
+                                <sup>*</sup>{{ "valor"|translate}} b {{ "obligatoria" | translate }}
+                            </p>
+
+                        </div>
+
+
+                        <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                            <label for="periodo"> {{'Periodo calibración sugerido'|translate}} </label>
+                            <ng-select2 name="idPeriodoSugeridoCalibracion"
+                                formControlName="idPeriodoSugeridoCalibracion" [data]="listaPeriodos"
+                                placeholder="{{ 'Seleccionar' | translate }}...">
+                            </ng-select2>
+                        </div>
+
+
+
+                        <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12 ">
+                            <label for="fechaUltimaCalibracion"> {{'Fecha ultima calibración'|translate}} *</label>
+                            <input type="date" name="fechaAdquisicion" class="form-control" [max]="fechaActual"
+                                formControlName="fechaUltimaCalibracion">
+
+                            <p *ngIf="ngForm2.submitted && fechaCalibracion!.invalid" class="error">
+                                <sup>*</sup>{{'fechaCalibracion'|translate}} {{ "obligatoria" | translate }}
+                            </p>
+
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                                    <hr>
+                                    <div class="col-md-12">
+                                        <h3 class="text-center  sish-titulo-formulario">
+                                            V = mN + b
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xl-8 col-lg-6 col-md-6 col-sm-12">
+                                    <hr>
+                                    <p>
+                                        Donde V es la velocidad expresada en m/s <br> Donde N representa las
+                                        revoluciones por segundo (RPS) <br> m y b son constantes de acuerdo a la
+                                        calibración del instrumento (molinetes)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-4 col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label for="numeroRevolucionesMin"> {{"Rango admisible"|translate}} N </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="numeroRevolucionesMin"> N>= </label>
+                                <input name="numeroRevolucionesMin" formControlName="numeroRevolucionesMin"
+                                    ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" type="number"
+                                    class="form-control" placeholder="Ingrese valor " />
+
+                                <p *ngIf="ngForm2.submitted && numeroRevolucionesMin!.invalid" class="error">
+                                    <sup>*</sup>{{"valor"|translate}} {{ "obligatoria" | translate }}
+                                </p>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="numeroRevolucionesMax"> N<= </label>
+                                        <input name="numeroRevolucionesMax" formControlName="numeroRevolucionesMax"
+                                            ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" type="number"
+                                            class="form-control" placeholder="Ingrese valor " />
+
+
+                                        <p *ngIf="ngForm2.submitted && numeroRevolucionesMax!.invalid" class="error">
+                                            <sup>*</sup>{{"valor"|translate}} {{ "obligatoria" | translate }}
+                                        </p>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-4 col-md-4 col-sm-12">
+                            <div class="form-group ">
+                                <label for="numeroRevolucionesMin"> {{"Rango admisible"|translate}} V </label>
+                            </div>
+                            <div class="form-group ">
+                                <label for="velocidadExpresadaMin"> V>= </label>
+                                <input name="velocidadExpresadaMin" formControlName="velocidadExpresadaMin"
+                                    ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" type="number"
+                                    class="form-control" placeholder="Ingrese valor " />
+
+                                <p *ngIf="ngForm2.submitted && velocidadExpresadaMin!.invalid" class="error">
+                                    <sup>*</sup>{{"velocidad"|translate}} {{ "obligatoria" | translate }}
+                                </p>
+                            </div>
+                            <div class="form-group ">
+                                <label for="velocidadExpresadaMax"> V<= </label>
+                                        <input name="velocidadExpresadaMax" formControlName="velocidadExpresadaMax"
+                                            ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" type="number"
+                                            class="form-control" placeholder="Ingrese valor " />
+
+                                        <p *ngIf="ngForm2.submitted && velocidadExpresadaMax!.invalid" class="error">
+                                            <sup>*</sup>{{"velocidad"|translate}}{{ "obligatoria" | translate }}
+                                        </p>
+                            </div>
+                        </div>
+                        <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12">
+                            <label for="observaciones"> {{"observaciones"|translate}} </label>
+                            <input name="observaciones" autocomplete="off" maxlength="500"
+                                formControlName="observaciones" type="textarea" class="form-control"
+                                placeholder="{{'observaciones '|translate}}" />
+                        </div>
+
+
+                        <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12">
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                <label for="periodo"> {{'imagen'|translate}} </label>
+                                <section class="section-preview">
+                                    <div class="input-group my-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroupFileAddon01">Adjuntar
+                                                Imagen</span>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" accept="image/gif,image/jpeg,image/jpg,image/png"
+                                                class="custom-file-input" id="inputFileServer"
+                                                (change)="capturar($event,1)" aria-describedby="inputGroupFileAddon01">
+                                            <label class="custom-file-label"
+                                                for="inputGroupFile01">{{imagenCargada}}</label>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                <label for="periodo"> {{'ultimacalibracion'|translate}} </label>
+                                <section class="section-preview">
+                                    <div class="input-group my-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroupFileAddon02">Adjuntar
+                                                Certificado</span>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" accept=".pdf" class="custom-file-input"
+                                                id="inputFileServer" (change)="capturar($event,2)"
+                                                aria-describedby="inputGroupFileAddon02">
+                                            <label class="custom-file-label" for="inputGroupFile02">
+                                                {{ArchivoCargado}}</label>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+
+                        <!-- preview image  -->
+                        <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12 fa-border">
+                            <div class="text-center">
+                                <img [src]="previsualizacion" class="img-fluid img-rounded" alt="">
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <br>
+
+                    <div class="btn-group mr-2" id="CerrarModal" role="group" aria-label="First group">
+                        <button type="button" class="sish-boton-cancelar" #ModalMolinete
+                            data-dismiss="modal">Cerrar</button>
+
+                        <button type="submit" class="sish-boton-confirmar" data-dismiss="cerrar">
+                            {{ "Botones.Guardar" | translate }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

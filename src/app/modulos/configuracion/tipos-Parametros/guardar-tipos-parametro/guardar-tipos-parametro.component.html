@@ -1,0 +1,52 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item active" [routerLink]="['/configuracion/parametros/tipoParametros']">
+                {{'Tipo'|translate}} {{ 'Parametros' | translate }}
+            </li>
+            <li class="breadcrumb-item">
+                {{ id === "0" ? "Crear" : "Editar" }}
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+
+            <h2 class="sish-titulo-formulario">
+                {{ id === "0" ? "Crear" : "Editar" }} {{' tipo'|translate}} {{ ' parámetro' | translate }} {{ id === "0" ? "Nuevo" : tipoParametro}}
+            </h2>
+
+            <hr />
+        </div>
+    </div>
+
+    <form class="sish-form">
+        <div class="row" width="100%">
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="Tipo">{{'Tipo'|translate}}</label>
+                <input name="Tipo" [(ngModel)]="tipoParametro" type="text" class="form-control" disabled />
+            </div>
+        </div>
+        <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+                <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/parametros/tipoParametros']">
+                    {{ 'Botones.Regresar' | translate }}
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <hr>
+    <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'idMetodo'" [columnaEstado]="'activo'" 
+        [condicionEstado]="'No'" [transformaciones]="{ activo: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}" 
+        [consultarRegistros]="false" [editarRegistros]="false" [eliminarRegistros]="validarPermiso('EliminarMetodoXTipoParametro')" 
+        [cambiarEstadoRegistros]="false" (accion)="accionRegistro($event)" [verFiltros]="validarPermiso('ConsultarMetodoXTipoParametro')" 
+        [verColumnas]="validarPermiso('ConsultarMetodoXTipoParametro')" [crear]="false" 
+        [copiar]="validarPermiso('ConsultarMetodoXTipoParametro')" [imprimir]="validarPermiso('ConsultarMetodoXTipoParametro')" 
+        [excel]="validarPermiso('ConsultarMetodoXTipoParametro')" [botonesGenerales]="botonesGenerales" [seleccionarRegistro]="false"
+        (accionGeneral)="accionGeneral($event)" [verFiltros]="false">
+    </app-datatable>
+</div>

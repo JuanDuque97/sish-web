@@ -1,0 +1,127 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item active" [routerLink]="['/configuracion/parametros']">
+                {{ 'columnas' | translate }}
+            </li>
+            <li class="breadcrumb-item">
+                {{ id === "0" ? "Crear" : "Editar" }}
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">
+                {{ 'archivo' | translate }} {{ 'columnas' | translate }} : {{ id === "0" ? "Nuevo" : id }}
+            </h2>
+            <hr />
+        </div>
+    </div>
+    <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioArchivoColumnas" (ngSubmit)="guardar()" novalidate>
+        <input name="idTipoArchivoColumna" formControlName="idTipoArchivoColumna" type="hidden" />
+        <!-- <input name="idTipoArchivoConfigurado" formControlName="idTipoArchivoConfigurado" type="hidden" /> -->
+
+        <div class="row" width="100%">
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'archivo' | translate }} {{'columna'| translate}} *</label>
+                <input type="text" class="form-control" formControlName="tipoArchivosColumna" name="tipoArchivosColumna" placeholder="{{'Nombre'|translate}} {{'archivo'|translate}}" />
+
+                <p *ngIf="ngForm.submitted && tipoArchivosColumna!.invalid" class="error">
+                    <sup>*</sup> {{ 'archivo' | translate }} {{'obligatoria'|translate}}
+                </p>
+
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'formato' | translate }} {{'origen'| translate}} *</label>
+                <input type="text" class="form-control" formControlName="formatoOrigen" name="formatoOrigen" placeholder="{{'Nombre'|translate}} {{'archivo'|translate}}" />
+                <p *ngIf="ngForm.submitted && formatoOrigen!.invalid" class="error">
+                    <sup>*</sup> {{ 'formato' | translate }} {{'obligatoria'|translate}}
+                </p>
+
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'formato' | translate }} {{'destino'| translate}} *</label>
+                <input type="text" class="form-control" formControlName="formatoDestino" name="formatoDestino" placeholder="{{'Nombre'|translate}} {{'archivo'|translate}}" />
+                <p *ngIf="ngForm.submitted && formatoDestino!.invalid" class="error">
+                    <sup>*</sup> {{ 'formato' | translate }} {{'obligatoria'|translate}}
+                </p>
+
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'numero' | translate }} {{'columna'| translate}} *</label>
+                <input type="number" class="form-control" formControlName="numeroColumna" name="numeroColumna" placeholder="{{'Nombre'|translate}} {{'archivo'|translate}}" />
+
+                <p *ngIf="ngForm.submitted && numeroColumna!.invalid" class="error">
+                    <sup>*</sup> {{ 'numero' | translate }} {{'columna'| translate}} {{'obligatoria'|translate}}
+                </p>
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'posicion' | translate }} {{'inicial'| translate}} *</label>
+                <input type="number" class="form-control" formControlName="posicionInicial" name="posicionInicial" placeholder="{{'Nombre'|translate}} {{'archivo'|translate}}" />
+                <p *ngIf="ngForm.submitted && posicionInicial!.invalid" class="error">
+                    <sup>*</sup> {{ 'posicion' | translate }} {{'obligatoria'|translate}}
+                </p>
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'posicion' | translate }} {{'final'| translate}} *</label>
+                <input type="number" class="form-control" formControlName="posicionFinal" name="posicionFinal" placeholder="{{'Nombre'|translate}} {{'archivo'|translate}}" />
+                <p *ngIf="ngForm.submitted && posicionFinal!.invalid" class="error">
+                    <sup>*</sup> {{ 'posicion' | translate }} {{'obligatoria'|translate}}
+                </p>
+
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'separador' | translate }} </label>
+                <input type="text" class="form-control" formControlName="separador" name="separador" placeholder="{{'separador'|translate}}" />
+
+                <p *ngIf="ngForm.submitted && separador!.invalid" class="error">
+                    <sup>*</sup> {{ 'separador' | translate }} {{'obligatoria'|translate}}
+                </p>
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'tipo' | translate }} {{ 'dato' | translate }}*</label>
+                <ng-select2 name="tipo" [data]="listTipoDato" formControlName="idTipoDato" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{'tipo'|translate}}...">
+                </ng-select2>
+                <p *ngIf="ngForm.submitted && idTipoDato!.invalid" class="error">
+                    <sup>*</sup> {{'Seleccionar'|translate}} {{'tipo'|translate}}
+                </p>
+
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{ 'tipo' | translate }} {{ 'contenido' | translate }}*</label>
+                <ng-select2 name="idTipoContenido" [data]="listTipoContenido" formControlName="idTipoContenido" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{'tipo'|translate}}...">
+                </ng-select2>
+                <p *ngIf="ngForm.submitted && idTipoContenido!.invalid" class="error">
+                    <sup>*</sup> {{'Seleccionar'|translate}} {{'tipo'|translate}}
+                </p>
+
+            </div>
+        </div>
+
+        <!--BOTONES-->
+        <div class="row">
+            <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id== '0'">
+                        
+                        {{ 'Botones.Crear' | translate }}
+                        </button>
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id!= '0'">
+                        {{ 'Botones.Guardar' | translate }}
+                        </button>
+                </div>
+
+                <div class="btn-group mr-2" role="group" aria-label="Second group">
+                    <button type="button" class="sish-boton-cancelar" [routerLink]=rutacancelar>
+                                {{ 'Botones.Cancelar' | translate }}
+                            </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+</div>

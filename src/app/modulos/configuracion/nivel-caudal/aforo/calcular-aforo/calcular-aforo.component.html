@@ -1,0 +1,202 @@
+ 
+ 
+ <div class="row text-right sish-miga-de-pan" style="margin-top: 60px;">
+  <div class="col-md-12 text-right">
+      <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+          <li class="breadcrumb-item active"> {{'Configuracion'|translate}}</li>
+          <li class="breadcrumb-item"> {{ 'GestionReportes' | translate }}</li>
+      </ol>
+  </div>
+</div>
+ 
+ 
+ <div class="row text-right sish-miga-de-pan" style="margin-top: 60px;">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item">{{'aforosCorrientes'|translate}}
+            </li>
+        </ol>
+    </div>
+  </div>
+  <div class="container-fluid bg-white pt-5">
+    <div class="row">
+      <div class="col-md-12">
+          <h2 class="sish-titulo-formulario">
+              {{ 'aforosCorrientes' | translate }} : {{ id === "0" ? "Nuevo" : id }}
+          </h2>
+      </div>
+   </div>
+    <br>
+    <br>
+    <form class="sish-form">
+     
+  
+      <div class="text-center form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 " width="100%">
+         
+        <div class="row col-xl-12">
+  
+          <div class="row" width="100%">
+  
+            <div class="text-center  col-xl-12 col-lg-12 col-md-12 col-sm-12 " width="100%">
+  
+                <div class="col-xl-12 row">
+                   
+                    <p>   <label>Punto   &nbsp;  </label>  {{aforoLocal.idAforoAforador }}  </p>
+                </div>
+                <div class=" col-xl-12">
+                   
+                    <p> <label>Corriente   &nbsp;  </label> {{aforoLocal.nombreElemento }}  </p>
+                </div>
+                <div class="col-xl-12">
+                
+                  <p>   <label>Identificaciión del equipo &nbsp;  </label> {{listahelice.serieHelice}} </p>
+                </div>
+                <div class="col-xl-12">
+                
+                  <p>   <label>Fecha y hota  &nbsp;  </label> {{aforoLocal.fecha }}  </p>
+                </div>
+                <div class="col-xl-12">
+                
+                  <p>   <label> Aforador &nbsp;  </label> {{aforoLocal.idAforoAforador }}   </p>
+                </div>
+              
+            
+  
+            </div>
+            <br>
+  
+  
+          
+          </div>
+  
+  
+  
+  
+  
+  
+  
+        </div>
+        </div>
+      </form>
+    <div>
+      <br> <br>
+      <div class=" text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+     
+      <div class=" col-xl-12">
+          <label>H (m) = {{h}} </label>
+          <label> </label>
+      </div> 
+        <div class="col-xl-12">
+          <label>Q caudal (M3/S) = {{listaCalculo.caudal}}  </label>
+          <label> </label>
+      </div>
+      <div class=" col-xl-12">
+          <label>Vel.Media m/s =     {{velocidadMedia}} </label>
+          <label> </label>
+      </div>
+      <div class="col-xl-12">
+        <label>Area m2 =   {{listaCalculo.area}}   </label>
+        <label> </label>
+      </div>
+
+      <div class="col-xl-12">
+        <label>Radio Hidráulico (m) =   {{radio}}   </label>
+        <label> </label>
+      </div>
+      <div class="col-xl-12">
+        <label>Perímetro mojado (m)=   {{perimetroMojado}}   </label>
+        <label> </label>
+      </div>
+      <div class="col-xl-12">
+        <label>Ancho superficial (tirante) =   {{ancho}}   </label>
+        <label> </label>
+      </div>
+
+      
+  
+  
+      </div>
+        <hr>
+  
+        <div class="row text-center">
+  
+            <div class="col-xl-12 text-center col-lg-5 col-md-12 col-sm-12 ">
+  
+                <div id="chart" class="chart" #chart (contextmenu)="onRightClick4(chart, chart.id, $event)">
+                  <apx-chart
+                    id="chart"
+                    [series]="chartOptions.series"
+                    [chart]="chartOptions.chart"
+                    [xaxis]="chartOptions.xaxis"
+                    [markers]="chartOptions.markers"
+                    [stroke]="chartOptions.stroke"
+                    [yaxis]="chartOptions.yaxis"
+                    [dataLabels]="chartOptions.dataLabels"
+                    [title]="chartOptions.title"
+                    [fill]="chartOptions.fill"
+                    [tooltip]="chartOptions.tooltip"
+                    [legend]="chartOptions.legend"
+                  ></apx-chart>
+  
+                </div>
+    
+  
+            </div>
+            <div class="col-xl-10 text-center col-lg-5 col-md-12 col-sm-12 ">
+  
+              <div id="chart1"  *ngIf="ecuacion  == 0 "  >
+                  <apx-chart
+                  id="chart1"
+                  (contextmenu)="onRightClick($event)"
+                  [series]="chartOptions1.series"
+                  [chart]="chartOptions1.chart"
+                  [xaxis]="chartOptions1.xaxis"
+                  [markers]="chartOptions1.markers"
+                  [stroke]="chartOptions1.stroke"
+                  [yaxis]="chartOptions1.yaxis"
+                  [dataLabels]="chartOptions1.dataLabels"
+                  [title]="chartOptions1.title"
+                  [fill]="chartOptions1.fill"
+                  [tooltip]="chartOptions1.tooltip"
+                  [legend]="chartOptions1.legend"
+                ></apx-chart>
+  
+  
+                </div>
+  
+  
+                <div  id="chart2" *ngIf="ecuacion  == 1 "  >
+                  <apx-chart
+                  (contextmenu)="onRightClick($event)"
+                  [series]="chartOptions2.series"
+                  [chart]="chartOptions2.chart"
+                  [xaxis]="chartOptions2.xaxis"
+                  [markers]="chartOptions2.markers"
+                  [stroke]="chartOptions2.stroke"
+                  [yaxis]="chartOptions2.yaxis"
+                  [dataLabels]="chartOptions2.dataLabels"
+                  [title]="chartOptions2.title"
+                  [fill]="chartOptions2.fill"
+                  [tooltip]="chartOptions2.tooltip"
+                  [legend]="chartOptions2.legend"
+                ></apx-chart>
+  
+  
+              </div>
+      
+            </div>
+          
+  
+        </div>
+        <br> <br>  <br> <br>
+    </div>
+  
+  
+    
+ 
+  
+    <button type="button" id="btn"  style="visibility: hidden;" (click)="infoAforo()">
+    </button>
+  
+  

@@ -1,0 +1,17 @@
+<div class="wrapper">
+    <app-navbar   ></app-navbar>
+    <aside  aria-label="Encabezado" class="main-sidebar sish-linea-usuario sish-barra-lateral elevation-4">
+        <a [routerLink]="'inicio'" class="brand-link text-center">
+            <span class="brand-text font-weight-bold sish-titulo-logo">SISH - EAAB</span>
+            <hr/>
+        </a>
+        <app-menu-izquierdo></app-menu-izquierdo>
+    </aside>
+    <div class="content-wrapper">
+        <router-outlet></router-outlet>
+    </div>
+    <aside  aria-label="Barra de menu superior" class="control-sidebar control-sidebar-dark">
+    </aside>
+    <app-footer></app-footer>
+    <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "ball-circus" [fullScreen] = "true"></ngx-spinner>
+</div>

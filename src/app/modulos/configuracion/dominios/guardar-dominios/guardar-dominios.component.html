@@ -1,0 +1,94 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">{{'Configuracion'|translate}}</li>
+            <li class="breadcrumb-item active" [routerLink]="['/configuracion/dominios']">
+                {{'Dominios'|translate}}
+            </li>
+            <li class="breadcrumb-item">
+                {{ id === "0" ? "Crear" : "Editar" }}
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario"> 
+
+                {{ id === "0" ? "Crear" :  ac == 'V' ? "Detalle" : "Editar"  }}
+            </h2>
+            <hr />
+        </div>
+    </div>
+
+    <form class="sish-form" [formGroup]="formularioDominio" (ngSubmit)="guardar()" novalidate>
+        <input name="id" formControlName="idDominio" type="hidden" />
+
+        <div class="row" width="100%">
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="dominio"> {{'Dominio'|translate}} *</label>
+                <input name="dominio" formControlName="dominio" type="text" 
+                class="form-control" [attr.disabled]="true" placeholder="{{'Dominio'|translate}}" />
+
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="descripcion">{{'Descripción' |translate}} *</label>
+                <input name="descripcion" formControlName="descripcion" type="text" class="form-control" placeholder="{{'DescripcionDetallada'|translate}} {{'Dominio'|translate}}" />
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <p class="sish-datos-auditoria">
+                    <strong>{{'Auditoria'|translate}}</strong> | {{'Fecha'|translate}} {{'creacion'|translate}}:
+                    <label controlName="fechaCreacion"></label> | {{'Fecha'|translate}} {{'modificación'|translate}}:
+
+                    <label controlName="usuarioCreacion"></label> | {{'Usuario'|translate}} {{'modificación'|translate}}:
+                    <label controlName="usuarioModificacion"></label>
+                </p>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="ac == 'E'">
+                        {{ 'Botones.Guardar' | translate }}
+                    </button>
+                    <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/dominios']">
+                        {{ 'Botones.Regresar' | translate }}
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+    <hr>
+    <h3 class="sish-titulo-formulario">
+        Listado de valores
+    </h3>
+
+    <!-- TABLA VALORES -->
+    <div class="row" width="100%">
+        <div class="col-md-12">
+            <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'idDominioValor'" [columnaEstado]="'activo'" 
+                [condicionEstado]="'No'" [transformaciones]="{ activo: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}"  
+                [cambiarEstadoRegistros]="validarPermiso('ActualizarValorDominio')" (accion)="accionRegistro($event)" 
+                [verFiltros]="validarPermiso('ConsultarValorDominio')" [verColumnas]="validarPermiso('ConsultarValorDominio')" 
+                [crear]="false" [copiar]="validarPermiso('ConsultarValorDominio')" [imprimir]="validarPermiso('ConsultarValorDominio')" 
+                [excel]="validarPermiso('ConsultarValorDominio')" [consultarRegistros]="false"
+                [editarRegistros]="false" [eliminarRegistros]="false" [botonesGenerales]="botonesGenerales" (accion)="accionRegistro($event)" 
+                [seleccionarRegistro]="false" (accionGeneral)="accionGeneral($event)" [verFiltros]="false" 
+                 >
+            </app-datatable>
+        </div>
+    </div>
+</div>

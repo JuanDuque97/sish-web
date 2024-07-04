@@ -1,0 +1,235 @@
+<div class="row text-right sish-miga-de-pan">
+  <div class="col-md-12 text-right">
+      <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+          <li class="breadcrumb-item active">Configuración</li>
+          <li class="breadcrumb-item">{{'aforosCorrientes'|translate}}
+          </li>
+      </ol>
+  </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+  <div class="row">
+      <div class="col-md-12">
+          <h2 class="sish-titulo-formulario text-center">{{'Cálcular de regresión'|translate}}
+          </h2>
+          <h2 class="sish-titulo-formulario text-center">{{'Aforo corriente de agua'|translate}}
+          </h2>
+      </div>
+  </div>
+  <br>
+  <div class="row col-xl-12">
+
+    <div class="row" width="100%">
+
+      <div class="text-center form-group col-xl-6 col-lg-12 col-md-12 col-sm-12 " width="100%">
+
+          <div class="col-xl-12">
+              <label>Estación  &nbsp; </label>
+              <label> {{ndestacion}} </label>
+          </div>
+          <div class=" col-xl-12">
+              <label>Corriente    &nbsp; </label>
+              <label></label>
+          </div>
+          <div class="col-xl-12">
+            <label>Periodo  &nbsp;  </label>
+            <label>{{fechaInicio }} - {{hoy }}  </label>
+          </div>
+
+      </div>
+
+
+
+      <div class="text-center form-group col-xl-5 col-lg-12 col-md-12 col-sm-12 " width="100%">
+        <form class="sish-form">
+          <div class="row" width="100%">
+
+
+            <div class="text-center form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 " width="100%">
+           <img src="../../../../../../sish-frontend/assets/images/tabla.jpeg" width="60" height="60">
+           <label>Fritros de búsqueda </label>
+           <br>
+           
+          <label> Curva de tendencia </label>
+          <select name="curva"   [(ngModel)]="tempIdCurva"   width="'80%'"    (change)="buscarInformacion($event)" >
+            <option *ngFor="let list of ListaCurva" 
+             [ngValue]="list.id"    >{{list.text}}
+            <label> {{list.label}} </label> </option>
+          </select>
+        </div>
+      </div>
+        </form>
+
+      </div>
+
+    </div>
+
+
+
+
+
+
+
+  </div>
+
+
+  <div>
+    <br> <br>
+    <hr>
+    <div class="text-center form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 " width="100%">
+      <label class="text-center form-group"> Tipo de curva de tendencia </label>
+      <br>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio"  (change)="obtenerElementos(elemento)" [(ngModel)]="elemento" name="elemento" id="elemento" value="1">
+          <label class="form-check-label" for="inlineRadio1">Exponencial</label>
+      </div>
+      <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio"
+          (change)="obtenerElementos(elemento)" [(ngModel)]="elemento" name="elemento"
+          id="elemento" value="2">
+          <label class="form-check-label" for="inlineRadio2">Logaritmica</label>
+      </div>
+      <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio"  (change)="obtenerElementos(elemento)" [(ngModel)]="elemento" name="elemento" id="elemento" value="3">
+          <label class="form-check-label" for="inlineRadio3">Lineal</label>
+      </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio"  (change)="obtenerElementos(elemento)" [(ngModel)]="elemento" name="elemento" id="elemento" value="4">
+          <label class="form-check-label" for="inlineRadio1">Polinómica</label>
+      </div>
+      <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio"
+          (change)="obtenerElementos(elemento)" [(ngModel)]="elemento" name="elemento"
+          id="elemento" value="5">
+          <label class="form-check-label" for="inlineRadio2">Potencial </label>
+      </div>
+      <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio"   (change)="obtenerElementos(elemento)" [(ngModel)]="elemento" name="elemento" id="elemento" value="6">
+          <label class="form-check-label" for="inlineRadio3">Media movil</label>
+      </div>
+
+    </div>
+      <hr>
+
+      <div class="row text-center">
+
+          <div class="col-xl-10 text-center col-lg-10 col-md-10 col-sm-10 ">
+
+              <div id="chart" class="chart" #chart (contextmenu)="onRightClick4(chart, chart.id, $event)">
+                <highcharts-chart 
+                [Highcharts]="Highcharts"
+                [options]="chartOptions"
+         
+            
+                style="width: 100%; height: 60%; display: flex;"
+              >
+              </highcharts-chart>
+
+              </div>
+  
+
+          </div>
+          
+        
+
+          <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 ">
+            <div class="col-xl-12">
+              <label> Tipo de Ecuación = {{tipoEcuacionString}} </label>
+              <label> </label>
+          </div>
+            <div class="col-xl-12">
+              <label>Ecuación = {{ecuacionString}} </label>
+              <label> </label>
+          </div>
+          <div class=" col-xl-12">
+              <label>R' = {{r2}}   </label>
+              <label> </label>
+          </div>
+          <div class="col-xl-12">
+            <label>MAE  = {{mae}}  </label>
+            <label> </label>
+          </div>
+            <div class="col-xl-12">
+              <label>RMSE = {{rmse}}  </label>
+              <label> </label>
+          </div>
+          <div class=" col-xl-12">
+              <label>MSPE =   {{mspe}}    </label>
+              <label> </label>
+          </div>
+          <div class="col-xl-12">
+            <label>BIAS =   {{bias}}     </label>
+            <label> </label>
+          </div>
+
+
+          </div>
+
+      </div>
+      <br> <br>  <br> <br>
+  </div>
+
+  <div class="row  ">
+
+    <div class="col-xl-6 ">
+
+
+        <app-datatable
+        [datos]="listParametro_eje" [opciones]="columnas" 
+        (accion)="accionRegistroColumnas($event)"
+        [transformaciones]="false"  [verFilrtos]="false" [id]="'id_aforo'"
+        [rutaConsulta]="rutaConsulta1"  [editarRegistros]="false"
+        [cambiarEstadoRegistros]="false" (accion)="false" [verColumnas]="false"
+        [crear]="false" [copiar]="false" [excel]="false" [verFiltros]="false"
+            ></app-datatable>
+      </div>
+
+      
+
+      <div class="col-xl-6">
+        <label class="text-center form-group">Otros acciones </label>
+        <div class="row text-center">
+
+          <div  (click)="ImportarTabla()"  class="col-xl-6 text-center col-lg-6 col-md-6 col-sm-6 ">
+            <img src="../../../../../../sish-frontend/assets/images/tabla.jpeg" width="60" height="60">
+          <br>
+            <label class="text-center form-group">Exportar tabla  </label>
+
+
+          </div>
+          <div  (click)="regresarCurva()"  class="col-xl-6 text-center col-lg-6 col-md-6 col-sm-6 ">
+            <img src="../../../../../../sish-frontend/assets/images/grafica.jpeg" width="60" height="60">
+            <br>
+            <label class="text-center form-group">Ver gráficas anteriores  </label>
+          </div>
+
+
+          <div  (click)="imprimirGrafica()"  class="col-xl-12 text-center col-lg-6 col-md-6 col-sm-6 ">
+            <img src="../../../../../../sish-frontend/assets/images/archivo.jpeg" width="60" height="60">
+            <br>
+            <label class="text-center form-group">Exportar regresión  </label>
+          </div>
+
+
+
+
+        </div>
+      </div>
+</div>
+<div class="row text-center">
+  <div class="form-group col-xl-12 col-lg-6 col-sm-12">
+      <div class="btn-group mr-2" role="group" aria-label="First group">
+          <button type="button" class="sish-boton-confirmar" (click)="guadarCurva()" >
+{{ 'Botones.Guardar' | translate }}
+</button>
+<button type="button" class="sish-boton-cancelar" (click)="eliminarRegresar()" >
+{{ 'Botones.Cancelar' | translate }}
+</button>
+</div>
+
+      </div>
+  </div>
+
+  <button type="button" id="btn"  style="visibility: hidden;" (click)="infoAforo()">
+  </button>
+

@@ -1,0 +1,33 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item">{{ 'Parametros' | translate }}</li>
+        </ol>
+    </div>
+</div>
+
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">{{ 'Parametros' | translate }}</h2>
+        </div>
+    </div>
+
+    <app-esri-map [capas]="capas" [center]="mapCenter" [basemap]="basemapType" [zoom]="mapZoomLevel" (clickMapa)="clickMapa($event)" (seleccionMapa)="seleccionMapa($event)" (mapLoadedEvent)="mapLoadedEvent($event)">
+    </app-esri-map>
+
+    <hr>
+
+    <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'idParametro'" [rutaGeneral]="rutaGeneral" 
+        [rutaConsulta]="rutaConsulta" [rutaEdicion]="rutaEdicion" [columnaEstado]="'activo'" [condicionEstado]="'No'" 
+        [transformaciones]="{ activo: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}" 
+        [consultarRegistros]="validarPermiso('ConsultarParametro')" [editarRegistros]="validarPermiso('ActualizarParametro')" 
+        [eliminarRegistros]="false" [cambiarEstadoRegistros]="validarPermiso('ActualizarParametro')" (accion)="accionRegistro($event)" 
+        [verFiltros]="validarPermiso('ConsultarParametro')" [verColumnas]="validarPermiso('ConsultarParametro')" 
+        [crear]="validarPermiso('CrearParametro')" [copiar]="validarPermiso('ConsultarParametros')" 
+        [imprimir]="validarPermiso('ConsultarParametro')" [excel]="validarPermiso('ConsultarParametro')" 
+        [botonesGenerales]="botonesGenerales" (accionGeneral)="accionGeneral($event)" [seleccionarRegistro]="validarPermiso('ActualizarParametro')" 
+       (listaSelect)="lista($event)">
+    </app-datatable>
+</div>

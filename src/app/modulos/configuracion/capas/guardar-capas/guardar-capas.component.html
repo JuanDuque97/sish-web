@@ -1,0 +1,108 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item active" [routerLink]="['/configuracion/capas']">
+                {{ 'capas' | translate }}
+            </li>
+            <li class="breadcrumb-item">
+                {{ id === "0" ? "Crear" : "Editar" }}
+            </li>
+        </ol>
+    </div>
+</div>
+
+
+
+
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">
+                {{ id === "0" ? "Crear" :  ac == 'V' ? "Detalle" : "Editar"  }}: {{ id === "0" ? "Nuevo" : id }}
+            </h2>
+            <hr />
+        </div>
+    </div>
+    <!--INICIA FORMULARIO-->
+    <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioCapas" (ngSubmit)="guardar()" novalidate>
+        <input name="id" formControlName="idCapa" type="hidden" />
+
+        <div class="row" width="100%">
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'Capa' | translate }}*</label>
+                <input type="text" class="form-control" formControlName="capa" name="nombrecapa" placeholder="{{'combre'|translate}}" />
+
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'Identificador' | translate }}*</label>
+                <input type="text" class="form-control" formControlName="identificador" name="identificadorcapa" placeholder="{{'identificador'|translate}}" />
+
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'Nombre' | translate }} {{'servicio'|translate}}*</label>
+                <input type="text" class="form-control" formControlName="identificador" name="identificadorcapa" placeholder="{{'identificador'|translate}}" />
+
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'URL' | translate }} {{'vizualizar'|translate}}*</label>
+                <input type="text" class="form-control" formControlName="urlVisualizar" name="urlVisualizar" placeholder="URL {{'vizualizar'|translate}}" />
+
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'URL' | translate }} {{'crear'|translate}}*</label>
+                <input type="text" class="form-control" formControlName="urlCrear" name="urlCrear" placeholder="URL {{'crear'|translate}}" />
+
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'URL' | translate }} {{'actualizar'|translate}}*</label>
+                <input type="text" class="form-control" formControlName="urlActualizar" name="urlActualizar" placeholder="URL {{'actualizar'|translate}}" />
+
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'URL' | translate }} {{'borrar'|translate}}*</label>
+                <input type="text" class="form-control" formControlName="urlBorrar" name="urlBorrar" placeholder="URL {{'borrar'|translate}}" />
+
+            </div>
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'URL' | translate }} {{'consulta'|translate}}*</label>
+                <input type="text" class="form-control" formControlName="urlConsulta" name="urlConsulta" placeholder="URL {{'consulta'|translate}}" />
+
+            </div>
+
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <p class="sish-datos-auditoria">
+                    <strong>{{'Auditoria'|translate}}</strong> | {{'Fecha'|translate}} {{'creacion'|translate}}:<label controlName="fechaCreacion"></label> | {{'Fecha'|translate}} {{'modificación'|translate}}: <label controlName="fechaModificacion"></label>                    | {{'Fecha'|translate}} {{'estado'|translate}}: <label controlName="fechaEstado"></label> | {{'Usuario'|translate}} {{'creacion'|translate}}:
+                    <label controlName="usuarioCreacion"></label> | {{'Usuario'|translate}} {{'modificación'|translate}}: <label controlName="usuarioModificacion"></label> | {{'Usuario'|translate}} {{'estado'|translate}}: <label controlName="usuarioEstado"></label>
+                </p>
+            </div>
+        </div>
+        <!--BOTONES-->
+        <div class="row">
+            <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id== '0'">
+                      
+                      {{ 'Botones.Crear' | translate }}
+                    </button>
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id!= '0'">
+                    {{ 'Botones.Guardar' | translate }}
+                    </button>
+                </div>
+
+                <div class="btn-group mr-2" role="group" aria-label="Second group">
+                    <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/capas']">
+                            {{ 'Botones.Cancelar' | translate }}
+                        </button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--FINALIZA FORMULARIO-->
+
+</div>

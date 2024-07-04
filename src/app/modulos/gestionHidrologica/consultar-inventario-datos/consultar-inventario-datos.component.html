@@ -1,0 +1,552 @@
+<!-- Miga de Pan.... -->
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active"> {{'Configuracion'|translate}}</li>
+            <li class="breadcrumb-item">{{'inventarioDatos'|translate}}</li>
+        </ol>
+    </div>
+</div>
+
+<div class="container-fluid bg-white pt-5">
+    <!-- Titulo.... -->
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">{{'Inventario de datos'|translate}}</h2>
+            <hr />
+        </div>
+    </div>
+
+    <!-- Formulario.... -->
+    <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioConsulta" (ngSubmit)="obtener()" novalidate>
+        <div class="row" width="100%">
+
+            <!--Primera Columna... -->
+            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+                <!-- Tipo Elemento.... -->
+                <div class="form-group">
+                    <label> Tipo elemento *</label>
+                    <ng-select2 name="nombreElemento" [data]="listaElementos"    formControlName="idTipoElemento" (ngModelChange)="obtenerElementos($event)" 
+                        [width]="'100%'" placeholder="{{ 'Seleccionar tipo elemento' | translate }}..." [(ngModel)]="idElementoTipo">
+                    </ng-select2>
+                    <p *ngIf="ngForm.submitted && idTipoElemento == '0'" class="error">
+                        <sup>*</sup> {{ "Nombre" | translate }} {{ "obligatorio" | translate }}
+                    </p>
+                </div> 
+
+                <!-- Codigo IDEAM.... -->
+                <div class="form-group" >
+                    <label> {{ 'codigo' | translate }} IDEAM</label>
+                    <ng-select2 name="codigoIDEAM" [data]="listaCodigoIDEAM"  [disabled]="!idTipoElemento"  [(ngModel)]="idElemento" formControlName="idCodigoIDEAM" 
+                        [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{' codigo IDEAM' | translate}}...">
+                    </ng-select2>
+                </div>                   
+
+                <!-- Codigo EAAB.... -->
+                <div class="form-group" >
+                    <label> {{ 'codigo' | translate }} EAAB</label>
+                    <ng-select2 name="CodigoEAAB" formControlName="idCodigoEAAB"  [disabled]="idTipoElemento !=466" [data]="listaCodigoEAAB" [(ngModel)]="idElemento" 
+                        [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{' codigo EAAB' | translate}}...">
+                    </ng-select2>
+                </div> 
+
+                <!-- Nombre Elemento.... -->
+                <div class="form-group">
+                    <label> {{ 'Nombre' | translate }} elemento *</label>
+                    <ng-select2 name="nombreElemento"   [data]="listaElemento" (ngModelChange)="agregarElementoOrigen()" (ngModelChange)="obtenerListaParametros($event)" formControlName="idElemento" [(ngModel)]="idElemento" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }}..." [disabled]="!idTipoElemento">
+                    </ng-select2>
+                    <p *ngIf="ngForm.submitted && idElemento == '0'" class="error">
+                        <sup>*</sup> {{ "Nombre" | translate }} {{ "obligatorio" | translate }}
+                    </p>
+                </div>
+            </div>
+
+            <!--Segunda Columna... -->
+            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+                <!-- Parametro.... -->
+                <div class="form-group">
+                    <label>{{ 'Parámetro'|translate}}</label>
+                    <ng-select2 name="idParametro" [data]="listParametro" [(ngModel)]="parametro" formControlName="idParametro" [width]="'100%'" 
+                        placeholder="Seleccionar parámetro" (ngModelChange)="actualizarFrecuencia($event)">
+                    </ng-select2>
+                    <p *ngIf="ngForm.submitted && parametro == 0" class="error">
+                        <sup>*</sup> {{ "Parámetro" | translate }} {{ "obligatorio" | translate }}
+                    </p>
+                </div>
+
+                <!-- Frecuencia.... -->
+                <div class="form-group">
+                    <label> {{ 'frecuencia' | translate }}</label>
+                    <ng-select2 name="idFrecuencia" [(ngModel)]="idfrecuencia" [data]="listaFrecuencia" formControlName="frecuencia" [width]="'100%'" 
+                        placeholder="Frecuencia" [disabled]=true >
+                    </ng-select2>
+                </div>
+            </div>
+
+            <!--Tercera Columna... -->
+            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+           
+
+                <!--Fechas y Horas -->
+                <!--
+                <div class=" row "  *ngIf="verFechas && (idfrecuencia==683 || idfrecuencia==682 || idfrecuencia==146)">
+                    <!--Fecha Inicio... --
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label> {{ "Desde" | translate }} </label>
+                        <input type="datetime-local"  [(ngModel)]="fechainicio"  placeholder="yyyy/MM/dd HH:mm:ss"  class="form-control" formControlName="fechaInicio" 
+                            name="fechaInicio" placeholder="{{ 'Hasta' | translate }}" />
+                    </div>
+
+                    <!--Fecha Fin... --
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label> {{ "Hasta" | translate }} </label>
+                        <input type="datetime-local"    [(ngModel)]="Fechafin"   placeholder="yyyy/MM/dd HH:mm:ss" class="form-control" formControlName="fechaFin" 
+                            name="fechaFin" placeholder="{{ 'Desde' | translate }}" />
+                    </div>
+                </div>
+                -->
+
+                <!--Solo Dias -->
+                <!--
+                <div class=" row "  *ngIf="verFechas && (idfrecuencia==151)">     
+                    <!--Fecha Inicio... --
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label> {{ "Desde" | translate }} </label>
+                        <input type="date"  [(ngModel)]="fechainicio"  placeholder="yyyy/MM/dd HH:mm:ss"  class="form-control" formControlName="fechaInicio" 
+                            name="fechaInicio" placeholder="{{ 'Hasta' | translate }}" />
+                    </div>
+
+                    <!--Fecha Fin... --
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label> {{ "Hasta" | translate }} </label>
+                        <input type="date"    [(ngModel)]="Fechafin"   placeholder="yyyy/MM/dd HH:mm:ss" class="form-control" formControlName="fechaFin" 
+                            name="fechaFin" placeholder="{{ 'Desde' | translate }}" />
+                    </div>
+                </div>
+                -->
+
+                <!--Solo Meses -->
+                <!-- <div class=" row "  *ngIf="verFechas && (idfrecuencia==152)"> -->
+                <div class=" row " >
+                    <!--Fecha Inicio... -->
+                    <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12">
+                        <label> {{ "Desde" | translate }} </label>
+                        <input type="month"  [(ngModel)]="fechainicio"  placeholder="yyyy/MM/dd HH:mm:ss"  class="form-control" formControlName="fechaInicio" 
+                            name="fechaInicio" placeholder="{{ 'Hasta' | translate }}" />
+                            <p *ngIf="ngForm.submitted && fechainicio  == undefined " class="error">
+                                <sup>*</sup> {{ "fecha" | translate }} {{ "obligatorio" | translate }}
+                            </p>
+                    </div>
+
+                    <!--Fecha Fin... -->
+                    <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12">
+                        <label> {{ "Hasta" | translate }} </label>
+                        <input type="month"    [(ngModel)]="Fechafin"   placeholder="yyyy/MM/dd HH:mm:ss" class="form-control" formControlName="fechaFin" 
+                            name="fechaFin" placeholder="{{ 'Desde' | translate }}" />
+                            <p *ngIf="ngForm.submitted && Fechafin  == undefined " class="error">
+                                <sup>*</sup> {{ "fecha" | translate }} {{ "obligatorio" | translate }}
+                            </p>
+                    </div>
+                </div>
+
+                <!--Solo Anos -->
+                <!--
+                <div class=" row "  *ngIf="verFechas && (idfrecuencia==154)">
+                    <!--Fecha Inicio... -->
+                    <!--
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label> {{ "Desde" | translate }} </label>
+                        <input type="month"  [(ngModel)]="fechainicio"  placeholder="yyyy/MM/dd HH:mm:ss"  class="form-control" formControlName="fechaInicio" 
+                            name="fechaInicio" placeholder="{{ 'Hasta' | translate }}" />
+                    </div>
+                    --
+
+                    <!--Fecha Fin... --
+                    <!--
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <label> {{ "Hasta" | translate }} </label>
+                        <input type="month" [(ngModel)]="Fechafin" placeholder="yyyy/MM/dd HH:mm:ss" class="form-control" formControlName="fechaFin" 
+                            name="fechaFin" placeholder="{{ 'Desde' | translate }}" />
+                    </div>
+                    --
+
+                    <!--Ano Inicio... --
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12" >
+                        <label> {{ 'Desde' | translate }} *</label>
+                        <ng-select2 name="anoInicio"  [max]=fechaActual  [data]="listaAnos" [(ngModel)]="anoInicio" formControlName="fechaInicio" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{'año' | translate}}...">
+                        </ng-select2>
+    
+                        <p *ngIf="ngForm.submitted && anoInicio==undefined " class="error">
+                            <sup>*</sup> {{ "fecha" | translate }} {{ "obligatorio" | translate }}
+                        </p>
+                    
+                    </div>
+
+                    <!--Ano Fin... --
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12" >
+                        <label> {{ 'Hasta' | translate }} *</label>
+                        <ng-select2 name="anoFin"  [max]=fechaActual  [data]="listaAnos" [(ngModel)]="anoFin" formControlName="fechaFin" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{'año' | translate}}...">
+                        </ng-select2>
+    
+                        <p *ngIf="ngForm.submitted && anoFin==undefined " class="error">
+                            <sup>*</sup> {{ "fecha" | translate }} {{ "obligatorio" | translate }}
+                        </p>
+                
+                    </div> 
+                </div>
+                -->
+            </div>
+      
+
+            
+            <!--Botones -->
+            <div class="row">
+                <div class="form-group col-xl-12 col-lg-6 col-sm-12">
+                    <div class="btn-group mr-2" role="group" aria-label="First group">
+                        <button type="submit" class="sish-boton-confirmar"> 
+                            {{ 'Botones.consultar' | translate }}
+                        </button>
+                        <button type="reset" class="sish-boton-cancelar"> 
+                            {{ 'Botones.limpiar' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <app-datatable   [botones]="botones"  [botonesGenerales]="botonesGenerales" [datos]="datosFilter"
+     [opciones]="columnas" [id]="'fecha'"  (accion)="accionRegistroColumnas($event)"  [seleccionarRegistro]="false" 
+    [verColumnas]="false" [copiar]="false"             [transformaciones]="false"  [verFilrtos]="false"  (accion)="false" 
+     [crear]="false"  [excel]="false"   [verRegistros]="false"   [editar]="false"  [cambiarEstadoRegistros]="false"
+      [verFiltros]="false"    [ver]="false"  [imprimir]="false" [excel]="false" 
+       [consultarRegistros]="false"    [editarRegistros]="false" [eliminarRegistros]="false"
+      >
+    </app-datatable>
+</div>
+
+<!--
+<div class="row">
+    <div class="form-group col-xl-12 col-lg-6 col-sm-12">
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+        
+<button type="button" class=" center sish-boton-cancelar"> 
+    {{ 'Regresar' | translate }}
+    </button>
+        </div>
+    </div>
+</div>
+-->
+
+<div class="invisible">
+    <button type="button" #ModalCalidad class="invisible" data-toggle="modal" data-target="#ModalCalidad"></button>
+</div>
+
+<div id="ModalCalidad" class="modal fade in"  role="dialog">
+    <div class="modal-dialog modal-lg " role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title">{{ "Autocompletado de datos " | translate }}</p>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+
+             <div class="row">
+    
+                        <div class="row"> 
+                    
+                            <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioConsulta" novalidate>
+                                <div class="row" width="100%">
+                                    
+                                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+                          
+                                        <div class="form-group" >
+                                            <label> {{ 'codigo' | translate }} IDEAM</label>
+                                            <ng-select2 name="codigoIDEAM" [data]="listaCodigoIDEAM"  [disabled]="!idTipoElemento"  [(ngModel)]="idElemento" formControlName="idCodigoIDEAM" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                                         'categoriaEstacion' | translate
+                                         }}...">
+                                            </ng-select2>
+                                            <p *ngIf="ngForm.submitted && idElemento == '0'" class="error">
+                                               <sup>*</sup> {{ "Nombre" | translate }} {{ "obligatorio" | translate }}
+                                           </p>
+                                        </div>                   
+                        
+                                        <div class="form-group" >
+                                            <label> {{ 'codigo' | translate }} EAAB</label>
+                                            <ng-select2 name="CodigoEAAB" formControlName="idCodigoEAAB"  [disabled]="idTipoElemento !=466" [data]="listaCodigoEAAB" [(ngModel)]="idElemento" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                                 'categoriaEstacion' | translate
+                                 }}...">
+                                            </ng-select2>
+                                            <p *ngIf="ngForm.submitted && idElemento == '0'" class="error">
+                                               <sup>*</sup> {{ "Nombre" | translate }} {{ "obligatorio" | translate }}
+                                           </p>
+                                        </div> 
+                                         <div class="form-group">
+                                            <label> {{ 'Nombre' | translate }} elemento *</label>
+                                            <ng-select2 name="nombreElemento"   [data]="listaElemento"   (ngModelChange)="obtenerListaParametros($event)" 
+                                            formControlName="idElemento" [(ngModel)]="idElemento" [width]="'100%'" 
+                                             placeholder="{{ 'Seleccionar' | translate }}..." [disabled]="!idTipoElemento">
+                                            </ng-select2>
+                                            <p *ngIf="ngForm.submitted && idElemento == '0'" class="error">
+                                                <sup>*</sup> {{ "Nombre" | translate }} {{ "obligatorio" | translate }}
+                                            </p>
+                                        </div>
+                                    </div>
+                       
+                                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+                                        <div class="form-group">
+                                            <label>{{ 'Parámetro'|translate}}</label>
+                                            <ng-select2  [(ngModel)]="parametro"   name="idParametro" [data]="listParametro" 
+                                              formControlName="idParametro" [width]="'100%'" placeholder="Seleccionar parametro ">
+                                            </ng-select2>
+                                            <p *ngIf="ngForm.submitted && parametro == 0" class="error">
+                                               <sup>*</sup> {{ "Parámetro" | translate }} {{ "obligatorio" | translate }}
+                                           </p>
+                                        </div>
+
+                        
+                                        <div class="form-group">
+                                            <label> {{ 'frecuencia' | translate }} * </label>
+                                            <ng-select2 name="idFrecuencia"     [disabled]=true  [(ngModel)]="idfrecuencia" [data]="listaFrecuencia" formControlName="frecuencia"   [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                                         'categoriaEstacion' | translate 
+                                         }}...">
+                                            </ng-select2>
+                                            <p *ngIf="ngForm.submitted && idfrecuencia == 0" class="error">
+                                               <sup>*</sup> {{ "frecuencia" | translate }} {{ "obligatorio" | translate }}
+                                           </p>
+                   
+                                        </div>
+                   
+                                    </div>
+                                
+                                    <div   class="col-xl-4 col-lg-4 col-md-4 col-sm-12" >
+                                        <!--Fecha Inicio... -->
+                                        <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12">
+                                            <label> {{ "Desde" | translate }} </label>
+                                            <input type="month"  [(ngModel)]="fechaMes"  placeholder="yyyy/MM/dd HH:mm:ss"  class="form-control" formControlName="fechaInicio" 
+                                                name="fechaInicio" placeholder="{{ 'Hasta' | translate }}" />
+                                        </div>
+                    
+                                        <!--Fecha Fin... -->
+                                        <div class="form-group col-xl-12 col-lg-6 col-md-6 col-sm-12">
+                                            <label> {{ "Hasta" | translate }} </label>
+                                            <input type="month"    [(ngModel)]="fechaMesFin"   placeholder="yyyy/MM/dd HH:mm:ss" class="form-control" formControlName="fechaFin" 
+                                                name="fechaFin" placeholder="{{ 'Desde' | translate }}" />
+                                        </div>
+                                    </div>
+                              
+                                    <!--BOTONES-->
+                               
+                                </div>
+                                <br>
+                                <div class="row">
+                   
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                                        <label>{{ 'Elementos reprentativos' | translate }}</label>
+                                     
+                                        <br>
+                    
+                                        <div class="form-group" >
+                                            <label> {{ 'codigo' | translate }} IDEAM</label>
+                                            <ng-select2 name="listaCodigoIDEAMAgregar" [data]="listaCodigoIDEAMAgregar"   [disabled]="!idTipoElemento"  [(ngModel)]="idElementoAgregar"  formControlName="idCodigoIDEAMAgregar" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                                         ' codigo IDEAM' | translate
+                                         }}...">
+                                            </ng-select2>
+                   
+                                            <p *ngIf=" ngForm.submitted && !idElementoAgregar" class="error">
+                                               <sup>*</sup> {{ "frecuencia" | translate }} {{ "obligatorio" | translate }}
+                                           </p>
+                                        </div>                   
+                    
+                                        <div class="form-group" >
+                                            <label> {{ 'codigo' | translate }} EAAB</label>
+                                            <ng-select2 name="idCodigoEAABAgregar" formControlName="idCodigoEAABAgregar"   [disabled]="idTipoElemento !=466" [data]="listaCodigoEAABAgregar" [(ngModel)]="idElementoAgregar" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                                 ' codigo EAAB' | translate
+                                 }}...">
+                                            </ng-select2>
+                   
+                                            <p *ngIf=" ngForm.submitted && !idElementoAgregar" class="error">
+                                               <sup>*</sup> {{ "frecuencia" | translate }} {{ "obligatorio" | translate }}
+                                           </p>
+                                        </div> 
+                    
+                                         <div class="form-group">
+                                            <label> {{ 'Nombre' | translate }} Elemento *</label>
+                                            <ng-select2 name="listaElementoAgregar" [data]="listaElementoAgregar" 
+                                             [disabled]="!idTipoElemento"  formControlName="ElementoAgregar"  [(ngModel)]="idElementoAgregar" 
+                                             [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }}..." >
+                                            </ng-select2>
+                                            <p *ngIf=" ngForm.submitted && !idElementoAgregar" class="error">
+                                               <sup>*</sup> {{ "frecuencia" | translate }} {{ "obligatorio" | translate }}
+                                           </p>
+                                        </div>
+                   
+                                        <div  class="form-group text-center"> 
+                                            <a class="sish-boton-verde" title="Agregar">
+                                                <em class="fas fa-plus-circle"   disabled="idElemento == '0' && idfrecuencia == 0 "  
+                                                (click)="buscarEstacion()"> </em>
+                                            </a>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                                    <div class="form-group text-center">
+                                        <table datatable class="sish-tabla">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">ID </th>
+                                                    <th scope="col">Código estación IDEAM </th>
+                                                    <th scope="col">Código estación EAAB </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="text-center">
+                                                    <tr class="text-center" *ngFor="let dato of listaItemsElementos">
+                        
+                                                        <th scope="row"> {{dato.id}} </th>
+                                                        <th scope="row"> {{dato.codigoIDEAM }} </th>
+                                                        <th scope="row"> {{dato.nombreElemento }} </th>
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div> 
+                   
+                   
+                   
+                                </div>   
+                                <div class="row">
+                                    <div class="form-group col-xl-12 col-lg-6 col-sm-12">
+                                        <div class="btn-group mr-2" role="group" aria-label="First group">
+                                            <button type="button"  (click)="filtrarAutocompletado(idTipoElemento)"  class="sish-boton-confirmar"> 
+                                {{ 'Botones.consultar' | translate }}
+                                </button>
+                                <button type="button" class="sish-boton-cancelar" > 
+                                    {{ 'Botones.limpiar' | translate }}
+                                    </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        <br>
+
+                        </div>
+                        <!--segunda columna -->
+                        <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+
+                            <div class="form-group">
+                                <div class="card border-info ">
+                                    <div class="row">
+                                        <div class="col-sm-5">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <p class="card-text"><b>Serie de  </b></p>
+                                                    <p class="card-text">
+                                                        {{nombreParametro}}
+                                                    </p>
+                                                    <p class="card-text"><b>Estación</b></p>
+                                                    <p class="card-text">
+                                                        {{nombreEstacion}}
+                                                    </p>
+                                                    <p class="card-text"><b>Ecuación representativa</b></p>
+                                                    <p class="card-text">
+                                                        {{nombreEstacionA}}
+                                                        {{nombreEstacionB}}
+                                                        {{nombreEstacionC}}
+                                                        {{nombreEstacionD}}
+                                                        {{nombreEstacionE}}
+                                                    </p>
+                                                    <p class="card-text"><b>Periodo de analisis</b></p>
+                                                    <p class="card-text">
+                                                        {{formularioConsulta.value.fechaInicio1 }} - {{formularioConsulta.value.fechaFin1}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                  
+                                    </div>
+                    
+                                </div>
+                            </div>
+                        </div>
+                            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+
+                            <div class="form-group">
+                                <div class="card border-info ">
+                                    <div class="row">
+                                        <div class="col-sm-5">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <p class="card-text"><b>Factor de correlación </b></p>
+                                                    <p class="card-text">
+                                                        {{correlacion}}
+                                                    </p>
+                                                    <p class="card-text"><b>R2</b></p>
+                                                    <p class="card-text">
+                                                        {{r2}}
+                                                    </p>
+                                                    <p class="card-text"><b>Ecuación</b></p>
+                                                    <p class="card-text">
+                                                        {{ ecuacionString}}
+                                                    </p>
+                                                    <p class="card-text"><b>Periodo de ajuste</b></p>
+                                                    <p class="card-text">
+                                                        {{pediente2 }} 
+                                                    </p>
+                                                    <p class="card-text"><b>Pendiente 1</b></p>
+                                                    <p class="card-text">
+                                                        {{pediente1 }}
+                                                    </p>
+                                                    <p class="card-text"><b>Pendiente 2</b></p>
+                                                    <p class="card-text">
+                                                        {{pediente2 }}
+                                                    </p>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                  
+                                    </div>
+                    
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+
+                                <div class="form-group">
+                                    <div >
+                                        <highcharts-chart 
+                                                [Highcharts]="Highcharts"
+                                                [options]="chartOptions"
+                                                style="width: 100%; height: 60%; display: flex;" >
+                                            </highcharts-chart>
+                                        
+                                    </div>
+                                </div>
+
+                        </div>
+            </div>
+            <div class="row text-center">
+                <div class="form-group col-xl-12 col-lg-6 col-sm-12">
+                    <div class="btn-group mr-2" role="group" aria-label="First group">
+                        <button type="button" class="sish-boton-confirmar" (click)="autocompletado()" >
+              {{ 'Botones.Guardar' | translate }}
+              </button>
+              <button type="button" class="sish-boton-cancelar" >
+              {{ 'Botones.Cancelar' | translate }}
+              </button>
+              </div>
+              
+              <button type="button" class="sish-boton-cancelar"  >
+                {{ 'Botones.Regresar' | translate }}
+              </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

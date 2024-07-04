@@ -1,0 +1,11 @@
+{
+  "/rpc": {
+    "target": "https://localhost:4200",
+    "secure": true,
+    "pathRewrite": {
+      "^/rpc": ""
+    },
+    "changeOrigin": true
+  }
+}
+

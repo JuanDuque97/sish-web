@@ -1,0 +1,69 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active"> {{'Configuracion'|translate}}</li>
+            <li class="breadcrumb-item">{{'Configuración de Parametros'|translate}}</li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">{{'Configuración de parámetros'|translate}}</h2>
+            <hr />
+        </div>
+    </div>
+
+    <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioConsulta" (ngSubmit)="guardarOp()" novalidate>
+        
+        <div class="row" width="100%">
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'Parámetro' | translate }} {{ ' origen' | translate }} *</label>
+                <ng-select2 name="Parámetro" [data]="listaParametros" 
+                formControlName="idParametro" 
+                (ngModelChange)="consultarConfiguracionP($event)"
+                [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }}...">
+                </ng-select2>
+            </div>
+            
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'Tipo operación ' | translate }} *</label>
+                <ng-select2 name="idOperacion" [data]="listaElemento
+             " formControlName="idOperacion"  [width]="'100%'"   placeholder="{{ 'Seleccionar' | translate }}..."  >
+                </ng-select2>
+                <p *ngIf="ngForm.submitted && idOperacion" class="error">
+                    <sup>*</sup> {{ "Elemento" | translate }} {{ "obligatorio" | translate }}
+                </p>
+            </div>
+            
+           
+        </div>
+        <div class="row"  >
+            <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                <div class="btn-group mr-2"    role="group" aria-label="First group">
+               
+                    <button type="submit" class="sish-boton-confirmar"> 
+                {{ 'Botones.Guardar' | translate }}
+                </button>
+                </div>
+ 
+            </div>
+        </div>
+    </form>
+
+
+
+    <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'id'" 
+     [columnaEstado]="'activo'" [condicionEstado]="'No'" 
+     [consultarRegistros]="false" 
+     [editarRegistros]="false" 
+     (accion)="accionRegistroColumnas($event)"
+     [rutaEdicion]="rutaEdicion"
+     [transformaciones]="{ activo: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}" 
+         [cambiarEstadoRegistros]="false"  [eliminarRegistros]="true" 
+         [verFiltros]="false" [verColumnas]="validarPermiso('ConsultarDominio')"
+        [crear]="false" [copiar]="validarPermiso('ConsultarDominio')" 
+        [imprimir]="validarPermiso('ConsultarDominio')"
+         [excel]="validarPermiso('ConsultarDominio')" 
+         [seleccionarRegistro]="false"></app-datatable>
+</div>

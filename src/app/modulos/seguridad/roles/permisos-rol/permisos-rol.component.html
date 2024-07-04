@@ -1,0 +1,77 @@
+<!-- Miga de Pan-->
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item active">
+                Rol
+            </li>
+            <li class="breadcrumb-item">
+                {{ id === "0" ? "Crear" : "Editar" }}
+            </li>
+        </ol>
+    </div>
+</div>
+
+<!-- Contenido -->
+<div class="container-fluid bg-white pt-5">
+    <!-- Titulo -->
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">
+                Rol: {{ id === "0" ? "Nuevo" : id }}
+            </h2>
+            <hr />
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <form class="sish-form" [formGroup]="formularioRol" novalidate>
+        <!-- Campo idRol -->
+        <input name="idRol" formControlName="idRol" type="hidden" />
+
+        <!-- Campos Generales -->
+        <div class="row" width="100%">
+            <!-- Campo Nombre Rol-->
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="rol">{{'Rol'|translate}}</label>
+                <input name="rol" formControlName="rol" type="text" class="form-control" />
+            </div>
+            <!-- Campo Descripción Rol-->
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="descripcion">{{'Descripcion'|translate}}</label>
+                <input name="descripcion" formControlName="descripcion" type="text" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Campos Auditoria -->
+        <div class="row">
+            <div class="col-md-12">
+                <p class="sish-datos-auditoria">
+                    <strong>{{'Auditoria'|translate}}</strong> | {{'Fecha'|translate}} {{'creacion'|translate}}:<label controlName="fechaCreacion"></label> | {{'Fecha'|translate}} {{'modificación'|translate}}: <label controlName="fechaModificacion"></label> | {{'Fecha'|translate}} {{'estado'|translate}}: <label controlName="fechaEstado"></label> | {{'Usuario'|translate}} {{'creacion'|translate}}:
+                    <label controlName="usuarioCreacion"></label> | {{'Usuario'|translate}} {{'modificación'|translate}}: <label controlName="usuarioModificacion"></label> | {{'Usuario'|translate}} {{'estado'|translate}}: <label controlName="usuarioEstado"></label>
+                </p>
+            </div>
+        </div>
+    </form>
+
+    <!-- Botones -->
+    <div class="btn-group mr-2" role="group" aria-label="Second group">
+        <!-- Boton Cancelar -->
+        <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/seguridad/roles']">
+            {{ 'Botones.Cancelar' | translate }}
+        </button>
+    </div>
+
+    <hr>
+
+    <!-- DataTable -->
+    <div class="row" width="100%">
+        <div class="col-md-12">
+            <!-- <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'idPermiso'" [columnaEstado]="'activo'" [condicionEstado]="'No'" [transformaciones]="{ activoPermiso: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}" [consultarRegistros]="false" -->
+            <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'idPermiso'" [columnaEstado]="'activo'" [condicionEstado]="'No'" [consultarRegistros]="false"
+                [editarRegistros]="false" [eliminarRegistros]="true" [cambiarEstadoRegistros]="false" [verFiltros]="true" [verColumnas]="true" [crear]="false" [copiar]="true" [imprimir]="true" [excel]="true" [botonesGenerales]="botonesGenerales" (accionGeneral)="accionGeneral($event)"
+                (accion)="accionRegistro($event)"></app-datatable>
+        </div>
+    </div>
+</div>

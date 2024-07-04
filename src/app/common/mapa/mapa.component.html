@@ -1,0 +1,19 @@
+<div class="row">
+    <div [ngClass]="capas ? 'col-md-8' : 'col-md-12'">
+        <div #mapViewNode></div>
+        <div #selectByRectangle id="selectByRectangle" class="esri-widget esri-widget--button esri-widget esri-interactive" title="Select features by rectangle" (click)="seleccionar()">
+            <span class="esri-icon-checkbox-unchecked"></span>
+        </div>
+    </div>
+    <div class="col-md-4" *ngIf="capas">
+        <div id="layerListPanel" name="layerListPanel" #layerListPanel class="panel-layers"></div>
+    </div>
+</div>
+<!--<div
+  #clearSelection
+  id="clearSelection"
+  class="esri-widget esri-widget--button esri-widget esri-interactive"
+  title="Clear selection"
+>
+  <span class="esri-icon-erase"></span>
+</div>-->

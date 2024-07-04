@@ -1,0 +1,137 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item">{{ "Estaciones" | translate }}</li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">{{ "Estaciones" | translate }}</h2>
+        </div>
+    </div>
+    <app-esri-map *ngIf="capas.length > 0" [capas]="capas" [center]="mapCenter" [basemap]="basemapType" [zoom]="mapZoomLevel" (clickMapa)="clickMapa($event)" (seleccionMapa)="seleccionMapa($event)" (mapLoadedEvent)="mapLoadedEvent($event)">
+    </app-esri-map>
+    <hr>
+    <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'idEstacion'" [rutaGeneral]="rutaGeneral" 
+        [rutaConsulta]="rutaConsulta" [rutaEdicion]="rutaEdicion" [columnaEstado]="'activo'" [condicionEstado]="'No'" 
+        [transformaciones]="{ activo: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}"
+        [consultarRegistros]="validarPermiso('ConsultarEstacion')" [editarRegistros]="validarPermiso('ActualizarEstacion')" 
+        [eliminarRegistros]="false" [cambiarEstadoRegistros]="validarPermiso('ActualizarEstacion')" (accion)="accionRegistro($event)" 
+        [verFiltros]="validarPermiso('ConsultarEstacion')" [verColumnas]="validarPermiso('ConsultarEstacion')" [crear]="validarPermiso('CrearEstacion')" 
+        [copiar]="validarPermiso('ConsultarEstacion')" [imprimir]="validarPermiso('ConsultarEstacion')" [excel]="validarPermiso('ConsultarEstacion')" 
+        [botones]="botones" (accionGeneral)="accionGeneral($event)" [seleccionarRegistro]="true" 
+        (listaSelect)="lista($event)" >
+    </app-datatable>
+</div>
+
+<div class="invisible">
+
+    <button type="button" #ModalMolinete class="invisible" data-toggle="modal" data-target="#ModalQe"></button>
+    <button type="button"  id="validarBtn" #ModalQr class="invisible" data-toggle="modal" data-target="#ModalQeCrear"></button>
+
+</div>
+
+<div id="ModalQe" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">QR Code </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body" id="qrconten">
+                <div class="form-group">
+                    <label>{{ "Estaciones" | translate }} :  {{  Estacion }}  </label> <br>
+                    <label>{{ "codigoEstacionIdeam" | translate }} :  {{  CodigoIdeam }}  </label> <br>
+                    <label>{{ "codigo" | translate }}  EAAB  :  {{  CodigoEaab }}  </label> <br>
+                </div>
+
+                <div class="container" width="100%">
+                    <ngx-qrcode [elementType]="tipoElementoQR" cssClass="qrcodeshadow" [width]="300" [value]="valorQR" [errorCorrectionLevel]="errorQR"></ngx-qrcode>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" (click)="imprimir()" class="btn btn-secondary">{{"imprimir"|translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="ModalQeCrear" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Crear QR  </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body" id="qrconten">
+                <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioQR" (ngSubmit)="crearCodigo()" novalidate>
+
+                    <div class="row">
+          
+                      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <label>{{ 'Ingresar QR  ' | translate }}</label>
+          
+          
+          
+                        <div class="form-group">
+                          <label> {{ 'Tipo de elemento ' | translate }}</label>
+          
+                          <input type="text" class="form-control" [attr.disabled]="true" name="identificacion" formControlName="idtipoElemento"
+                             [(ngModel)]="tipoElemento" [width]="'100%'">
+          
+          
+                       
+                        </div>
+          
+                        <div class="form-group">
+                          <label> {{ 'Estación' | translate }} </label>
+                          <input type="text" class="form-control" [attr.disabled]="true"  name="elemento" formControlName="elemento"   
+                         [(ngModel)]="idElementoN" [width]="'100%'">
+                        
+          
+          
+          
+                        </div>
+          
+                        <div class="form-group">
+                          <label> {{ 'Codigo QR' | translate }} </label>
+                          <input type="text" class="form-control"  name="idCodigo"   [(ngModel)]="codigo"
+                            formControlName="idcodigo" [width]="'100%'">
+          
+          
+                        </div>
+          
+                        <div class="form-group">
+                          <br>
+          
+                          <button type="submit" class="sish-boton-confirmar text-center">
+                            Guardar
+                          </button>
+          
+          
+                        </div>
+          
+                      </div>
+          
+          
+                    </div>
+                  </form>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">salir</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,479 @@
+<!-- Miga de Pan -->
+<div class="row text-right sish-miga-de-pan" style="margin-top: 60px;">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active"> {{'Configuracion'|translate}}</li>
+            <li class="breadcrumb-item"> {{ 'GestionReportes' | translate }}</li>
+        </ol>
+    </div>
+</div>
+
+<!--Contenido -->
+<div class="container-fluid bg-white pt-5">
+
+    <!-- Título -->
+    <div class="row">
+        <div class="col-md-12" style="position: relative;">
+            <h2 class="sish-titulo-formulario" style="float: left; position: relative; ">Reportes estáticos</h2>
+            <hr style="margin-top: 40px;" />
+        </div>
+    </div>
+
+    <!-- DataTable -->
+    <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'reporteId'" [consultarRegistros]="false"
+        [editarRegistros]="false" [eliminarRegistros]="false" [cambiarEstadoRegistros]="false" [verFiltros]="false"
+        [verColumnas]="validarPermiso('ConsultarReporte')" [crear]="false" [copiar]="validarPermiso('ConsultarReporte')"
+        [imprimir]="validarPermiso('ConsultarReporte')" [excel]="validarPermiso('ConsultarReporte')" [botones]="botones"
+        (accion)="accionRegistro($event)" [seleccionarRegistro]="false">
+    </app-datatable>
+
+    <!-- Modal Reporte Caudales Aforados -->
+    <div id="modalR1" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sx">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Parámetros reporte caudales aforados</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="formR1" class="sish-form" #ngForm="ngForm" [formGroup]="formGroupR1"
+                        (ngSubmit)="onNavegarR1($event)" novalidate>
+                        <div class="form-group col-xl-3 col-lg-4 col-md-12 col-sm-12">
+                            <!-- Ano -->
+                            <div>
+                                <label for="r1AnoCBID">* Año</label>
+                                <ng-select2 id="r1AnoCBID" name="r1AnoCB" [data]="listaAnos" formControlName="r1AnoCB"
+                                    [(ngModel)]="idAno" width="100%" placeholder="{{ 'Seleccionar' | translate }}...">
+                                    <label>Año*</label>
+                                </ng-select2>
+                                <p *ngIf="ngForm.submitted && r1AnoFC!.invalid" class="error">
+                                    <sup>*</sup>Año obligatorio.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- ComboBox selector de estacion -->
+                        <div class="form-group col-xl-3 col-lg-4 col-md-12 col-sm-12">
+                            <label for="r1EstacionesDivID">Estación</label>
+                            <div id="r1EstacionesDivID" name="r1EstacionesDiv">
+                                <label for="r1EstacionesCBID">* Estación a seleccionar</label>
+                                <ng-select2 id="r1EstacionesCBID" name="r1EstacionesCB"
+                                    [data]="listaEstacionesDisponibles" formControlName="r1EstacionesCB"
+                                    [(ngModel)]="idEstacion" (ngModelChange)="onEstacionesCBChange($event)" width="100%"
+                                    placeholder="{{ 'Seleccionar' | translate }}...">
+                                    <label>Estación*</label>
+                                </ng-select2>
+                            </div>
+                        </div>
+
+                        <!-- Tabla con las estaciones seleccionadas. -->
+                        <div class="form-group" *ngIf="listaEstacionesAgregadas.length>0">
+                            <label for="r1EstacionesTableID">Estaciones Seleccionadas</label>
+                            <table id="r1EstacionesTableID" name="r1EstacionesTable" datatable class="sish-tabla">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id Estacion</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Código EAAB</th>
+                                        <th scope="col">Código IDEAM</th>
+                                        <th scope="col">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="text-center" *ngFor="let dato of listaEstacionesAgregadas">
+                                        <td scope="row"> {{dato.id}} </td>
+                                        <td scope="row"> {{dato.text}} </td>
+                                        <td scope="row"> {{dato.codigoEAAB}} </td>
+                                        <td scope="row"> {{dato.codigoIDEAM}} </td>
+                                        <td scope="row"><a class="sish-boton-rojo" title="Eliminar"
+                                                (click)="eliminarEstacionAgregada(dato.id)"><em
+                                                    class="fas fa-trash-alt"></em></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p *ngIf="ngForm.submitted && !(listaEstacionesAgregadas.length>=1 && listaEstacionesAgregadas.length<=15)"
+                                class="error">
+                                <sup>*</sup>Debe seleccionar al menos entre [1-15] estaciones para este reporte.
+                            </p>
+                        </div>
+
+                        <!-- Botones. -->
+                        <div class="form-group text-center">
+                            <!-- Boton Submit -->
+                            <button type="submit" class="sish-boton-confirmar">Generar</button>
+
+                            <!-- Boton Cancelar -->
+                            <button type="button" class="sish-boton-cancelar" (click)="onCancelarModalR1()"
+                                data-dismiss="modal">{{"Botones.Cancelar"|translate}}</button>
+                        </div>
+
+                        <div class="invisible">
+                            <button type="button" #modalR1 class="invisible" data-toggle="modal"
+                                data-target="#modalR1"></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Reporte Caudales Aforados -->
+    <div id="modalR2" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sx">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Parámetros reporte fuentes superficiales</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="formR2" class="sish-form" #ngForm="ngForm" [formGroup]="formGroupR2"
+                        (ngSubmit)="onNavegarR2($event)" novalidate>
+                        <div class="form-group col-xl-3 col-lg-4 col-md-12 col-sm-12">
+                            <!-- Ano -->
+                            <div>
+                                <label for="r2AnoCBID">* Año</label>
+                                <ng-select2 id="r2AnoCBID" name="r2AnoCB" [data]="listaAnos" formControlName="r2AnoCB"
+                                    [(ngModel)]="idAno" width="100%" placeholder="{{ 'Seleccionar' | translate }}...">
+                                    <label>Año*</label>
+                                </ng-select2>
+                                <p *ngIf="ngForm.submitted && r2AnoFC!.invalid" class="error">
+                                    <sup>*</sup>Año obligatorio.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- ComboBox selector de estacion -->
+                        <div class="form-group col-xl-3 col-lg-4 col-md-12 col-sm-12">
+                            <label for="r2EstacionesDivID">Estación</label>
+                            <div id="r2EstacionesDivID" name="r2EstacionesDiv">
+                                <label for="r2EstacionesCBID">* Estación a seleccionar</label>
+                                <ng-select2 id="r2EstacionesCBID" name="r2EstacionesCB"
+                                    [data]="listaEstacionesDisponibles" formControlName="r2EstacionesCB"
+                                    [(ngModel)]="idEstacion" (ngModelChange)="onEstacionesCBChange($event)" width="100%"
+                                    placeholder="{{ 'Seleccionar' | translate }}...">
+                                    <label>Estación*</label>
+                                </ng-select2>
+                            </div>
+                        </div>
+
+                        <!-- Tabla con las estaciones seleccionadas. -->
+                        <div class="form-group" *ngIf="listaEstacionesAgregadas.length>0">
+                            <label for="r2EstacionesTableID">Estaciones Seleccionadas</label>
+                            <table id="r2EstacionesTableID" name="r2EstacionesTable" datatable class="sish-tabla">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id Estacion</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Código EAAB</th>
+                                        <th scope="col">Código IDEAM</th>
+                                        <th scope="col">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="text-center" *ngFor="let dato of listaEstacionesAgregadas">
+                                        <td scope="row"> {{dato.id}} </td>
+                                        <td scope="row"> {{dato.text}} </td>
+                                        <td scope="row"> {{dato.codigoEAAB}} </td>
+                                        <td scope="row"> {{dato.codigoIDEAM}} </td>
+                                        <td scope="row"><a class="sish-boton-rojo" title="Eliminar"
+                                                (click)="eliminarEstacionAgregada(dato.id)"><em
+                                                    class="fas fa-trash-alt"></em></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p *ngIf="ngForm.submitted && (listaEstacionesAgregadas.length<1 || listaEstacionesAgregadas.length>1) "
+                                class="error">
+                                <sup>*</sup>Debe seleccionar SOLO una estación.
+                            </p>
+                        </div>
+
+                        <!-- Botones. -->
+                        <div class="form-group text-center">
+                            <!-- Boton Submit -->
+                            <button type="submit" class="sish-boton-confirmar">Generar</button>
+
+                            <!-- Boton Cancelar -->
+                            <button type="button" class="sish-boton-cancelar" (click)="onCancelarModalR1()"
+                                data-dismiss="modal">{{"Botones.Cancelar"|translate}}</button>
+                        </div>
+
+                        <div class="invisible">
+                            <button type="button" #modalR2 class="invisible" data-toggle="modal"
+                                data-target="#modalR2"></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Reporte Niveles -->
+    <div id="modalR3" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sx">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Parámetros reportes niveles</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="formR3" class="sish-form" #ngForm="ngForm" [formGroup]="formGroupR3"
+                        (ngSubmit)="onNavegarR3($event)" novalidate>
+                        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <!-- Ano -->
+                            <div>
+                                <label for="r3AnoCBID">* Año</label>
+                                <ng-select2 id="r3AnoCBID" name="r3AnoCB" [data]="listaAnos" formControlName="r3AnoCB"
+                                    [(ngModel)]="idAno" width="100%" placeholder="{{ 'Seleccionar' | translate }}...">
+                                    <label>Año*</label>
+                                </ng-select2>
+                                <p *ngIf="ngForm.submitted && r3AnoFC!.invalid" class="error">
+                                    <sup>*</sup>Año obligatorio.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- ComboBox Mes -->
+                        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <label for="r3MesCBID">* Mes</label>
+                            <ng-select2 id="r3MesCBID" name="r3MesCB" [data]="listaMeses" formControlName="r3MesCB"
+                                [(ngModel)]="idMes" width="100%" placeholder="{{ 'Seleccionar' | translate }}...">
+                                <label>Mes*</label>
+                            </ng-select2>
+                        </div>
+
+                        <!-- ComboBox selector de estacion -->
+                        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <label for="r3EstacionesDivID">Estación</label>
+                            <div id="r3EstacionesDivID" name="r3EstacionesDiv">
+                                <label for="r3EstacionesCBID">* Estación a seleccionar</label>
+                                <ng-select2 id="r3EstacionesCBID" name="r3EstacionesCB"
+                                    [data]="listaEstacionesDisponibles" formControlName="r3EstacionesCB"
+                                    [(ngModel)]="idEstacion" (ngModelChange)="onEstacionesCBChange($event)" width="100%"
+                                    placeholder="{{ 'Seleccionar' | translate }}...">
+                                    <label>Estación*</label>
+                                </ng-select2>
+                            </div>
+                        </div>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" style="visibility: hidden;"  data-toggle="modal"  id="codigoNesplu" data-target="#exampleModal">
+                            Cargar codigo Nesplu
+                        </button>
+
+                        <!-- Tabla con las estaciones seleccionadas. -->
+                        <div class="form-group" *ngIf="listaEstacionesAgregadas.length>0">
+                            <label for="r3EstacionesTableID">Estaciones Seleccionadas</label>
+                            <table id="r3EstacionesTableID" name="r3EstacionesTable" datatable class="sish-tabla">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id Estacion</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Código EAAB</th>
+                                        <th scope="col">Código IDEAM</th>
+                                        <th scope="col">Codigo Nesplu</th>
+                                        <th scope="col">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="text-center" *ngFor="let dato of listaEstacionesAgregadas">
+                                        <td scope="row"> {{dato.id}} </td>
+                                        <td scope="row"> {{dato.text}} </td>
+                                        <td scope="row"> {{dato.codigoEAAB}} </td>
+                                        <td scope="row"> {{dato.codigoIDEAM}} </td>
+                                        <td scope="row"> {{dato.nesplu}} </td>
+                                        <td scope="row"><a class="sish-boton-rojo" title="Eliminar"
+                                                (click)="eliminarEstacionAgregada(dato.id)"><em
+                                                    class="fas fa-trash-alt"></em></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p *ngIf="ngForm.submitted && !(listaEstacionesAgregadas.length>=1 && listaEstacionesAgregadas.length<=15)"
+                                class="error">
+                                <sup>*</sup>Debe seleccionar al menos entre [1-15] estaciones para este reporte.
+                            </p>
+                        </div>
+
+                        <!-- Botones. -->
+                        <div class="form-group text-center">
+                            <!-- Boton Submit -->
+                            <button type="submit" class="sish-boton-confirmar">Generar</button>
+
+                            <!-- Boton Cancelar -->
+                            <button type="button" class="sish-boton-cancelar" (click)="onCancelarModalR1()"
+                                data-dismiss="modal">{{"Botones.Cancelar"|translate}}</button>
+                        </div>
+
+                        <div class="invisible">
+                            <button type="button" #modalR3 class="invisible" data-toggle="modal"
+                                data-target="#modalR3"></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Reporte Precipitacion -->
+    <div id="modalR4" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sx">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Parámetros reportes precipitación</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="formR4" class="sish-form" #ngForm="ngForm" [formGroup]="formGroupR4"
+                        (ngSubmit)="onNavegarR4($event)" novalidate>
+                        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <!-- Ano -->
+                            <div>
+                                <label for="r3AnoCBID">* Año</label>
+                                <ng-select2 id="r4AnoCBID" name="r4AnoCB" [data]="listaAnos" formControlName="r4AnoCB"
+                                    [(ngModel)]="idAno" width="100%" placeholder="{{ 'Seleccionar' | translate }}...">
+                                    <label>Año*</label>
+                                </ng-select2>
+                                <p *ngIf="ngForm.submitted && r3AnoFC!.invalid" class="error">
+                                    <sup>*</sup>Año obligatorio.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- ComboBox Mes -->
+                        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <label for="r4MesCBID">* Mes</label>
+                            <ng-select2 id="r4MesCBID" name="r4MesCB" [data]="listaMeses" formControlName="r4MesCB"
+                                [(ngModel)]="idMes" width="100%" placeholder="{{ 'Seleccionar' | translate }}...">
+                                <label>Mes*</label>
+                            </ng-select2>
+                        </div>
+
+                        <!-- ComboBox selector de estacion -->
+                        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <label for="r4EstacionesDivID">Estación</label>
+                            <div id="r4EstacionesDivID" name="r4EstacionesDiv">
+                                <label for="r4EstacionesCBID">* Estación a seleccionar</label>
+                                <ng-select2 id="r4EstacionesCBID" name="r4EstacionesCB"
+                                    [data]="listaEstacionesDisponibles" formControlName="r4EstacionesCB"
+                                    [(ngModel)]="idEstacion" (ngModelChange)="onEstacionesCBChange($event)" width="100%"
+                                    placeholder="{{ 'Seleccionar' | translate }}...">
+                                    <label>Estación*</label>
+                                </ng-select2>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="btn btn-primary" data-toggle="modal" style="visibility: hidden;"  data-target="#exampleModal1">
+                            Cargar codigo Nesplu
+                        </button>
+
+                        <!-- Tabla con las estaciones seleccionadas. -->
+                        <div class="form-group" *ngIf="listaEstacionesAgregadas.length>0">
+                            <label for="r4EstacionesTableID">Estaciones Seleccionadas</label>
+                            <table id="r4EstacionesTableID" name="r4EstacionesTable" datatable class="sish-tabla">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id Estacion</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Código EAAB</th>
+                                        <th scope="col">Código IDEAM</th>
+                                        <th scope="col">Codigo Nesplu</th>
+                                        <th scope="col">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="text-center" *ngFor="let dato of listaEstacionesAgregadas">
+                                        <td scope="row"> {{dato.id}} </td>
+                                        <td scope="row"> {{dato.text}} </td>
+                                        <td scope="row"> {{dato.codigoEAAB}} </td>
+                                        <td scope="row"> {{dato.codigoIDEAM}} </td>
+                                        <td scope="row"> {{dato.nesplu}} </td>
+                                        <td scope="row"><a class="sish-boton-rojo" title="Eliminar"
+                                                (click)="eliminarEstacionAgregada(dato.id)"><em
+                                                    class="fas fa-trash-alt"></em></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p *ngIf="ngForm.submitted && !(listaEstacionesAgregadas.length>=1 && listaEstacionesAgregadas.length<=15)"
+                                class="error">
+                                <sup>*</sup>Debe seleccionar al menos entre [1-15] estaciones para este reporte.
+                            </p>
+                        </div>
+
+                        <!-- Botones. -->
+                        <div class="form-group text-center">
+                            <!-- Boton Submit -->
+                            <button type="submit" class="sish-boton-confirmar">Generar</button>
+
+                            <!-- Boton Cancelar -->
+                            <button type="button" class="sish-boton-cancelar" (click)="onCancelarModalR1()"
+                                data-dismiss="modal">{{"Botones.Cancelar"|translate}}</button>
+                        </div>
+
+                        <div class="invisible">
+                            <button type="button" #modalR4 class="invisible" data-toggle="modal"
+                                data-target="#modalR4"></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal"  role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="formR3" class="sish-form" #ngForm="ngForm" [formGroup]="formGroupR3">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Codigo Nesplu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="r3Codigo" name="r3Codigo" formControlName="r3Codigo"       [(ngModel)]="nesplu" 
+                        placeholder="digite el codigo">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cerrar"  data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" (click)="agregarcodigoNiveles()">Cargar codigo</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="formR4" class="sish-form" #ngForm="ngForm" [formGroup]="formGroupR4">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Codigo Nesplu</h5>
+                    <button type="button"  id="cerrarModal"  class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="r4Codigo" name="r4Codigo" formControlName="r4Codigo"  [(ngModel)]="nesplu" 
+                        placeholder="digite el codigo">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cerrar" data-dismiss="modal">Cerrar</button> 
+
+                    <button type="submit" class="btn btn-primary"  (click)="agregarcodigoPrecipitacion()">Cargar codigo</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

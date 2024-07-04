@@ -1,0 +1,400 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">{{'Configuracion'|translate}}</li>
+            <li class="breadcrumb-item active" [routerLink]="['/configuracion/gestionCriterios']">
+                {{'criterios'|translate}} {{'aceptacion'|translate}}
+            </li>
+            <li class="breadcrumb-item">
+                {{ id === "0" ? "Crear" : "Editar" }}
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">
+
+                {{ id === "0" ? "Crear" : ac == 'V' ? "Detalle" : "Editar" }} {{ 'criterios' | translate }}
+            </h2>
+            <hr />
+        </div>
+    </div>
+
+    <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioCriterios" (ngSubmit)="guardar()" novalidate>
+        <input name="id" formControlName="idCriterio" type="hidden" />
+        <div class="row" width="100%">
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="codigo"> {{'codigo'|translate}} *</label>
+                <input name="codigo" formControlName="codigo" type="number"   [(ngModel)]="codigoid"
+                  [readonly]="bloquear" class="form-control"
+                    placeholder="{{'codigo'|translate}}" />
+
+                <p *ngIf="ngForm.submitted && codigo!.invalid" class="error">
+                    <sup>*</sup> {{ "codigo" | translate }} {{ "obligatoria" | translate }}
+                </p>
+
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="Nombre"> {{'Nombre'|translate}} *</label>
+                <input name="nombre" formControlName="nombre" type="text" class="form-control"
+                    placeholder="{{'Nombre'|translate}}" />
+
+                <p *ngIf="ngForm.submitted && nombre!.invalid" class="error">
+                    <sup>*</sup> {{ "Nombre" | translate }} {{ "obligatoria" | translate }}
+                </p>
+
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label for="descripcion">{{'Descripción' |translate}} *</label>
+                <input name="descripcion" formControlName="descripcion" type="text" class="form-control"
+                    placeholder="{{'DescripcionDetallada'|translate}} {{'criterios'|translate}}" />
+
+                    <p *ngIf="ngForm.submitted && descripcion!.invalid" class="error">
+                        <sup>*</sup> {{ "DescripcionDetallada" | translate }} {{ "obligatoria" | translate }}
+                    </p>
+            </div>
+
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="sish-datos-auditoria">
+                    <strong>{{'Auditoria'|translate}}</strong> | {{'Fecha'|translate}} {{'creacion'|translate}}:<label controlName="fechaCreacion"></label> | {{'Fecha'|translate}} {{'modificación'|translate}}: <label controlName="fechaModificacion"></label>                    | {{'Fecha'|translate}} {{'estado'|translate}}: <label controlName="fechaEstado"></label> | {{'Usuario'|translate}} {{'creacion'|translate}}:
+                    <label controlName="usuarioCreacion"></label> | {{'Usuario'|translate}} {{'modificación'|translate}}: <label controlName="usuarioModificacion"></label> | {{'Usuario'|translate}} {{'estado'|translate}}: <label controlName="usuarioEstado"></label>
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+
+                    <button type="submit"   *ngIf="ac !='V'"    class="sish-boton-confirmar">
+                        {{ 'Botones.Guardar' | translate }}
+                    </button>
+                    <button type="button" class="sish-boton-cancelar"
+                        [routerLink]="['/configuracion/gestionCriterios']">
+                        {{ 'Botones.Regresar' | translate }}
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+    <hr>
+    <div *ngIf="id != '0'">
+
+
+        <h3 class="sish-titulo-formulario">
+            Listado de valores
+        </h3>
+
+        <!-- TABLA VALORES -->
+        <div class="row" width="100%">
+            <div class="col-md-12">
+                <app-datatable [datos]="datosFilter" [opciones]="columnas" [id]="'idParametroXCriterio'"
+                    [columnaEstado]="'activo'" [condicionEstado]="'No'"
+                    [transformaciones]="{ activo: { S: 'Sí', N: 'No' }, nombre: {'Administrador 1': 'W'}}"
+                    [consultarRegistros]="false" [editarRegistros]="false" [eliminarRegistros]="eliminar"
+                    [cambiarEstadoRegistros]="false" [verFiltros]="false" [verColumnas]="false" [crear]="false"
+                    [copiar]="false" [imprimir]="false" [excel]="false" [botonesGenerales]="botonesGenerales"
+                    [botones]="botones" [seleccionarRegistro]="false" (accion)="accionRegistro($event)"
+                    (accionGeneral)="accionGeneral($event)"></app-datatable>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<div class="invisible">
+
+    <button id="idbtn" type="button" #ModalValores class="invisible" data-toggle="modal" data-target="#ModalValores"></button>
+    <button  id="idbtn2" type="button" #ModalValores2 class="invisible" data-toggle="modal" data-target="#ModalValores2"></button>
+    <button  id="idbtn3" type="button" #ModalValores3 class="invisible" data-toggle="modal" data-target="#ModalValores3"></button>
+    <button  id="idbtn4" type="button" #ModalValores4 class="invisible" data-toggle="modal" data-target="#ModalValores4"></button>
+
+</div>
+
+
+<div id="ModalValores" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{"asignarValores"|translate}} </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="qrconten">
+                <div class="form-group">
+                    <label>{{'criterios'|translate}} : {{criterio}} </label> <br>
+                    <label>{{'Parámetro'|translate}} : {{parametro}} </label> <br>
+                </div>
+
+
+
+                <form class="sish-form" [formGroup]="formularioValores" (ngSubmit)="guardarValores()" novalidate>
+                    <input name="id" formControlName="idValoresCalidad" type="hidden" />
+                    <input name="id" formControlName="idParametroXCriterio" type="hidden" />
+
+                    <div class="row" width="100%">
+
+                        <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                            <label for="dominio"> {{'valor'|translate}} {{'maximo'|translate}} *</label>
+                            <input name="valor1" formControlName="valor1" type="number" class="form-control"
+                                placeholder="{{'valor'|translate}}  {{'maximo'|translate}}" />
+
+                        </div>
+
+                        <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                            <label for="dominio"> {{'valor'|translate}} {{'minimo'|translate}} *</label>
+                            <input name="valor2" formControlName="valor2" type="number" class="form-control"
+                                placeholder="{{'valor'|translate}}  {{'minimo'|translate}}" />
+                        </div>
+
+                        <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                            <label> {{ 'Fecha'|translate}} {{ 'vigencia'|translate}} </label>
+                            <input type="date" class="form-control" formControlName="fechaVigencia"
+                                name="fechaVigencia" />
+
+                        </div>
+
+                    </div>
+                    <hr>
+
+
+                    <div class="row">
+                        <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                            <div class="btn-group mr-2" role="group" aria-label="First group">
+
+                                <button type="submit" (click)="guardarValores()" data-dismiss="modal"
+                                    class="sish-boton-confirmar">
+                                    {{ 'Botones.Guardar' | translate }}
+                                </button>
+                                <button type="button" class="sish-boton-cancelar" data-dismiss="modal">
+                                    {{ 'Botones.Cancelar' | translate }}
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="ModalValores2" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{"asignarValores"|translate}} </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="qrconten">
+                <div class="form-group">
+                    <label>{{'criterios'|translate}} : {{criterio}} </label> <br>
+                    <label>{{'Parámetro'|translate}} : {{parametro}} </label> <br>
+                </div>
+
+
+
+                <form class="sish-form" [formGroup]="formularioValores" (ngSubmit)="guardarValores()" novalidate>
+                    <input name="id" formControlName="idValoresCalidad" type="hidden" />
+                    <input name="id" formControlName="idParametroXCriterio" type="hidden" />
+
+                    <div class="row" width="100%">
+
+                        <div class="form-group col-xl-12 col-xl-12 col-xl-12 col-sm-12">
+                            <label for="dominio"> {{'parametro'|translate}} *</label>
+                            <ng-select2 name="valor1" [data]="listaparametrosSelect" formControlName="valor1"
+                                [width]="'100%'">
+                            </ng-select2>
+                        </div>
+
+                        <div class="form-group col-xl-12 col-xl-12 col-xl-12 col-sm-12">
+                            <label for="dominio"> {{'Relacion'|translate}} *</label>
+                            <ng-select2 name="valor2" [data]="listaRelacion" formControlName="valor2" [width]="'100%'">
+                            </ng-select2>
+
+                        </div>
+
+                        <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12" *ngIf="ActivarElementos">
+                            <label for="dominio"> {{'elemento'|translate}} *</label>
+                            <ng-select2 name="valor3" [data]="listaElementos"
+                            formControlName="valor3" [width]="'100%'">
+                            </ng-select2>
+
+                        </div>
+
+                        <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                            <label> {{ 'Fecha'|translate}} {{ 'vigencia'|translate}} </label>
+                            <input type="date" class="form-control" formControlName="fechaVigencia"
+                                name="fechaVigencia" />
+                        </div>
+
+                    </div>
+                    <hr>
+
+
+                    <div class="row">
+                        <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                            <div class="btn-group mr-2" role="group" aria-label="First group">
+
+                                <button type="submit" (click)="guardarValores()" data-dismiss="modal"
+                                    class="sish-boton-confirmar">
+                                    {{ 'Botones.Guardar' | translate }}
+                                </button>
+                                <button type="button" class="sish-boton-cancelar" data-dismiss="modal">
+                                    {{ 'Botones.Cancelar' | translate }}
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div id="ModalValores3" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{"asignarValores"|translate}} </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="qrconten">
+                <div class="form-group">
+                    <label>{{'criterios'|translate}} : {{criterio}} </label> <br>
+                    <label>{{'Parámetro'|translate}} : {{parametro}} </label> <br>
+                </div>
+
+
+
+                <form class="sish-form" [formGroup]="formularioValores" (ngSubmit)="guardarValoresNumeroB()" novalidate>
+                    <input name="id" formControlName="idValoresCalidad" type="hidden" />
+                    <input name="id" formControlName="idParametroXCriterio" type="hidden" />
+
+                    <div class="row" width="100%">
+
+                        <div class="form-group  text-center col-xl-8 col-lg-8 col-md-8 col-sm-8">
+                            <label> {{ 'Valor '|translate}} {{ 'de validacion'|translate}} </label>
+                            <input type="number"  class="form-control" formControlName="valor1"
+                                name="valor1" />
+                        </div>
+
+                        <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                            <label> {{ 'Fecha'|translate}} {{ 'vigencia'|translate}} </label>
+                            <input type="date" class="form-control" formControlName="fechaVigencia"
+                                name="fechaVigencia" />
+                        </div>
+
+
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                            <div class="btn-group mr-2" role="group" aria-label="First group">
+
+                                <button type="submit" (click)="guardarValoresNumeroB()" data-dismiss="modal"
+                                    class="sish-boton-confirmar">
+                                    {{ 'Botones.Guardar' | translate }}
+                                </button>
+                                <button type="button" class="sish-boton-cancelar" data-dismiss="modal">
+                                    {{ 'Botones.Cancelar' | translate }}
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="ModalValores4" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{"asignarValores"|translate}} </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="qrconten">
+                <div class="form-group">
+                    <label>{{'criterios'|translate}} : {{criterio}} </label> <br>
+                    <label>{{'Parámetro'|translate}} : {{parametro}} </label> <br>
+                </div>
+
+
+
+                <form class="sish-form" [formGroup]="formularioValores" (ngSubmit)="guardarValoresNumeroB()" novalidate>
+                    <input name="id" formControlName="idValoresCalidad" type="hidden" />
+                    <input name="id" formControlName="idParametroXCriterio" type="hidden" />
+
+                    <div class="row" width="100%">
+
+
+
+                        <div class="form-group  text-center col-xl-8 col-lg-8 col-md-8 col-sm-8">
+                            <label> {{ 'Número'|translate}} {{ 'de Observaciones'|translate}} </label>
+                            <input type="number"  class="form-control" formControlName="valor1"
+                                name="valor1" />
+                        </div>
+                        <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                            <label> {{ 'Fecha'|translate}} {{ 'vigencia'|translate}} </label>
+                            <input type="date" class="form-control" formControlName="fechaVigencia"
+                                name="fechaVigencia" />
+                        </div>
+
+
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="form-group col-xl-12 col-lg-6 col-sm-12 ">
+                            <div class="btn-group mr-2" role="group" aria-label="First group">
+
+                                <button type="submit" (click)="guardarValoresNumeroB()" data-dismiss="modal"
+                                    class="sish-boton-confirmar">
+                                    {{ 'Botones.Guardar' | translate }}
+                                </button>
+                                <button type="button" class="sish-boton-cancelar" data-dismiss="modal">
+                                    {{ 'Botones.Cancelar' | translate }}
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

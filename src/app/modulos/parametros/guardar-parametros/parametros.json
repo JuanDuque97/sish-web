@@ -1,0 +1,8 @@
+[{
+    "id": 1,
+    "nombre": "Administrador",
+    "descripcion": "Rol de administrador",
+    "estado": "Activo",
+    "fechaCreacion": "01-01-2021",
+    "fechaModificacion": "03-05-2021"
+}]

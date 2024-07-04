@@ -1,0 +1,346 @@
+<div class="row text-right sish-miga-de-pan">
+    <div class="col-md-12 text-right">
+        <ol class="breadcrumb float-sm-right sish-miga-de-pan">
+            <li class="breadcrumb-item active">Configuración</li>
+            <li class="breadcrumb-item active" [routerLink]="['/configuracion/parametros']">
+                {{ "Estaciones" | translate }}
+            </li>
+            <li class="breadcrumb-item">
+                {{ id === "0" ? "Crear" : "Editar" }}
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid bg-white pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="sish-titulo-formulario">
+                {{ id === "0" ? "Crear" :  ac == 'V' ? "Detalle" : "Editar"  }} {{ ' estación ' | translate }}  {{ id === "0" ? "nueva" : estacion?.value }} 
+            </h2>
+            <hr />
+        </div>
+    </div>
+    <!--INICIA FORMULARIO-->
+    <form class="sish-form" #ngForm="ngForm" [formGroup]="formularioEstaciones" (ngSubmit)="guardar()" novalidate>
+        <input name="id" formControlName="idEstacion" type="hidden" />
+
+
+        <div class="row" width="100%">
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ "Codigo estación IDEAM" | translate }} * </label>
+                 <input type="text" autocomplete="off"  maxlength="8"
+                class="form-control" formControlName="codigoEstacionIdeam" name="CodigoEstacionIdeam" placeholder="{{ 'Seleccionar' | translate }} {{ 'Codigo estación IDEAM' | translate }}..." />
+
+
+                <p *ngIf="ngForm.submitted && codigoEstacionIdeam!.invalid" class="error">
+                    <sup>*</sup> {{ "codigoIdeam" | translate }} {{ "obligatoria" | translate }}
+                </p>
+
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ "Nombre de la estación" | translate }} *</label>
+                 <input type="text" autocomplete="off"  maxlength="50"class="form-control" formControlName="estacion" name="Estacion" placeholder="{{ 'Seleccionar' | translate }} {{ 'Nombre de la estación' | translate }}..." />
+                <p *ngIf="ngForm.submitted && estacion!.invalid" class="error">
+                    <sup>*</sup> {{ "nombreEstacion" | translate }} {{ "obligatoria" | translate }}
+                </p>
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label>{{ 'codigo' | translate }} {{ " estación" | translate }}  EAAB *</label>
+                 <input type="text"   autocomplete="off"  
+                 maxlength="10" class="form-control" formControlName="codigoEstacionEaab" name="codigoEstacionEaab" placeholder="{{ 'Seleccionar' | translate }} {{ ' codigo' | translate }} {{ ' estación EAAB' | translate }}..." />
+
+                <p *ngIf="ngForm.submitted && codigoEstacionEaab!.invalid" class="error">
+                    <sup>*</sup> {{ "codigo" | translate }} EAAB {{ "obligatoria" | translate }}
+                </p>
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label>{{ "Categoria" | translate }} *</label>
+                <ng-select2 name="idCategoria" [data]="listaCategorias" 
+                
+                formControlName="idCategoria" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+            ' categoria' | translate
+          }}...">
+                </ng-select2>
+                <p *ngIf="ngForm.submitted && idCategoria!.invalid" class="error">
+                    <sup>*</sup> {{ "categoriaEstacion" | translate }} {{ "obligatoria" | translate }}
+                </p>
+
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label>{{ "Tecnologia" | translate }} *</label>
+                <ng-select2 name="idTecnologia" [data]="listaTecnologias" formControlName="idTecnologia" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+            ' tecnología' | translate
+          }}...">
+                </ng-select2>
+
+                <p *ngIf="ngForm.submitted && idTecnologia!.invalid" class="error">
+                    <sup>*</sup> {{ "tecnologiaEstacion" | translate }} {{ "obligatoria" | translate }}
+                </p>
+
+            </div>
+
+            <!-- <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label>{{ "Tipo estación" | translate }} *</label>
+                <ng-select2 name="idTipoEstacion" [data]="listaTipoEstacion" formControlName="idTipoEstacion" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+            'tipo estación' | translate
+          }}...">
+                </ng-select2>
+
+                <p *ngIf="ngForm.submitted && idTipoEstacion!.invalid" class="error">
+                    <sup>*</sup> {{ "tipoEstacion" | translate }} {{ "obligatoria" | translate }}
+                </p>
+
+            </div> -->
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label>{{ "Entidad" | translate }} *</label>
+                <ng-select2 name="idEntidad" [data]="listaEntidad" formControlName="idEntidad" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+            ' entidad' | translate
+          }}...">
+                </ng-select2>
+                <p *ngIf="ngForm.submitted && idEntidad!.invalid" class="error">
+                    <sup>*</sup> {{ "entidadEstacion" | translate }} {{ "obligatoria" | translate }}
+                </p>
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label>{{ "Estado" | translate }} *</label>
+                <ng-select2 name="idEstado" [data]="listaEstado" formControlName="idEstado" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+            'estado' | translate
+          }}...">
+                </ng-select2>
+
+                <p *ngIf="ngForm.submitted && idEstado!.invalid" class="error">
+                    <sup>*</sup> {{ "estadoEstacion" | translate }} {{ "obligatoria" | translate }}
+                </p>
+            </div>
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ "Fecha de instalación" | translate }} *</label>
+                <input type="date" class="form-control" formControlName="fechaInstalacion" name="FechaInstalacion" placeholder="{{ 'Seleccionar' | translate }} {{ 'fecha instalación' | translate }}" />
+                <p *ngIf="ngForm.submitted && fechaInstalacion!.invalid" class="error">
+                    <sup>*</sup> {{ "fechaInstalacion" | translate }} {{ "obligatoria" | translate }}
+                </p>
+
+            </div>
+
+
+            <!-- <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ 'fechaEstado' | translate }}</label>
+                <input type="date" class="form-control" formControlName="fechaModificacion" name="FechaModificacion" placeholder="{{'fechaEstado'|translate}}" />
+            </div> -->
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ "Altitud" | translate }} *</label>
+                <input type="number" class="form-control" formControlName="altitud" name="Altitud" placeholder="{{ 'Seleccionar' | translate }} {{ ' altitud' | translate }}" />
+            </div>
+
+            <div class="form-group">
+                <label>{{ "Tipo coordenada" | translate }} *</label>
+
+                <ng-select2 name="tipoCoordenada" [data]="listaTipoCoordenada" formControlName="idTipoCoordenadas" [width]="'100%'" [(ngModel)]="tipoCoordenadaSelect" placeholder="{{ 'Seleccionar' | translate }} {{
+          'tipo coordenada' | translate
+        }}...">
+                </ng-select2>
+
+
+                <p *ngIf="ngForm.submitted && idTipoCoordenadas!.invalid" class="error">
+                    <sup>*</sup> {{ "tipoCoordenada" | translate }} {{ "obligatoria" | translate }}
+                </p>
+            </div>
+        
+                <div class="form-group" *ngIf="tipoCoordenadaSelect == 192" >
+                    <label> {{ "latitud" | translate }} *</label>
+                    <input type="number" class="form-control" formControlName="latitud" name="Latitud" pattern="^-?\d+\.?\d+$"  placeholder="{{ 'Seleccionar' | translate }} {{ ' latitud' | translate }}" />
+                </div>
+                <div class="form-group" *ngIf="tipoCoordenadaSelect == 192">
+                    <label> {{ "longitud" | translate }} *</label>
+                    <input type="number" class="form-control" formControlName="longitud" name="Norte" pattern="^-?\d+\.?\d+$"  placeholder="{{ 'Seleccionar' | translate }}{{ ' longitud' | translate }}" />
+                </div>
+   
+         
+                <div class="form-group" *ngIf="tipoCoordenadaSelect == 191">
+                    <label> {{ "Norte" | translate }} *</label>
+                    <input type="number" class="form-control" formControlName="norte" name="Norte" placeholder="{{ 'Norte' | translate }}" />
+                </div>
+                <div class="form-group"  *ngIf="tipoCoordenadaSelect == 191">
+                    <label> {{ "Este" | translate }} *</label>
+                    <input type="number" class="form-control" formControlName="este" name="Este" placeholder="{{ 'Este' | translate }}" />
+                </div>
+          
+            
+
+            
+            <!-- <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label> {{ "corriente" | translate }}</label> 
+                <ng-select2 name="idEstado" [data]="listaCorriente" formControlName="idCorriente" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+                    'estadoEstacion' | translate
+                  }}...">
+                </ng-select2>
+
+            </div> -->
+
+            <div class="form-group col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <label>{{ "Zona operativa EAAB" | translate }} *</label>
+                <ng-select2 name="zonaOperativaEaab" [data]="listaZonaOperativa" formControlName="zonaOperativaEaab" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+            'zona operativa EAAB' | translate
+          }}...">
+                </ng-select2>
+            </div>
+        </div>
+
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <h5 class="sish-titulo-formulario">
+                    {{ "Ubicación de la estación" | translate }}
+                </h5>
+                <hr />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 pr-5">
+                <div class="form-group">
+                    <label>{{ "departamento" | translate }} *</label>
+                    <ng-select2 name="idDepartamento" [data]="listaDepartamentos" formControlName="idDepartamento" [width]="'100%'" [(ngModel)]="departamentoSelected" (ngModelChange)="cambioDepartamento(departamentoSelected)" placeholder="{{ 'Seleccionar' | translate }} {{
+              ' departamento' | translate
+            }}...">
+                    </ng-select2>
+
+
+                </div>
+                <div class="form-group">
+                    <label>{{ "municipio" | translate }} *</label>
+                    <ng-select2 name="idMunicipio" [data]="listaMunicipios" formControlName="idMunicipio" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              ' municipio' | translate
+            }}...">
+                    </ng-select2>
+                    <p *ngIf="ngForm.submitted && idMunicipio!.invalid" class="error">
+                        <sup>*</sup> {{ "municipio" | translate }} {{ "obligatoria" | translate }}
+                    </p>
+
+                </div>
+                <div class="form-group">
+                    <label>{{ "area" | translate }}  {{" hidrográfica"|translate}} *</label>
+                    <ng-select2 name="idAreaHidrografica" [data]="listaAreaHidrografica" formControlName="idAreaHidrografica" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              'area hidrográfica' | translate
+            }}...">
+                    </ng-select2>
+
+                    <p *ngIf="ngForm.submitted && areaHidrografica!.invalid" class="error">
+                        <sup>*</sup> {{ "area" | translate }}  {{"Hidrografica"|translate}} {{ "obligatoria" | translate }}
+                    </p>
+
+                </div>
+                <div class="form-group">
+                    <label>{{ "Zona hidrográfica" | translate }} *</label>
+                    <ng-select2 name="idZonaHidrografica" [data]="listaZonaHidrografica" formControlName="idZonaHidrografica" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              'zona hidrográfica' | translate
+            }}...">
+                    </ng-select2>
+
+                    <p *ngIf="ngForm.submitted && zonaHidrografica!.invalid" class="error">
+                        <sup>*</sup> {{ "zonaHidrografica" | translate }} {{ "obligatoria" | translate }}
+                    </p>
+
+                </div>
+                <div class="form-group">
+                    <label>{{ "Sub zona hidrográfica" | translate }} *</label>
+                    <ng-select2 name="idSubZonaHidrografica" [data]="listaSubzonaHidrografica" formControlName="idSubZonaHidrografica" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              'subzona hidrografica' | translate
+            }}...">
+                    </ng-select2>
+                    <p *ngIf="ngForm.submitted && subZonaHidrografica!.invalid" class="error">
+                        <sup>*</sup> {{ "Sub zonaHidrografica" | translate }} {{ "obligatoria" | translate }}
+                    </p>
+
+                </div>
+                <div class="form-group">
+                    <label>{{ "Cuenca" | translate }} *</label>
+                    <ng-select2 name="cuenca" [data]="listaCuenca" formControlName="idCuenca" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              ' cuenca' | translate
+            }}...">
+                    </ng-select2>
+                </div>
+                <div class="form-group">
+                    <label>{{ "Sub cuenca" | translate }} *</label>
+                    <ng-select2 name="idSubCuenca" [data]="listaSubcuenca" formControlName="idSubCuenca" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              'sub cuenca' | translate
+            }}...">
+                    </ng-select2>
+                </div>
+                <div class="form-group">
+                    <label>{{ "Micro cuenca" | translate }} *</label>
+                    <ng-select2 name="idMicroCuenca" [data]="listaMicrocuenca" formControlName="idMicroCuenca" [width]="'100%'" placeholder="{{ 'Seleccionar' | translate }} {{
+              ' micro cuenca' | translate
+            }}...">
+                    </ng-select2>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ "Nivel" | translate }} {{" subsiguiente"|translate}} *</label>
+                    <!-- <ng-select2 name="nivelSubsiguiente" [data]="listaNivelSubsiguiente" formControlName="nivelSubSiguiente" [width]="'100%'" placeholder="{{'Seleccionar'|translate}} {{' nivel subsiguiente'|translate}}...">
+                    </ng-select2> -->
+
+                    <input class="form-control" type="text" name="nivelSubsiguiente" formControlName="nivelSubSiguiente" />
+                </div>
+
+          
+            </div>
+            <div class="col-md-8">
+                <!--<app-esri-map
+          [center]="mapCenter"
+          [basemap]="basemapType"
+          [zoom]="mapZoomLevel"
+          (mapLoadedEvent)="mapLoadedEvent($event)"
+        >
+        </app-esri-map>-->
+                <app-esri-map *ngIf="capas.length > 0" [capas]="capas" [center]="mapCenter" [basemap]="basemapType" [zoom]="mapZoomLevel" (clickMapa)="clickMapa($event)" (seleccionMapa)="seleccionMapa($event)" (mapLoadedEvent)="mapLoadedEvent($event)">
+                </app-esri-map>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <p class="sish-datos-auditoria">
+                    <strong>{{'Auditoria'|translate}}</strong> | {{'Fecha'|translate}} {{'creacion'|translate}}:<label controlName="fechaCreacion"></label> | {{'Fecha'|translate}} {{'modificación'|translate}}: <label controlName="fechaModificacion"></label>                    | {{'Fecha'|translate}} {{'estado'|translate}}: <label controlName="fechaEstado"></label> | {{'Usuario'|translate}} {{'creacion'|translate}}:
+                    <label controlName="usuarioCreacion"></label> | {{'Usuario'|translate}} {{'modificación'|translate}}: <label controlName="usuarioModificacion"></label> | {{'Usuario'|translate}} {{'estado'|translate}}: <label controlName="usuarioEstado"></label>
+                </p>
+            </div>
+        </div>
+        <!--BOTONES-->
+        <div class="row">
+            <div class="form-group col-xl-12 col-lg-6 col-sm-12">
+                <div class="btn-group mr-2" role="group" aria-label="First group" *ngIf="ac!='V'">
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id == '0'">
+            {{ "Botones.Crear" | translate }}
+          </button>
+                    <button type="submit" class="sish-boton-confirmar" *ngIf="id != '0'">
+            {{ "Botones.Guardar" | translate }}
+          </button>
+                </div>
+
+
+
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/estaciones']" *ngIf="ac!='V'">
+                        {{ 'Botones.Cancelar' | translate }}
+                    </button>
+
+                    <button type="button" class="sish-boton-cancelar" [routerLink]="['/configuracion/estaciones']" *ngIf="ac =='V'">
+                        {{ 'Botones.Regresar' | translate }}
+                    </button>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </form>
+    <!--FINALIZA FORMULARIO-->
+</div>
